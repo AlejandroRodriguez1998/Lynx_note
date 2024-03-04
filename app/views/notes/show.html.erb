@@ -1,0 +1,21 @@
+<p>
+  <strong>Text:</strong>
+  <%= @note.text %>
+</p>
+
+<p>
+  <strong>List:</strong>
+  <%= @note.list %>
+</p>
+
+<p>
+  <strong>Images:</strong>
+  <% @note.images.each do |image| %>
+    <%= image_tag(image) %>
+  <% end %>
+</p>
+
+<%= link_to 'Edit', edit_note_path(@note) %> |
+<%= link_to 'Back', notes_path %>
+
+

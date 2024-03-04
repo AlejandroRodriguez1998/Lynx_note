@@ -1,0 +1,22 @@
+<h1>Notes</h1>
+
+<div class="row m-0 p-0">
+<%= link_to 'New Note', new_note_path %>
+    <div class="col-3">
+        <ul class="list-group">
+            <% @notes.each do |note| %>
+                <li class="list-group-item" onclick="mostrarNota('<%= note.id %>')">
+                    <%= note.text.split[0..4].join(' ') %>
+                </li>
+                <!-- Los botones de editar y eliminar funciona href=/notes/id/edit -->
+            <% end %>
+        </ul>
+    </div>
+    <div class="col-9 d-none" id="padreContenido">
+            <div class="card">
+                <div class="card-body" id="contenido">
+        
+                </div>
+            </div>
+    </div>                  
+</div>
