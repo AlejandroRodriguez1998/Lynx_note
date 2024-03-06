@@ -1,0 +1,43 @@
+<!-- app/views/notes/edit.html.erb -->
+<h1>Editar Nota</h1>
+
+<%= form_with(model: @note, local: true) do |form| %>
+  <% if @note.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% @note.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :text %>
+    <%= form.text_area :text %>
+  </div>
+
+  <div class="field">
+    <%= form.label :list %>
+    <%= form.text_field :list %>
+  </div>
+
+  <% if @note.images.attached? %>
+    <% @note.images.each_with_index do |image, index| %>
+        <%= image_tag(image.variant(resize: "100x100")) %>
+        <%= check_box_tag "note[images_to_delete][]", image.id, false %>
+        <%= label_tag "Eliminar imagen #{index + 1}" %>
+    <% end %>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :images, "Añadir nuevas imágenes:" %>
+    <%= form.file_field :images, multiple: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Actualizar Nota" %>
+  </div>
+<% end %>
+
+<%= link_to 'Volver', notes_path %>

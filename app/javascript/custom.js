@@ -8,6 +8,20 @@ function mostrarNota(noteId) {
     .then(data => {
         cont.innerHTML = "";
 
+        console.log(data)
+        
+        var edit = document.createElement("a");
+        edit.setAttribute("href","/notes/"+noteId+"/edit");
+        edit.setAttribute("class","btn btn-primary");
+        edit.innerHTML = "Editar";
+        cont.appendChild(edit);
+
+        var del = document.createElement("button");
+        del.setAttribute("class","btn btn-secondary");
+        del.setAttribute("onclick","eliminarNota("+noteId+")");
+        del.innerHTML = "Eliminar";
+        cont.appendChild(del);
+
         var p = document.createElement("p");
         p.innerHTML = data.text;
         cont.appendChild(p);
@@ -16,13 +30,28 @@ function mostrarNota(noteId) {
         p1.innerHTML = data.list;
         cont.appendChild(p1);
     
-        var img2 = document.createElement("img");
-        img2.src = data.image;
-        img2.style.width = "120";
-        img2.style.height = "120";
-        cont.appendChild(img2);
+        data.image.forEach(element => {
+            var img = document.createElement("img");
+            img.src = element;
+            img.style.width = "120";
+            img.style.height = "120";
+            cont.appendChild(img);
+        });
     })
     .catch(error => {
         console.log('Error:', error);
     });
+}
+
+function eliminarNota(noteId) {
+    if (confirm('¿Estás seguro?')) {
+        fetch(`/notes/${noteId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }).then(response => {
+            window.location.href = "/notes";
+        }).catch(error => console.error('Error:', error));
+    }
 }

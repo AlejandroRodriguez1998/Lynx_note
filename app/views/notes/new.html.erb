@@ -1,32 +1,48 @@
 <%= form_with(model: @note, local: true) do |form| %>
-    <% if @note.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@note.errors.count, "error") %> prohibited this note from being saved:</h2>
-  
-        <ul>
-        <% @note.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
+  <% if @note.errors.any? %>
+    
+    <button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal"></button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="alert alert-warning m-0">
+            <div class="modal-header border-0">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                <%= pluralize(@note.errors.count, "error") %> prohibited this note from being saved:
+              </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <ul>
+              <% @note.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+            </div>
+        </div>
       </div>
-    <% end %>
-  
-    <div class="field">
-      <%= form.label :text %>
-      <%= form.text_area :text %>
-    </div>
-  
-    <div class="field">
-      <%= form.label :list %>
-      <%= form.text_area :list %>
-    </div>
-  
-    <div class="field">
-      <%= form.label :images %>
-      <%= form.file_field :images, multiple: true %>
-    </div>
-  
-    <div class="actions">
-      <%= form.submit %>
-    </div>
+    </div>                
+
+    <script>
+        document.getElementById('modal').click();
+    </script>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :text %>
+    <%= form.text_area :text %>
+  </div>
+
+  <div class="field">
+    <%= form.label :list %>
+    <%= form.text_area :list %>
+  </div>
+
+  <div class="field">
+    <%= form.label :images %>
+    <%= form.file_field :images, multiple: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
 <% end %>
