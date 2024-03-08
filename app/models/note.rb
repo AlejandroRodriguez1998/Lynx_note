@@ -1,6 +1,6 @@
 class Note < ApplicationRecord
     has_many_attached :images
-    validate :at_least_one_field_present
+    validate :at_least_one_field_present, on: :create
 
     private
         def at_least_one_field_present

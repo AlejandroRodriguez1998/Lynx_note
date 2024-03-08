@@ -1,4 +1,4 @@
-<h1>Notes</h1>
+<h1 class="ms-2">Notes</h1>
 
 <% if notice %>
     <div class="alert alert-success alert-dismissible fade show ms-5 me-5 mt-2 mb-2" role="alert">
@@ -8,25 +8,32 @@
 
     <script>
         setTimeout(() => { document.getElementById('botonCerrar').click(); }, 5000);
-    </script>
 
+        var urlParams = new URLSearchParams(window.location.search);
+        var IDNote = urlParams.get('number');
+        if (IDNote) { showNote(IDNote); }
+        
+    </script>
 <% end %>
 
 <div class="row m-0 p-0">
-<%= link_to 'New Note', new_note_path %>
     <div class="col-3">
         <ul class="list-group">
+            <li> <%= link_to 'New Note', new_note_path, class:'btn btn-primary w-100 mb-2' %></li>
             <% @notes.each do |note| %>
-                <li class="list-group-item" onclick="mostrarNota('<%= note.id %>')">
-                    <%= note.text.split[0..4].join(' ') %>
+                <li class="list-group-item" onclick="showNote('<%= note.id %>')">
+                    <% if note.text.blank? %>
+                        <span class="p-2"></span>
+                    <% else %>
+                        <%= note.text.split[0..4].join(' ') %>
+                    <% end %>
                 </li>
-                <!-- Los botones de editar y eliminar funciona href=/notes/id/edit -->
             <% end %>
         </ul>
     </div>
-    <div class="col-9 d-none" id="padreContenido">
+    <div class="col-9 d-none" id="fatherContent">
             <div class="card">
-                <div class="card-body" id="contenido">
+                <div class="card-body" id="content">
         
                 </div>
             </div>

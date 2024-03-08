@@ -1,43 +1,55 @@
 <!-- app/views/notes/edit.html.erb -->
-<h1>Editar Nota</h1>
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="text-center mb-3">Edit Note</h2>
 
-<%= form_with(model: @note, local: true) do |form| %>
-  <% if @note.errors.any? %>
-    <div id="error_explanation">
-      <ul>
-        <% @note.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+      <%= form_with(model: @note, local: true) do |form| %>
+        <div id="error" class="text-danger mb-3 text-center">
+          <% if @note.errors.any? %>
+            <% @note.errors.full_messages.each do |message| %>
+              <p><%= message %></p> 
+            <% end %>            
+          <% end %>
+        </div>
+
+        <div class="field mb-3">
+          <%= form.label :text, class:'form-label'%>
+          <%= form.text_area :text, class: 'form-control', rows:'3'%>
+        </div>
+
+        <div class="field mb-3">
+          <%= form.label :list, class:'form-label' %>
+          <%= form.text_field :list, class: 'form-control', rows:'2'%>
+        </div>
+
+        <% if @note.images.attached? %>
+          <label class="form-label">Current images</label>
+          <div class="card-group mb-3">
+            <% @note.images.each_with_index do |image, index| %>
+              <div class="card">
+                <div class="card-body text-center">
+                  <%= image_tag(image, class: 'card-img-top', style: 'width:100px; height:100px; object-fit: cover;') %>
+                  <div class="form-check">
+                    <%= check_box_tag "note[images_to_delete][]", image.id, false, class: 'form-check-input', id: "image_to_delete_#{index}" %>
+                    <%= label_tag "image_to_delete_#{index}", "Delete imagen #{index + 1}", class: 'form-check-label' %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
         <% end %>
-      </ul>
+
+        <div class="field mb-3">
+          <%= form.label :images, "Add new images", class:'form-label' %>
+          <%= form.file_field :images, multiple: true, class: 'form-control' %>
+        </div>
+
+        <div class="actions mb-3 text-center">
+          <%= form.submit "Update Note", class: 'btn btn-primary' %>
+          <%= link_to 'Go Back', notes_path, class: 'btn btn-secondary'  %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :text %>
-    <%= form.text_area :text %>
   </div>
-
-  <div class="field">
-    <%= form.label :list %>
-    <%= form.text_field :list %>
-  </div>
-
-  <% if @note.images.attached? %>
-    <% @note.images.each_with_index do |image, index| %>
-        <%= image_tag(image.variant(resize: "100x100")) %>
-        <%= check_box_tag "note[images_to_delete][]", image.id, false %>
-        <%= label_tag "Eliminar imagen #{index + 1}" %>
-    <% end %>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :images, "Añadir nuevas imágenes:" %>
-    <%= form.file_field :images, multiple: true %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit "Actualizar Nota" %>
-  </div>
-<% end %>
-
-<%= link_to 'Volver', notes_path %>
+</div>
