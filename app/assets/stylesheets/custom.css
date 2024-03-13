@@ -2,3 +2,54 @@
     background-color: #f0f0f0;
     color: #000; 
 }
+
+.color_button_brown:hover {
+    background-color: #beae97;
+    color : black;
+}
+
+.color_button_brown:active {
+    background-color: #beae97 !important;
+    color : black !important;
+}
+
+.color_button_brown {
+    background-color: #beae97c8;
+    color : black;
+}
+
+.color_button_green:hover {
+    background-color: rgba(164, 192, 78, 0.546);
+    color : black;
+}
+
+.color_button_green:active {
+    background-color: rgba(164, 192, 78, 0.546) !important;
+    color : black !important;
+}
+
+.color_button_green {
+    background-color: rgba(164, 192, 78, 0.749);
+    color : black;
+}
+
+.color_body {
+    background-color: #efeddc;
+}
+
+.color_navbar{
+    background-color:  #c5d6a1 !important;
+}
+
+.color_card{
+    background-color: #FDFDF0;
+}
+
+.color_footer{
+    background-color: #666666;
+}
+
+.size_img {
+    width: 100px;
+    height: auto;
+}

@@ -18,12 +18,12 @@ function showNote(noteId) {
        
         var edit = document.createElement("a");
         edit.setAttribute("href","/notes/"+noteId+"/edit");
-        edit.setAttribute("class","btn btn-primary mb-3");
+        edit.setAttribute("class","btn color_button_green fw-semibold mb-3");
         edit.innerHTML = "Edit";
         cont.appendChild(edit);
 
         var del = document.createElement("button");
-        del.setAttribute("class","btn btn-secondary mb-3 ms-2");
+        del.setAttribute("class","btn color_button_brown fw-semibold mb-3 ms-2");
         del.setAttribute("onclick","deleteNote("+noteId+")");
         del.innerHTML = "Delete";
         cont.appendChild(del);
@@ -51,7 +51,7 @@ function showNote(noteId) {
 
         data.image.forEach(element => {
             var card = document.createElement("div");
-            card.setAttribute("class","card");
+            card.setAttribute("class","card color_card");
 
             var cardBody = document.createElement("div");
             cardBody.setAttribute("class","card-body text-center");

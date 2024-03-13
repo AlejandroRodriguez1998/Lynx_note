@@ -19,9 +19,9 @@
 <div class="row m-0 p-0">
     <div class="col-3">
         <ul class="list-group">
-            <li> <%= link_to 'New Note', new_note_path, class:'btn btn-primary w-100 mb-2' %></li>
+            <li> <%= link_to 'New Note', new_note_path, class:'btn color_button_green fw-semibold w-100 mb-2' %></li>
             <% @notes.each do |note| %>
-                <li class="list-group-item" onclick="showNote('<%= note.id %>')">
+                <li class="list-group-item color_card" onclick="showNote('<%= note.id %>')">
                     <% if note.text.blank? %>
                         <span class="p-2"></span>
                     <% else %>
@@ -32,7 +32,7 @@
         </ul>
     </div>
     <div class="col-9 d-none" id="fatherContent">
-            <div class="card">
+            <div class="card color_card">
                 <div class="card-body" id="content">
         
                 </div>
