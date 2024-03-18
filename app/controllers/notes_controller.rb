@@ -1,12 +1,14 @@
 class NotesController < ApplicationController
   
   def index
+    @browser = Browser.new(request.user_agent)
     @notes = Note.all
   end
 
   def show
     @note = Note.find(params[:id])
     respond_to do |format|
+      format.html
       format.json {
         images_urls = @note.images.map { |image| url_for(image) }
         render json: @note.as_json.merge({ image: images_urls })
@@ -20,8 +22,14 @@ class NotesController < ApplicationController
 
   def create
       @note = Note.new(note_params)
+      browser = Browser.new(request.user_agent)
+      
       if @note.save
-        redirect_to notes_path(number: @note.id), notice: 'Note was successfully created.'
+        if browser.device.mobile?
+          redirect_to @note, notice: 'Note was successfully created.' and return
+        else
+          redirect_to notes_path(number: @note.id), notice: 'Note was successfully created.'
+        end
       else
         render :new, status: :unprocessable_entity
       end
@@ -33,6 +41,7 @@ class NotesController < ApplicationController
   
   def update
     @note = Note.find(params[:id])
+    browser = Browser.new(request.user_agent)
 
     text = params[:note][:text]
     list = params[:note][:list]     
@@ -64,16 +73,21 @@ class NotesController < ApplicationController
     # Si ha pasado el filtrado y la eliminación, actualiza el resto de los campos.
     if @note.update(note_params.except(:images))
       @note.images.attach(params[:note][:images]) if params[:note][:images].present?
-      redirect_to notes_path(number: @note.id), notice: 'Note was successfully updated.'
+    
+      if browser.device.mobile?
+        redirect_to @note, notice: 'Note was successfully updated.' and return
+      else
+        redirect_to notes_path(number: @note.id), notice: 'Note was successfully updated.'
+      end
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity 
     end
   end
   
   def destroy
     @note = Note.find(params[:id])
     @note.destroy
-    redirect_to notes_path, notice: 'Note was successfully destroyed.'
+    redirect_to notes_path, notice: 'Note was successfully destroyed.' 
   end
 
   private

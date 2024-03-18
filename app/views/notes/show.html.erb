@@ -1,21 +1,39 @@
-<p>
-  <strong>Text:</strong>
-  <%= @note.text %>
-</p>
+<% if notice %>
+  <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
+      <strong>Correct!</strong> <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+  </div>
 
-<p>
-  <strong>List:</strong>
-  <%= @note.list %>
-</p>
+  <script>
+      setTimeout(() => { document.getElementById('botonCerrar').click(); }, 5000);
+  </script>
+<% end %>
 
-<p>
-  <strong>Images:</strong>
-  <% @note.images.each do |image| %>
-    <%= image_tag(image) %>
-  <% end %>
-</p>
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <%= link_to 'Edit', edit_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
+      <button onclick="deleteNote('<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
 
-<%= link_to 'Edit', edit_note_path(@note) %> |
-<%= link_to 'Back', notes_path %>
-
-
+      <p><%= @note.text %></p>
+      <% if !@note.list.blank? %>
+        <ul>
+          <% @note.list.strip.split(" ").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+      <% end %>
+      <% if @note.images.count > 0 %>
+        <div class="card-group">
+          <% @note.images.each do |image| %>
+            <div class="card color_card">
+              <div class="card-body text-center">
+                <%= image_tag image, class: 'card-img-top ', style: 'width:100px; height:100px;' %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <h1 class="ms-2">Notes</h1>
 
 <% if notice %>
-    <div class="alert alert-success alert-dismissible fade show ms-5 me-5 mt-2 mb-2" role="alert">
+    <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
         <strong>Correct!</strong> <%= notice %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
     </div>
@@ -17,25 +17,35 @@
 <% end %>
 
 <div class="row m-0 p-0">
-    <div class="col-3">
+    <div class="col-12 col-md-3">
         <ul class="list-group">
             <li> <%= link_to 'New Note', new_note_path, class:'btn color_button_green fw-semibold w-100 mb-2' %></li>
             <% @notes.each do |note| %>
-                <li class="list-group-item color_card" onclick="showNote('<%= note.id %>')">
-                    <% if note.text.blank? %>
-                        <span class="p-2"></span>
-                    <% else %>
-                        <%= note.text.split[0..4].join(' ') %>
-                    <% end %>
-                </li>
+                <% if @browser.device.mobile? %>
+                    <li class="list-group-item color_card">
+                        <% if note.text.blank? %>
+                            <a href="<%= note_path(note) %>" class="btn p-2 w-100"></a>
+                        <% else %>
+                            <a href="<%= note_path(note) %>" class="btn w-100"><%= note.text.split[0..4].join(' ') %></a>
+                        <% end %>
+                    </li>
+                <% else %>
+                    <li class="list-group-item listSelected color_card" onclick="showNote('<%= note.id %>')">
+                        <% if note.text.blank? %>
+                            <span class="p-2"></span>
+                        <% else %>
+                            <%= note.text.split[0..4].join(' ') %>
+                        <% end %>
+                    </li>
+                <% end %>
             <% end %>
         </ul>
     </div>
-    <div class="col-9 d-none" id="fatherContent">
-            <div class="card color_card">
-                <div class="card-body" id="content">
-        
-                </div>
+    <div class="col-12 col-md-9 d-none" id="fatherContent">
+        <div class="card color_card">
+            <div class="card-body" id="content">
+
             </div>
-    </div>                  
+        </div>
+    </div>
 </div>

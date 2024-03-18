@@ -1,6 +1,6 @@
 function showNote(noteId) {
     // Añadir la clase 'selected' al elemento clickeado y quitarla de los demás
-    document.querySelectorAll('.list-group-item').forEach(function(item) {
+    document.querySelectorAll('.listSelected').forEach(function(item) {
         item.classList.remove('selected'); 
         //Con esto comprobamos si el id del elemento clickeado es igual al id de la nota
         if (item.getAttribute('onclick').includes(noteId.toString())) {
@@ -8,10 +8,14 @@ function showNote(noteId) {
         }
     });
 
-    document.getElementById("fatherContent").setAttribute("class","col-9");
+    document.getElementById("fatherContent").setAttribute("class","col-12 col-md-9 mt-2 mt-md-0");
     var cont = document.getElementById("content")
 
-    fetch("/notes/"+noteId)
+    fetch("/notes/"+noteId, {
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
     .then(response => response.json())
     .then(data => {
         cont.innerHTML = "";
@@ -32,7 +36,7 @@ function showNote(noteId) {
         p.innerHTML = data.text;
         cont.appendChild(p);
     
-        dataList = data.list.split(" ");
+        dataList = data.list.trim().split(" ");
 
         if (dataList.length > 0 && dataList[0] != "") {
             var ul = document.createElement("ul");

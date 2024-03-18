@@ -1,6 +1,10 @@
 .selected {
-    background-color: #f0f0f0;
-    color: #000; 
+    background-color: #fdfdf088 !important;
+    color : black;
+}
+
+.listSelected {
+    cursor: pointer;
 }
 
 .color_button_brown:hover {
