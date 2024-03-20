@@ -30,7 +30,7 @@
 
         <div class="field mb-3">
           <%= form.label :images, class:'form-label' %>
-          <%= form.file_field :images, multiple: true, class: 'form-control', id:'image' %>
+          <%= form.file_field :images, multiple: true, class: 'form-control', id:'image', accept: 'image/*' %>
         </div>
 
         <div class="actions mb-3 text-center">
