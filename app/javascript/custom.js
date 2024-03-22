@@ -1,3 +1,17 @@
+function checkInput(currentInput) {
+    const lastInput = document.querySelector('#listInputsContainer').lastElementChild;
+    if (currentInput === lastInput && currentInput.value.trim() !== "") {
+      const newInput = document.createElement("input");
+      newInput.setAttribute("type", "text");
+      newInput.setAttribute("name", "note[list][]");
+      newInput.classList.add("form-control", "list-input", "mb-1");
+      newInput.setAttribute("oninput", "checkInput(this)");
+      newInput.placeholder = "Add another item";
+  
+      document.querySelector('#listInputsContainer').appendChild(newInput);
+    }
+}
+
 function showNote(noteId) {
     // Añadir la clase 'selected' al elemento clickeado y quitarla de los demás
     document.querySelectorAll('.listSelected').forEach(function(item) {
@@ -20,6 +34,8 @@ function showNote(noteId) {
     .then(data => {
         cont.innerHTML = "";
        
+        console.log(data)
+
         var edit = document.createElement("a");
         edit.setAttribute("href","/notes/"+noteId+"/edit");
         edit.setAttribute("class","btn color_button_green fw-semibold mb-3");
@@ -36,20 +52,18 @@ function showNote(noteId) {
         p.innerHTML = data.text;
         cont.appendChild(p);
     
-        dataList = data.list.trim().split(" ");
-
-        if (dataList.length > 0 && dataList[0] != "") {
+        if (data.list && data.list.length > 0) {
             var ul = document.createElement("ul");
-
-            dataList.forEach(element => {
+        
+            data.list.forEach(element => {
                 var li = document.createElement("li");
-                li.innerHTML = element;
+                li.innerHTML = element; // Asume que 'element' es un string seguro para insertar
                 ul.appendChild(li);
             });
-
+        
             cont.appendChild(ul);
         }
-
+        
         var cardGroup = document.createElement("div");
         cardGroup.setAttribute("class","card-group");
 

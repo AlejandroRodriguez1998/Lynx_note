@@ -24,8 +24,10 @@
         </div>
 
         <div class="field mb-3">
-          <%= form.label :list, class:'form-label' %>
-          <%= form.text_area :list, class: 'form-control', rows:'2', id:'list', placeholder:'The list is created by separating with spaces'  %>
+          <%= form.label :list, "List Items", class: 'form-label' %>
+          <div id="listInputsContainer">
+            <%= text_field_tag 'note[list][]', nil, class: 'form-control list-input mb-1', placeholder: 'Add an item to the list', oninput: 'checkInput(this)' %>
+          </div>
         </div>
 
         <div class="field mb-3">

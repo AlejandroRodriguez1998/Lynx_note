@@ -21,7 +21,8 @@ class NotesController < ApplicationController
   end
 
   def create
-      @note = Note.new(note_params)
+      @note = Note.new(note_params.except(:list))
+      @note.list = params[:note][:list].reject(&:blank?).map(&:strip) if params[:note][:list].is_a?(Array)
       browser = Browser.new(request.user_agent)
       
       if @note.save
@@ -44,7 +45,7 @@ class NotesController < ApplicationController
     browser = Browser.new(request.user_agent)
 
     text = params[:note][:text]
-    list = params[:note][:list]     
+    list_items = params[:note][:list].reject { |item| item.blank? } 
     images = params[:note][:images].reject(&:blank?) 
     # reject(&:blank?) Filtra cualquier cadena vacía que pueda estar en el array, ya que por defecto
     # images devuelve aunque no hayas metido una imagen [""] y eso no lo queremos.
@@ -55,7 +56,7 @@ class NotesController < ApplicationController
       images_to_delete_ids = imagen_to_delete.reject(&:blank?)
  
       # Si no se proporciona texto, lista o imágenes, y se eliminan todas las imágenes, se debe mostrar un error.
-      if text.blank? && list.blank? && images.blank? && @note.images.count == images_to_delete_ids.count
+      if text.blank? && list_items.blank? && images.blank? && @note.images.count == images_to_delete_ids.count
         @note.errors.add(:base, "You cannot delete all photos without adding either a text, a list or another image.")
         render :edit, status: :unprocessable_entity and return
       else
@@ -64,14 +65,16 @@ class NotesController < ApplicationController
       end
     else 
       # Si no se ha seleccionado porque no hay imagenes para eliminar o no quiere el usuario y los campos estan vacios.
-      if text.blank? && list.blank? && images.blank? && @note.images.count == 0
+      if text.blank? && list_items.blank? && images.blank? && @note.images.count == 0
         @note.errors.add(:base, "You must provide at least one text, a list or an image.")
         render :edit, status: :unprocessable_entity and return
       end
     end
 
     # Si ha pasado el filtrado y la eliminación, actualiza el resto de los campos.
-    if @note.update(note_params.except(:images))
+    if @note.update(note_params.except(:images, :list))
+      @note.list = list_items
+      @note.save
       @note.images.attach(params[:note][:images]) if params[:note][:images].present?
     
       if browser.device.mobile?
@@ -92,6 +95,6 @@ class NotesController < ApplicationController
 
   private
     def note_params
-      params.require(:note).permit(:text, :list, images: [])
+      params.require(:note).permit(:text, list: [], images: [])
     end
 end

@@ -20,7 +20,14 @@
 
         <div class="field mb-3">
           <%= form.label :list, class:'form-label' %>
-          <%= form.text_field :list, class: 'form-control', rows:'2'%>
+          <div id="listInputsContainer">
+            <% if @note.list.present? %>
+              <% @note.list.each do |item| %>
+                <%= text_field_tag 'note[list][]', item, class: 'form-control list-input mb-1', placeholder: 'Item for the list' %>
+              <% end %>
+            <% end %>
+            <%= text_field_tag 'note[list][]', nil, class: 'form-control list-input mb-1', placeholder: 'Add another item', oninput: 'checkInput(this)' %>
+          </div>
         </div>
 
         <% if @note.images.attached? %>
