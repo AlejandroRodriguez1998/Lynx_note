@@ -23,18 +23,18 @@
             <% @notes.each do |note| %>
                 <% if @browser.device.mobile? %>
                     <li class="list-group-item color_card">
-                        <% if note.text.blank? %>
+                        <% if note.title.blank? %>
                             <a href="<%= note_path(note) %>" class="btn p-2 w-100"></a>
                         <% else %>
-                            <a href="<%= note_path(note) %>" class="btn w-100"><%= note.text.split[0..4].join(' ') %></a>
+                            <a href="<%= note_path(note) %>" class="btn w-100"><%= note.title %></a>
                         <% end %>
                     </li>
                 <% else %>
                     <li class="list-group-item listSelected color_card" onclick="showNote('<%= note.id %>')">
-                        <% if note.text.blank? %>
+                        <% if note.title.blank? %>
                             <span class="p-2"></span>
                         <% else %>
-                            <%= note.text.split[0..4].join(' ') %>
+                            <%= note.title %>
                         <% end %>
                     </li>
                 <% end %>

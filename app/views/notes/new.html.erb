@@ -1,45 +1,54 @@
-<div class="container mt-2">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <h2 class="text-center mb-3">New Note</h2>
-
-      <%= form_with(model: @note, local: true) do |form| %>
-        <div id="error" class="text-danger mb-3 text-center">
-          <% if @note.errors.any? %>
-            <script>
-              document.getElementById("text").setAttribute("style","border-color: red");
-              document.getElementById("list").setAttribute("style","border-color: red");
-              document.getElementById("image").setAttribute("style","border-color: red");
-            </script>
-
-            <% @note.errors.full_messages.each do |message| %>
-              <p><%= message %></p> 
-            <% end %>            
-          <% end %>
-        </div>
-
-        <div class="field mb-3">
-          <%= form.label :text, class:'form-label' %>
-          <%= form.text_area :text, class: 'form-control', rows:'3', id:'text', placeholder:'Any text you want to add to the note' %>
-        </div>
-
-        <div class="field mb-3">
-          <%= form.label :list, "List Items", class: 'form-label' %>
-          <div id="listInputsContainer">
-            <%= text_field_tag 'note[list][]', nil, class: 'form-control list-input mb-1', placeholder: 'Add an item to the list', oninput: 'checkInput(this)' %>
-          </div>
-        </div>
-
-        <div class="field mb-3">
-          <%= form.label :images, class:'form-label' %>
-          <%= form.file_field :images, multiple: true, class: 'form-control', id:'image', accept: 'image/*' %>
-        </div>
-
-        <div class="actions mb-3 text-center">
-          <%= form.submit class: 'btn color_button_green fw-semibold' %>
-          <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold'  %>
-        </div>
-      <% end %>
-    </div>
+<button type="button" onclick="addContentType('text')">Añadir Texto</button>
+<button type="button" onclick="addContentType('file')">Añadir Archivo</button>
+<button type="button" onclick="addContentType('list')">Añadir Imagen</button>
+<%= form_with model: @note, html: { multipart: true } do |form| %>
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
   </div>
-</div>
+
+  <div id="contentContainer">
+    <!-- Los campos dinámicos se añadirán aquí -->
+  </div>
+  <button type="submit">Enviar</button>
+<% end %>
+
+<script>
+  function addContentType(contentType) {
+    var container = document.getElementById('contentContainer');
+    var contentDiv = document.createElement('div');
+    
+    var typeInput = document.createElement('input');
+    typeInput.setAttribute('type', 'hidden');
+    typeInput.setAttribute('name', `note[content][][type]`);
+    typeInput.value = contentType;
+
+    contentDiv.appendChild(typeInput);
+
+    if (contentType === 'list'){
+      var div = document.createElement('div');
+      div.setAttribute('id', 'listInputsContainer');
+
+      contentDiv.appendChild(div);
+
+      var input = document.createElement('input');
+      input.setAttribute('name', `note[content][][value][]`);
+      input.setAttribute('oninput', 'checkInput(this)');
+      input.setAttribute('type', 'text');
+
+      div.appendChild(input);
+
+    }else{
+      var valueInput = document.createElement('input');
+      valueInput.setAttribute('name', `note[content][][value]`);
+      valueInput.setAttribute('type', contentType === 'text' ? 'text' : 'file');
+
+      
+      contentDiv.appendChild(valueInput);
+      
+    }
+
+    container.appendChild(contentDiv);
+
+  }
+</script>

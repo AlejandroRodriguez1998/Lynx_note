@@ -3,7 +3,7 @@ function checkInput(currentInput) {
     if (currentInput === lastInput && currentInput.value.trim() !== "") {
       const newInput = document.createElement("input");
       newInput.setAttribute("type", "text");
-      newInput.setAttribute("name", "note[list][]");
+      newInput.setAttribute("name", "note[content][][value][]");
       newInput.classList.add("form-control", "list-input", "mb-1");
       newInput.setAttribute("oninput", "checkInput(this)");
       newInput.placeholder = "Add another item";
@@ -33,8 +33,6 @@ function showNote(noteId) {
     .then(response => response.json())
     .then(data => {
         cont.innerHTML = "";
-       
-        console.log(data)
 
         var edit = document.createElement("a");
         edit.setAttribute("href","/notes/"+noteId+"/edit");
@@ -48,43 +46,44 @@ function showNote(noteId) {
         del.innerHTML = "Delete";
         cont.appendChild(del);
 
-        var p = document.createElement("p");
-        p.innerHTML = data.text;
-        cont.appendChild(p);
+        data.content.forEach(element => {
+            element = JSON.parse(element);
+
+            if (element.type == "text") {
+                var p = document.createElement("p");
+                p.innerHTML = element.value;
+                cont.appendChild(p);
+            } else if (element.type == "list") {
+                var ul = document.createElement("ul");
+                var dataUl = element.value.split(";")
+
+                dataUl.forEach(element => {
+                    var li = document.createElement("li");
+                    li.innerHTML = element;
+                    ul.appendChild(li);
+                });
+
+                cont.appendChild(ul);
+            } else if (element.type == "file") {
+                var cardGroup = document.createElement("div");
+                cardGroup.setAttribute("class","card-group");
+                var card = document.createElement("div");
+                card.setAttribute("class","card color_card");
     
-        if (data.list && data.list.length > 0) {
-            var ul = document.createElement("ul");
-        
-            data.list.forEach(element => {
-                var li = document.createElement("li");
-                li.innerHTML = element; // Asume que 'element' es un string seguro para insertar
-                ul.appendChild(li);
-            });
-        
-            cont.appendChild(ul);
-        }
-        
-        var cardGroup = document.createElement("div");
-        cardGroup.setAttribute("class","card-group");
-
-        data.image.forEach(element => {
-            var card = document.createElement("div");
-            card.setAttribute("class","card color_card");
-
-            var cardBody = document.createElement("div");
-            cardBody.setAttribute("class","card-body text-center");
-
-            var img = document.createElement("img");
-            img.src = element;
-            img.style.width = "150px";
-            img.style.height = "150px";
-
-            cardBody.appendChild(img);
-            card.appendChild(cardBody);
-            cardGroup.appendChild(card);
-        });
-
-        cont.appendChild(cardGroup);
+                var cardBody = document.createElement("div");
+                cardBody.setAttribute("class","card-body text-center");
+    
+                var img = document.createElement("img");
+                img.src = element.value;
+                img.style.width = "150px";
+                img.style.height = "150px";
+    
+                cardBody.appendChild(img);
+                card.appendChild(cardBody);
+                cardGroup.appendChild(card);
+                cont.appendChild(cardGroup);
+            }
+        }); 
     })
     .catch(error => {
         console.log('Error:', error);

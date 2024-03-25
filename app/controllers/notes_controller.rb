@@ -9,10 +9,7 @@ class NotesController < ApplicationController
     @note = Note.find(params[:id])
     respond_to do |format|
       format.html
-      format.json {
-        images_urls = @note.images.map { |image| url_for(image) }
-        render json: @note.as_json.merge({ image: images_urls })
-      }
+      format.json { render json: @note }
     end
   end
 
@@ -21,19 +18,36 @@ class NotesController < ApplicationController
   end
 
   def create
-      @note = Note.new(note_params.except(:list))
-      @note.list = params[:note][:list].reject(&:blank?).map(&:strip) if params[:note][:list].is_a?(Array)
-      browser = Browser.new(request.user_agent)
-      
-      if @note.save
-        if browser.device.mobile?
-          redirect_to @note, notice: 'Note was successfully created.' and return
-        else
-          redirect_to notes_path(number: @note.id), notice: 'Note was successfully created.'
+    if params[:note][:content].present? && params[:note][:title].present?
+      render :new, status: :unprocessable_entity and return
+    end
+
+    @note = Note.new(title: note_params[:title])
+  
+    if !params[:note][:content].blank?
+      processed_content = params[:note][:content].map do |content_item|  
+        case content_item[:type]
+          when 'list'
+            { type: 'list', value: content_item[:value].reject(&:blank?).join(';') }
+          when 'file'
+            { type: 'file', value: handle_uploaded_file(content_item[:value]) }
+          else
+            content_item
         end
-      else
-        render :new, status: :unprocessable_entity
       end
+      
+      @note.content = processed_content.map { |content_item| content_item.to_json }
+    end
+
+    if @note.save
+      if browser.device.mobile?
+        redirect_to @note, notice: 'Note was successfully created.' and return
+      else
+        redirect_to notes_path(number: @note.id), notice: 'Note was successfully created.'
+      end
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -95,6 +109,23 @@ class NotesController < ApplicationController
 
   private
     def note_params
-      params.require(:note).permit(:text, list: [], images: [])
+      params.require(:note).permit(:title, content: [:type, :value])
+    end
+
+    def handle_uploaded_file(uploaded_file)
+      # Genera un nombre de archivo único para evitar sobrescrituras
+      file_name = SecureRandom.uuid + File.extname(uploaded_file.original_filename)
+      
+      # Construye la ruta completa donde se guardará el archivo
+      file_path = Rails.root.join('public', 'uploads', file_name)
+      
+      # Mueve el archivo subido al directorio de destino
+      File.open(file_path, 'wb') do |file|
+        file.write(uploaded_file.read)
+      end
+      
+      # Devuelve la URL al archivo subido
+      # Esto asume que 'public' es servido directamente. Ajusta la ruta según tu configuración.
+      "/uploads/#{file_name}"
     end
 end
