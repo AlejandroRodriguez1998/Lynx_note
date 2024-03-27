@@ -7,6 +7,7 @@ class NotesController < ApplicationController
 
   def show
     @note = Note.find(params[:id])
+    
     respond_to do |format|
       format.html
       format.json { render json: @note }
@@ -18,10 +19,6 @@ class NotesController < ApplicationController
   end
 
   def create
-    if params[:note][:content].present? && params[:note][:title].present?
-      render :new, status: :unprocessable_entity and return
-    end
-
     @note = Note.new(title: note_params[:title])
   
     if !params[:note][:content].blank?
@@ -113,19 +110,23 @@ class NotesController < ApplicationController
     end
 
     def handle_uploaded_file(uploaded_file)
-      # Genera un nombre de archivo único para evitar sobrescrituras
-      file_name = SecureRandom.uuid + File.extname(uploaded_file.original_filename)
-      
-      # Construye la ruta completa donde se guardará el archivo
-      file_path = Rails.root.join('public', 'uploads', file_name)
-      
-      # Mueve el archivo subido al directorio de destino
-      File.open(file_path, 'wb') do |file|
-        file.write(uploaded_file.read)
+      if uploaded_file.blank?
+        return ""
+      else
+        # Genera un nombre de archivo único para evitar sobrescrituras
+        file_name = SecureRandom.uuid + File.extname(uploaded_file.original_filename)
+        
+        # Construye la ruta completa donde se guardará el archivo
+        file_path = Rails.root.join('public', 'uploads', file_name)
+        
+        # Mueve el archivo subido al directorio de destino
+        File.open(file_path, 'wb') do |file|
+          file.write(uploaded_file.read)
+        end
+        
+        # Devuelve la URL al archivo subido
+        # Esto asume que 'public' es servido directamente. Ajusta la ruta según tu configuración.
+        return "/uploads/#{file_name}"
       end
-      
-      # Devuelve la URL al archivo subido
-      # Esto asume que 'public' es servido directamente. Ajusta la ruta según tu configuración.
-      "/uploads/#{file_name}"
     end
 end

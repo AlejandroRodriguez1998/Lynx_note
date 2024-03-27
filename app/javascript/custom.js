@@ -1,5 +1,63 @@
+function addContentType(contentType) {
+    var container = document.getElementById('contentContainer');
+    var contentDiv = document.createElement('div');
+    contentDiv.setAttribute('class', 'field mb-2');
+    
+    var typeInput = document.createElement('input');
+    typeInput.setAttribute('type', 'hidden');
+    typeInput.setAttribute('name', `note[content][][type]`);
+    typeInput.value = contentType;
+
+    contentDiv.appendChild(typeInput);
+
+    var label = document.createElement('label');
+    label.setAttribute('class', 'form-label');
+    
+    contentDiv.appendChild(label);
+
+    if (contentType === 'list'){
+        label.innerHTML = 'List';
+
+        var div = document.createElement('div');
+        div.setAttribute('id', 'listInputsContainer');
+
+        contentDiv.appendChild(div);
+
+        var input = document.createElement('input');
+        input.setAttribute('name', `note[content][][value][]`);
+        input.setAttribute('class', 'form-control list-input mb-1');
+        input.setAttribute('placeholder', 'Add an item to the list');
+        input.setAttribute('oninput', 'checkInput(this)');
+        input.setAttribute('type', 'text');
+
+        div.appendChild(input);
+
+    }else if (contentType === 'text'){
+        label.innerHTML = 'Text';
+
+        var valueInput = document.createElement('textarea');
+        valueInput.setAttribute('name', `note[content][][value]`);
+        valueInput.setAttribute('class', 'form-control');
+        valueInput.setAttribute('rows', '3');
+        valueInput.setAttribute('placeholder', 'Any text you want to add to the note');
+        
+        contentDiv.appendChild(valueInput);
+    }else{
+        label.innerHTML = 'Image';
+
+        var valueInput = document.createElement('input');
+        valueInput.setAttribute('name', `note[content][][value]`);
+        valueInput.setAttribute('class', 'form-control');
+        valueInput.setAttribute('type', 'file');
+        
+        contentDiv.appendChild(valueInput);
+    }
+
+    container.appendChild(contentDiv);
+}
+
 function checkInput(currentInput) {
-    const lastInput = document.querySelector('#listInputsContainer').lastElementChild;
+    const lastInput = currentInput.parentNode.lastElementChild;
     if (currentInput === lastInput && currentInput.value.trim() !== "") {
       const newInput = document.createElement("input");
       newInput.setAttribute("type", "text");
@@ -8,7 +66,7 @@ function checkInput(currentInput) {
       newInput.setAttribute("oninput", "checkInput(this)");
       newInput.placeholder = "Add another item";
   
-      document.querySelector('#listInputsContainer').appendChild(newInput);
+      currentInput.parentNode.appendChild(newInput);
     }
 }
 
@@ -42,48 +100,50 @@ function showNote(noteId) {
 
         var del = document.createElement("button");
         del.setAttribute("class","btn color_button_brown fw-semibold mb-3 ms-2");
-        del.setAttribute("onclick","deleteNote("+noteId+")");
+        del.setAttribute("onclick","deleteNote('"+noteId+"')");
         del.innerHTML = "Delete";
         cont.appendChild(del);
 
-        data.content.forEach(element => {
-            element = JSON.parse(element);
+        if (data.content !== null) {
+            data.content.forEach(element => {
+                element = JSON.parse(element);
 
-            if (element.type == "text") {
-                var p = document.createElement("p");
-                p.innerHTML = element.value;
-                cont.appendChild(p);
-            } else if (element.type == "list") {
-                var ul = document.createElement("ul");
-                var dataUl = element.value.split(";")
+                if (element.type == "text") {
+                    var p = document.createElement("p");
+                    p.innerHTML = element.value;
+                    cont.appendChild(p);
+                } else if (element.type == "list") {
+                    var ul = document.createElement("ul");
+                    var dataUl = element.value.split(";")
 
-                dataUl.forEach(element => {
-                    var li = document.createElement("li");
-                    li.innerHTML = element;
-                    ul.appendChild(li);
-                });
+                    dataUl.forEach(element => {
+                        var li = document.createElement("li");
+                        li.innerHTML = element;
+                        ul.appendChild(li);
+                    });
 
-                cont.appendChild(ul);
-            } else if (element.type == "file") {
-                var cardGroup = document.createElement("div");
-                cardGroup.setAttribute("class","card-group");
-                var card = document.createElement("div");
-                card.setAttribute("class","card color_card");
-    
-                var cardBody = document.createElement("div");
-                cardBody.setAttribute("class","card-body text-center");
-    
-                var img = document.createElement("img");
-                img.src = element.value;
-                img.style.width = "150px";
-                img.style.height = "150px";
-    
-                cardBody.appendChild(img);
-                card.appendChild(cardBody);
-                cardGroup.appendChild(card);
-                cont.appendChild(cardGroup);
-            }
-        }); 
+                    cont.appendChild(ul);
+                } else if (element.type == "file") {
+                    var cardGroup = document.createElement("div");
+                    cardGroup.setAttribute("class","card-group mb-3");
+                    var card = document.createElement("div");
+                    card.setAttribute("class","card color_card");
+        
+                    var cardBody = document.createElement("div");
+                    cardBody.setAttribute("class","card-body text-center");
+        
+                    var img = document.createElement("img");
+                    img.src = element.value;
+                    img.style.width = "150px";
+                    img.style.height = "150px";
+        
+                    cardBody.appendChild(img);
+                    card.appendChild(cardBody);
+                    cardGroup.appendChild(card);
+                    cont.appendChild(cardGroup);
+                }
+            });
+        }
     })
     .catch(error => {
         console.log('Error:', error);
