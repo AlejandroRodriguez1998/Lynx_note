@@ -5,7 +5,7 @@ class Note
     field :title, type: String
     field :content, type: Array
 
-    validate :validate_content
+    validate :validate_content, on: :create
 
     private
     def validate_content

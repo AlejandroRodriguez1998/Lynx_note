@@ -4,52 +4,73 @@
     <div class="col-md-8">
       <h2 class="text-center mb-3">Edit Note</h2>
 
-      <%= form_with(model: @note, local: true) do |form| %>
-        <div id="error" class="text-danger mb-3 text-center">
-          <% if @note.errors.any? %>
-            <% @note.errors.full_messages.each do |message| %>
-              <p><%= message %></p> 
-            <% end %>            
-          <% end %>
-        </div>
+      <div id="error" class="text-danger mb-3 text-center">
+        <% if @note.errors.any? %>
+          <% @note.errors.full_messages.each do |message| %>
+            <p><%= message %></p> 
+          <% end %>            
+        <% end %>
+      </div>
 
+      <div class="field mb-2 text-center">
+        <button type="button" onclick="addContentType('text')" class="btn color_button_green fw-semibold">Add Text</button>
+        <button type="button" onclick="addContentType('list')" class="btn color_button_green fw-semibold">Add List</button>
+        <button type="button" onclick="addContentType('file')" class="btn color_button_green fw-semibold">Add Image</button>
+      </div>
+
+      <%= form_with(model: @note, html: { multipart: true }) do |form| %>
+      
         <div class="field mb-3">
-          <%= form.label :text, class:'form-label'%>
-          <%= form.text_area :text, class: 'form-control', rows:'3'%>
+          <%= form.label :title, class:'form-label'%>
+          <%= form.text_field :title, class: 'form-control', rows:'3'%>
         </div>
+        
+        <% if @note.content.present? %>
+          <% @note.content.each do |content_string| %>
+            <% item = JSON.parse(content_string)%>
+              <% if item['type'] == 'text' %>
+                <div class="field mb-3">
+                  <%= label_tag 'Text', 'Text', class: 'form-label' %>
+                  <%= hidden_field_tag "note[content][][type]", 'text' %>
+                  <%= text_area_tag "note[content][][value]", item['value'], class: 'form-control', rows: '3' %>
+                </div>
+              <% elsif item['type'] == 'list' %>
+                <div class="field mb-3">
+                  <%= label_tag 'List', 'List', class: 'form-label' %>
+                  <%= hidden_field_tag "note[content][][type]", 'list' %>
+                  <% item['value'].split(';').each do |list_item| %>
+                    <%= text_field_tag "note[content][][value][]",list_item, class:'form-control list-input mb-1' %>
+                  <% end %>
+                  <%= text_field_tag 'note[content][][value][]', nil, class: 'form-control list-input mb-1', placeholder: 'Add another item', oninput: 'checkInput(this)' %>
+                </div>
+              <% elsif item['type'] == 'file' %>
+                <div class="field mb-3">
+                  <%= label_tag 'File', 'File', class: 'form-label' %>
+                  <%= hidden_field_tag "note[content][][type]", 'file' %>
+                  <div class="card-group mb-3">
+                    <div class="card color_card">
+                      <div class="card-body">
+                        <div class="text-center"> 
+                          <img src=<%= item['value'] %> style="width: 150px; height: 150px;">
+                          <%= hidden_field_tag 'note[content][][value]', item['value'] %>
+                        </div>
 
-        <div class="field mb-3">
-          <%= form.label :list, class:'form-label' %>
-          <div id="listInputsContainer">
-            <% if @note.list.present? %>
-              <% @note.list.each do |item| %>
-                <%= text_field_tag 'note[list][]', item, class: 'form-control list-input mb-1', placeholder: 'Item for the list' %>
-              <% end %>
-            <% end %>
-            <%= text_field_tag 'note[list][]', nil, class: 'form-control list-input mb-1', placeholder: 'Add another item', oninput: 'checkInput(this)' %>
-          </div>
-        </div>
+                        <div class="form-check">
+                          <%= check_box_tag "note[images_to_delete][]", item['value'], false, class: 'form-check-input'%>
+                          <%= label_tag "image_to_delete", "Delete imagen", class: 'form-check-label' %>
+                        </div>
 
-        <% if @note.images.attached? %>
-          <label class="form-label">Current images</label>
-          <div class="card-group mb-3">
-            <% @note.images.each_with_index do |image, index| %>
-              <div class="card">
-                <div class="card-body text-center">
-                  <%= image_tag(image, class: 'card-img-top', style: 'width:100px; height:100px; object-fit: cover;') %>
-                  <div class="form-check">
-                    <%= check_box_tag "note[images_to_delete][]", image.id, false, class: 'form-check-input', id: "image_to_delete_#{index}" %>
-                    <%= label_tag "image_to_delete_#{index}", "Delete imagen #{index + 1}", class: 'form-check-label' %>
+                        <%= file_field_tag 'note[content][][value]', class: 'form-control mt-2' %>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            <% end %>
-          </div>
+              <% end %>
+          <% end %>
         <% end %>
 
-        <div class="field mb-3">
-          <%= form.label :images, "Add new images", class:'form-label' %>
-          <%= form.file_field :images, multiple: true, class: 'form-control', accept: 'image/*' %>
+        <div id="contentContainer">
+          <!-- Los campos se añadirán aquí -->
         </div>
 
         <div class="actions mb-3 text-center">
