@@ -30,7 +30,8 @@
 !/tmp/storage/.keep
 
 /public/assets
-/public/uploads
+/public/uploads/*
+!/public/uploads/.keep
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
