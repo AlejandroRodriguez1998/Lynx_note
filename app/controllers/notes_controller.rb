@@ -60,12 +60,16 @@ class NotesController < ApplicationController
   def update
     @note = Note.find(params[:id])
     browser = Browser.new(request.user_agent)
-    imagen_to_delete = params[:note][:images_to_delete]
+    image_to_delete = params[:note][:images_to_delete]
+    image_to_update = params[:note][:images_to_update].each_with_object({}) do |image, hash|
+      index = image[:index].to_i # Convertimos dicho index a integer
+      hash[index] = image[:value] # Asignamos el valor al index correspondiente
+    end
 
     @note.title = note_params[:title]
 
     if !params[:note][:content].blank?
-      processed_content = params[:note][:content].map do |content_item|  
+      processed_content = params[:note][:content].each_with_index.map do |content_item, index|
         case content_item[:type]
           when 'list'
             if !content_item[:value] == "" || !content_item[:value].all?(&:blank?)
@@ -73,7 +77,13 @@ class NotesController < ApplicationController
             end
           when 'file'
             if !content_item[:value].blank?
-              { type: 'file', value: handle_uploaded_file(content_item[:value]) }
+              image = image_to_update[index]
+
+              if !image.blank?
+                { type: 'file', value: handle_uploaded_file(image) }
+              else
+                { type: 'file', value: handle_uploaded_file(content_item[:value]) }
+              end
             end
           when 'text'
             if !content_item[:value].blank?
@@ -84,10 +94,10 @@ class NotesController < ApplicationController
       
       @note.content = processed_content.map { |content_item| content_item.to_json }
 
-      if !imagen_to_delete.blank?
+      if !image_to_delete.blank?
         @note.content.reject! do |content_string|
           item = JSON.parse(content_string)
-          item['type'] == 'file' && imagen_to_delete.include?(item['value'])
+          item['type'] == 'file' && image_to_delete.include?(item['value'])
         end
       end
     end
@@ -111,13 +121,13 @@ class NotesController < ApplicationController
 
   private
     def note_params
-      params.require(:note).permit(:title, content: [:type, :value])
+      params.require(:note).permit(:title, content: [:type, :value], images_to_delete: [], images_to_update: [:index, :value])
     end
 
     def handle_uploaded_file(uploaded_file)
       if uploaded_file.blank?
         return ""
-      else
+      else     
         if uploaded_file.is_a?(String)
           return uploaded_file
         else
