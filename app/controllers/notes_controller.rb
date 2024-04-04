@@ -61,14 +61,18 @@ class NotesController < ApplicationController
     @note = Note.find(params[:id])
     browser = Browser.new(request.user_agent)
     image_to_delete = params[:note][:images_to_delete]
-    image_to_update = params[:note][:images_to_update].each_with_object({}) do |image, hash|
-      index = image[:index].to_i # Convertimos dicho index a integer
-      hash[index] = image[:value] # Asignamos el valor al index correspondiente
-    end
+    image_to_update = {}
 
     @note.title = note_params[:title]
 
     if !params[:note][:content].blank?
+      unless params[:note][:images_to_update].blank?
+        image_to_update = params[:note][:images_to_update].each_with_object({}) do |image, hash|
+          index = image[:index].to_i # Convertimos el index a int
+          hash[index] = image[:value] # Asignamos el valor al index, es decir: {index => 'valor'}
+        end
+      end 
+
       processed_content = params[:note][:content].each_with_index.map do |content_item, index|
         case content_item[:type]
           when 'list'
@@ -97,7 +101,12 @@ class NotesController < ApplicationController
       if !image_to_delete.blank?
         @note.content.reject! do |content_string|
           item = JSON.parse(content_string)
-          item['type'] == 'file' && image_to_delete.include?(item['value'])
+          if item['type'] == 'file' && image_to_delete.include?(item['value'])
+            deleteImage(item['value'])
+            true 
+          else
+            false
+          end
         end
       end
     end
@@ -109,19 +118,39 @@ class NotesController < ApplicationController
         redirect_to notes_path(number: @note.id), notice: 'Note was successfully updated.'
       end
     else
-      render :edit, status: :unprocessable_entity 
+      @note.reload
+      render :edit, status: :unprocessable_entity
     end
   end
   
   def destroy
     @note = Note.find(params[:id])
+
+    @note.content.each do |content_string|
+      content_item = JSON.parse(content_string)
+      
+      if content_item['type'] == 'file'
+        deleteImage(content_item['value'])
+      end
+    end
+
     @note.destroy
     redirect_to notes_path, notice: 'Note was successfully destroyed.' 
   end
 
   private
     def note_params
-      params.require(:note).permit(:title, content: [:type, :value], images_to_delete: [], images_to_update: [:index, :value])
+      params.require(:note).permit(
+        :title, 
+        content: [:type,{value: []},:value],
+        images_to_update: [:index,:value],
+        images_to_delete: []
+      )
+    end
+
+    def deleteImage(image_path)
+      file_path = Rails.root.join('public', 'uploads', image_path.split('/').last) 
+      File.delete(file_path) if File.exist?(file_path)
     end
 
     def handle_uploaded_file(uploaded_file)
@@ -131,19 +160,13 @@ class NotesController < ApplicationController
         if uploaded_file.is_a?(String)
           return uploaded_file
         else
-          # Genera un nombre de archivo único para evitar sobrescrituras
           file_name = SecureRandom.uuid + File.extname(uploaded_file.original_filename)
-          
-          # Construye la ruta completa donde se guardará el archivo
           file_path = Rails.root.join('public', 'uploads', file_name)
-          
-          # Mueve el archivo subido al directorio de destino
+
           File.open(file_path, 'wb') do |file|
             file.write(uploaded_file.read)
           end
-          
-          # Devuelve la URL al archivo subido
-          # Esto asume que 'public' es servido directamente. Ajusta la ruta según tu configuración.
+
           return "/uploads/#{file_name}"
         end
       end
