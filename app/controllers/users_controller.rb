@@ -10,13 +10,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to root_url, notice: "Signed up! You can now log in." }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-      end
+    @user = User.new(user_params.merge(role: 'user'))
+    #@user.password = Base64.encode64(params[:user][:password])
+
+    if @user.save
+        redirect_to root_url, notice: "Registered, you can now log in" 
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 

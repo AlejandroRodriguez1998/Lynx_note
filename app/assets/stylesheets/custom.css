@@ -67,3 +67,16 @@
     z-index: 999;
     width: 100%;
 }
+
+.modal-backdrop {
+    background-color: transparent !important;
+}
+
+body.modal-open {
+    overflow: visible !important;
+    padding-right: 0px !important;
+}
+
+.error_form {
+    border: 1px solid red;
+}

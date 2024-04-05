@@ -3,20 +3,26 @@
         <div class="col-md-6">
             <h2 class="text-center mb-3">Login</h2>
 
+            <% if flash[:alert] %>
+                <div id="error" class="text-danger mb-3 text-center">
+                    <p class="pb-2 fw-semibold"><%= flash[:alert] %>
+                </div>
+            <% end %>
+
             <%= form_tag("/login", method: "post") do %>
                 <div class="field mb-3">
                     <%= label_tag :name, 'Username' ,class:"form-label" %>
-                    <%= text_field_tag :name, params[:name], class: 'form-control' %>
+                    <%= text_field_tag :name, params[:name], class: "form-control #{'error_form' if @username_error}" %>
                 </div>
                 <div class="field mb-3">
                     <%= label_tag :password, 'Password', class:"form-label" %>
-                    <%= password_field_tag :password, params[:password], class: 'form-control' %>
+                    <%= password_field_tag :password, params[:password], class: "form-control #{'error_form' if @password_error}" %>
                 </div>
                 <div class="field text-center">
                     <a href="/signup" class="fw-semibold">Don't have an account yet? Sign up</a>
                 </div>
                 <div class="actions text-center">
-                    <%= submit_tag "Log in", class:"btn color_button_green fw-semibold mt-3 mb-4" %>
+                    <%= submit_tag "Log in", class:"btn color_button_green fw-semibold mt-3 mb-4 w-50" %>
                 </div>
             <% end %>
         

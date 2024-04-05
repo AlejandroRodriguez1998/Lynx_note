@@ -44,6 +44,9 @@
           </div>
           <div id="menu" class="position-absolute end-0">
             <% if session[:user] != nil %>
+              <% if session[:role] == 'admin' %>
+                <a href="#" class="btn color_button_brown fw-semibold me-2">Administration</a>
+              <% end %>
               <a href="<%= logout_path %>" class="btn color_button_brown fw-semibold me-2">Log out</a>
             <% else %>
               <a href="<%= login_path %>" class="btn color_button_brown fw-semibold me-2">Log in</a>

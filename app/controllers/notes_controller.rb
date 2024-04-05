@@ -1,4 +1,5 @@
 class NotesController < ApplicationController
+  before_action :is_login
   
   def index
     @browser = Browser.new(request.user_agent)
@@ -146,6 +147,12 @@ class NotesController < ApplicationController
         images_to_update: [:index,:value],
         images_to_delete: []
       )
+    end
+
+    def is_login
+      unless session[:user]
+        redirect_to root_url
+      end
     end
 
     def deleteImage(image_path)
