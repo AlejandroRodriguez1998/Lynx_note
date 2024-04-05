@@ -35,13 +35,19 @@
               <li class="nav-item">
                 <a class="nav-link fw-semibold" href="<%= about_path %>">About us</a>
               </li>
-              <li>
-                <a class="nav-link fw-semibold" href="<%= notes_path %>">Notes</a>
-              </li>
+              <% if session[:user] != nil %>
+                <li>
+                  <a class="nav-link fw-semibold" href="<%= notes_path %>">Notes</a>
+                </li>
+              <% end %>
             </ul>
           </div>
           <div id="menu" class="position-absolute end-0">
-            <button type="button" class="btn color_button_brown fw-semibold me-2">Log in</button>
+            <% if session[:user] != nil %>
+              <a href="<%= logout_path %>" class="btn color_button_brown fw-semibold me-2">Log out</a>
+            <% else %>
+              <a href="<%= login_path %>" class="btn color_button_brown fw-semibold me-2">Log in</a>
+            <% end %>
           </div>
         </div>
       </nav>

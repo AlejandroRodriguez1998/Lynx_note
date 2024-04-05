@@ -1,0 +1,41 @@
+<div class="container mt-2">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <h2 class="text-center mb-3">Sign up</h2>
+
+            <%= form_with(model: @user) do |form| %>
+                <% if @user.errors.any? %>
+                  <div style="color: red">
+                    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+              
+                    <ul>
+                      <% @user.errors.each do |error| %>
+                        <li><%= error.full_message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+              
+                <div class="field mb-3">
+                  <%= form.label :name, 'Username', class:"form-label" %>
+                  <%= form.text_field :name, class: 'form-control' %>
+                </div>
+
+                <div class="field mb-3">
+                  <%= form.label :email, 'Email', class:"form-label"  %>
+                  <%= form.text_field :email, class: 'form-control' %>
+                </div>
+              
+                <div class="field mb-3">
+                  <%= form.label :password, 'Password', class:"form-label"  %>
+                  <%= form.password_field :password, class: 'form-control' %>
+                </div>
+              
+                <div>
+                  <%= submit_tag "Sign Up", class:"btn color_button_green fw-semibold mt-2 mb-4" %>
+                </div>
+            <% end %>
+
+    </div>
+  </div>
+</div>

@@ -6,10 +6,17 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :notes
+  resources :users
+  resources :session
   root :to => "home#index"
   get 'notes', to: 'notes#index'
   get 'home', to: 'home#index'
   get 'about', to: 'about#index'
+
+  get "logout" => "session#destroy", :as => "logout"
+  get "login" => "session#new", :as => "login"
+  post "login" => "session#create"
+  get "signup" => "users#new", :as => "signup"
 
   # Defines the root path route ("/")
   # root "posts#index"
