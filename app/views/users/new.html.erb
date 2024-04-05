@@ -3,10 +3,6 @@
         <div class="col-md-7">
             <h2 class="text-center mb-3">Sign up</h2>
 
-            <% if flash[:alert] %>
-              <p class="text-danger mb-3 text-center><%= flash[:alert] %></p>
-            <% end %>
-
             <% if @user.errors[:base].any? %>
               <div id="error" class="text-danger mb-3 text-center">
                 <% @user.errors[:base].each do |message| %>
