@@ -1,5 +1,8 @@
 class SessionController < ApplicationController
   def new
+    if session[:user].present?
+      redirect_to root_url
+    end
   end
 
   def create
@@ -18,7 +21,7 @@ class SessionController < ApplicationController
       if @user.nil?
         flash.now[:alert] = "Username '#{username.capitalize}' was invalid"
         render :new, status: :unprocessable_entity
-      elsif @user.password == Base64.encode64(password)
+      elsif @user.password == password #Base64.encode64(password)
         session[:user] = @user.name
         session[:role] = @user.role
         cookies[:user_name] = { value: @user.name, expires: 14.days.from_now, httponly: true }
@@ -32,7 +35,7 @@ class SessionController < ApplicationController
   end
 
   def destroy
-    session.delete :user
+    session[:user] = nil
     session.delete :role
     cookies.delete :user_name
     redirect_to root_url, notice: "See you soon! ♥"

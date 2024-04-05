@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   resources :users
   resources :session
   root :to => "home#index"
-  get 'notes', to: 'notes#index'
   get 'home', to: 'home#index'
   get 'about', to: 'about#index'
 
