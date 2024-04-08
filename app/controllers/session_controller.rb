@@ -6,22 +6,22 @@ class SessionController < ApplicationController
   end
 
   def create
-    username = params[:name]
+    email = params[:email]
     password = params[:password]
 
-    if username.blank? || password.blank?
+    if email.blank? || password.blank?
       flash.now[:alert] = "Username and password can't be blank"
 
-      @username_error = true if username.blank?
-      @password_error = true if password.blank?
+      @email_error = true 
+      @password_error = true
       
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity and return
     else
-      @user = User.where(name: username).first
+      @user = User.where(email: email).first
       if @user.nil?
-        flash.now[:alert] = "Username '#{username.capitalize}' was invalid"
-        render :new, status: :unprocessable_entity
-      elsif @user.password == password #Base64.encode64(password)
+        flash.now[:alert] = "Email is invalid"
+        render :new, status: :unprocessable_entity and return
+      elsif @user.authenticate(password)
         session[:user] = @user.name
         session[:role] = @user.role
         cookies[:user_name] = { value: @user.name, expires: 14.days.from_now, httponly: true }

@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -19,6 +21,23 @@ class User
 
   def password_valid
     'error_form' if errors[:password].any? || errors[:base].any?
+  end
+
+  #Sobreescribimos el metodo de asignacion de la password
+  def password=(unencrypted_password)
+    if unencrypted_password.present?
+      super(BCrypt::Password.create(unencrypted_password))
+    else
+      super(unencrypted_password)
+    end
+  end
+
+  def authenticate(unencrypted_password)
+    if BCrypt::Password.new(self.password) == unencrypted_password
+      self
+    else
+      false
+    end
   end
 
   private

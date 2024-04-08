@@ -9,6 +9,7 @@ gem 'browser'
 gem 'mongoid', '~> 8.1', '>= 8.1.5'
 gem 'carrierwave', '~> 2.2', '>= 2.2.6'
 gem 'carrierwave-mongoid', '~> 1.4'
+gem 'bcrypt', '~> 3.1.7'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"

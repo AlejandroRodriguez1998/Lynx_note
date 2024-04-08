@@ -11,8 +11,8 @@
 
             <%= form_tag("/login", method: "post") do %>
                 <div class="field mb-3">
-                    <%= label_tag :name, 'Username' ,class:"form-label" %>
-                    <%= text_field_tag :name, params[:name], class: "form-control #{'error_form' if @username_error}" %>
+                    <%= label_tag :email, 'Email' ,class:"form-label" %>
+                    <%= text_field_tag :email, params[:email], class: "form-control #{'error_form' if @email_error}" %>
                 </div>
                 <div class="field mb-3">
                     <%= label_tag :password, 'Password', class:"form-label" %>
