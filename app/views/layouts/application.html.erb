@@ -70,7 +70,35 @@
       </div>
     </footer>
 
+    <!-- Aviso de Consentimiento de Cookies -->
+    <div class="cookie_consent position-fixed bottom-0 end-0 p-3">
+      <div class="toast show align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            <h6 class="fw-semibold">Cookie Consent</h6>
+
+            <span> This website uses cookies or similar technologies, 
+              to enhance your browsing experience and provide personalised recommendations. 
+              By continuing to use our website, you agree to our 
+              <a href="#">Privacy Policy</a>.
+            </span>
+
+            <div class="ms-3 me-2 mt-2 w-100">
+              <button type="button" class="btn color_button_green fw-semibold" id="acceptCookies">Accept</button>
+              <button type="button" class="btn color_button_brown fw-semibold" id="declineCookies">Decline</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <%= javascript_include_tag 'custom' %>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
+    <%= javascript_include_tag 'cookie' %>
+
+    </body>
 </html>
