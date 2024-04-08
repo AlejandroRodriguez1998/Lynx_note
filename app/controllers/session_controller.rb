@@ -12,8 +12,8 @@ class SessionController < ApplicationController
     if email.blank? || password.blank?
       flash.now[:alert] = "Username and password can't be blank"
 
-      @email_error = true 
-      @password_error = true
+      @email_error = true if email.blank?
+      @password_error = true if password.blank?
       
       render :new, status: :unprocessable_entity and return
     else
