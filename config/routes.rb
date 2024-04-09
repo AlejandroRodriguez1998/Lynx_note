@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :notes
   resources :users
   resources :session
+  resources :collections
   root :to => "home#index"
   get 'home', to: 'home#index'
   get 'about', to: 'about#index'

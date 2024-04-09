@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Collections</h1>
+
+<ul>
+  <% @collections.each do |collection| %> 
+    <li>
+      <%= link_to collection.name, collection %> |
+      <%= link_to "Edit", edit_collection_path(collection) %> 
+      <button onclick="deleteCollection('<%= collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "New collection", new_collection_path %>

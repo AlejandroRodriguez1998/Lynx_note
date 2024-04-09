@@ -22,7 +22,8 @@ class NotesController < ApplicationController
   end
 
   def new
-      @note = Note.new
+    @collections = Collection.all
+    @note = Note.new
   end
 
   def create
@@ -50,17 +51,22 @@ class NotesController < ApplicationController
     end
 
     if @note.save
+
+      add_collections_to_note(@note.id)
+
       if browser.device.mobile?
         redirect_to @note, notice: 'Note was successfully created.' and return
       else
         redirect_to notes_path(number: @note.id), notice: 'Note was successfully created.'
       end
     else
+      @collections = Collection.all
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
+    @collections = Collection.all
     @note = Note.find(params[:id])
   end
   
@@ -151,7 +157,8 @@ class NotesController < ApplicationController
         :title, 
         content: [:type,{value: []},:value],
         images_to_update: [:index,:value],
-        images_to_delete: []
+        images_to_delete: [],
+        collection_ids: []
       )
     end
 
@@ -178,4 +185,15 @@ class NotesController < ApplicationController
         end
       end
     end
+
+    def add_collections_to_note(note)
+      if !note_params[:collection_ids].blank?
+        note_params[:collection_ids].each do |collection_id|
+          collection = Collection.find(collection_id)
+          collection.notes.push(note)
+          collection.save
+        end
+      end
+    end
+
 end

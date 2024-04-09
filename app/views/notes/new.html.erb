@@ -19,8 +19,13 @@
         </div>
       </div>
 
-      <%= form_with model: @note, html: { multipart: true } do |form| %>
+      <%= form_with model: @note, html: { multipart: true } do |form| %> 
         
+        <% @collections.each do |collection| %>
+          <%= form.check_box :collection_ids, { multiple: true }, collection.id, nil %>
+          <%= collection.name %><br>
+        <% end %>
+
         <div class="field mb-2">
           <%= form.label :title, class:'form-label' %>
           <%= form.text_field :title, class: 'form-control', placeholder:'Any title you want to add to the note' %>

@@ -24,6 +24,7 @@ class SessionController < ApplicationController
       elsif @user.authenticate(password)
         session[:user] = @user.name
         session[:role] = @user.role
+        session[:user_id] = @user.id
         cookies[:user_name] = { value: @user.name, expires: 14.days.from_now, httponly: true }
 
         redirect_to root_url, notice: "Welcome back! #{@user.name.capitalize} ♥" 
