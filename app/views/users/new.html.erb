@@ -30,10 +30,6 @@
                 <div class="field mb-3">
                   <%= form.label :password, 'Password', class:"form-label"  %>
                   <%= form.password_field :password, class: "form-control #{@user.password_valid}" %>  
-
-                  <% if @user.errors[:password].any? %>
-                    <p class="text-danger text-center mt-1 mb-0 fw-semibold"><%= @user.errors[:password].first %></p>
-                  <% end %>
                 </div>
               
                 <div class="actions mb-3 text-center">

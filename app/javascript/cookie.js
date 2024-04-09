@@ -32,7 +32,4 @@ $(document).ready(function(){
     $('.cookie_consent').hide();
   });
 
-  $('#declineCookies').click(function(){
-    $('.cookie_consent').hide();
-  });
 });

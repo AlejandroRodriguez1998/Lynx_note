@@ -49,10 +49,6 @@ class User
         if email.present? && !email.match?(URI::MailTo::EMAIL_REGEXP)
           errors.add(:email, "It is invalid, does not have the format")
         end
-
-        if password.present? && password.length < 6
-          errors.add(:password, "It is too short (minimum is 6 characters)")
-        end
       end
     end
  
