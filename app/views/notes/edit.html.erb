@@ -22,17 +22,11 @@
 
       <%= form_with(model: @note, html: { multipart: true }, local: true) do |form| %>
 
-        <div class="field">
-          <strong>Seleccione las colecciones asociadas:</strong><br>
-          <% @collections.each do |collection| %>
-            <% collection_notes = collection.notes.map { |note_id| Note.find(note_id) } %>
-            <% collection_notes_ids = collection_notes.map { |note| note.id.to_s } %>
-    
-            <% Rails.logger.info(collection_notes_ids) %>
-            
-          <% end %>
-        </div>
-      
+        <% @collections.each do |collection| %>
+          <%= check_box_tag 'note[collection_ids][]', collection.id, @collection_found.include?(collection.id.to_s) %>
+          <%= collection.name %><br>
+        <% end %>
+        
         <div class="field mb-3">
           <%= form.label :title, class:'form-label'%>
           <%= form.text_field :title, class: 'form-control', rows:'3'%>

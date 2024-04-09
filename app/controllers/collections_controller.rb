@@ -2,7 +2,17 @@ class CollectionsController < ApplicationController
 
   # GET /collections or /collections.json
   def index
-    @collections = Collection.all
+    @collections = Collection.all.map do |collection|
+      notes = []
+    
+      collection.notes.each do |note_id|
+        note = Note.find(note_id)
+        notes << note
+      end
+      collection.assign_attributes(notes: notes)
+      
+      collection #es como si fuese un return
+    end
   end
 
   # GET /collections/id
