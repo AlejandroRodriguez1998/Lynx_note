@@ -1,0 +1,42 @@
+<div class="container mt-2">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <h2 class="text-center mb-3">Sign up</h2>
+
+            <% if @user.errors[:base].any? %>
+              <div id="error" class="text-danger mb-3 text-center">
+                <% @user.errors[:base].each do |message| %>
+                    <p class="p-0 m-0 fw-semibold"><%= message %></p> 
+                <% end %>     
+              </div>       
+            <% end %>
+
+            <%= form_with(model: @user) do |form| %>
+              
+                <div class="field mb-3">
+                  <%= form.label :name, 'Username', class:"form-label" %>
+                  <%= form.text_field :name, class: "form-control #{@user.name_valid}" %>
+                </div>
+
+                <div class="field mb-3">
+                  <%= form.label :email, 'Email', class:"form-label"  %>
+                  <%= form.text_field :email, class: "form-control #{@user.email_valid}" %>
+
+                  <% if @user.errors[:email].any? %>
+                    <p class="text-danger text-center mt-1 mb-0 fw-semibold"><%= @user.errors[:email].first %></p>
+                  <% end %>
+                </div>
+              
+                <div class="field mb-3">
+                  <%= form.label :password, 'Password', class:"form-label"  %>
+                  <%= form.password_field :password, class: "form-control #{@user.password_valid}" %>  
+                </div>
+              
+                <div class="actions mb-3 text-center">
+                  <%= submit_tag "Sign Up", class:"btn color_button_green fw-semibold mt-2 mb-4 w-50" %>
+                </div>
+            <% end %>
+
+    </div>
+  </div>
+</div>

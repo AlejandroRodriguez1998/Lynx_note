@@ -1,5 +1,12 @@
 class NotesController < ApplicationController
-  
+  before_action :is_login
+
+  def is_login
+    if !session[:user].present?
+      redirect_to root_url
+    end
+  end
+
   def index
     @browser = Browser.new(request.user_agent)
     @notes = Note.all

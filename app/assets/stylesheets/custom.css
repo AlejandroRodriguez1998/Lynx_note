@@ -1,3 +1,22 @@
+/* General */
+.color_body {
+    background-color: #efeddc;
+}
+
+.color_navbar{
+    background-color:  #c5d6a1 !important;
+}
+
+.color_card{
+    background-color: #FDFDF0;
+}
+
+.color_footer{
+    background-color: #666666;
+}
+
+
+/* Listas */
 .selected {
     background-color: #fdfdf088 !important;
     color : black;
@@ -7,6 +26,7 @@
     cursor: pointer;
 }
 
+/* botones */
 .color_button_brown:hover {
     background-color: #beae97;
     color : black;
@@ -37,27 +57,13 @@
     color : black;
 }
 
-.color_body {
-    background-color: #efeddc;
-}
-
-.color_navbar{
-    background-color:  #c5d6a1 !important;
-}
-
-.color_card{
-    background-color: #FDFDF0;
-}
-
-.color_footer{
-    background-color: #666666;
-}
-
+/* Tamaño imagenes */
 .size_img {
     width: 100px;
     height: auto;
 }
 
+/* Formularios */
 #fixed-buttons-container {
     display: inline;
     position: static;
@@ -66,4 +72,47 @@
     transform: translateX(-50%);
     z-index: 999;
     width: 100%;
+}
+
+.error_form {
+    border: 1px solid red;
+}
+
+/*Modales */
+.modal-backdrop {
+    background-color: transparent !important;
+}
+
+body.modal-open {
+    overflow: visible !important;
+    padding-right: 0px !important;
+}
+
+/* Cookies */
+.cookie_consent {
+    bottom: 25px;
+    right: 25px;
+    width: auto;
+    min-width: 300px;
+    z-index: 1051;
+}
+
+.toast {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+}
+
+.toast_body h6 {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.toast_body {
+    color: #555;
+}
+
+.toast .btn {
+    padding: 0.375rem 0.75rem;
 }
