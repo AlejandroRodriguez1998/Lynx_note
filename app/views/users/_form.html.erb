@@ -1,4 +1,5 @@
-<%= form_with(model: user) do |form| %>
+<% is_admin = local_assigns[:is_admin] || false %>
+<%= form_with(model: is_admin ? [:admin, user] : user) do |form| %>
               
     <div class="field mb-3">
       <%= form.label :name, 'Username', class:"form-label" %>
@@ -19,7 +20,7 @@
     </div>
   
     <div class="field mb-3">
-      <%= form.label :password, 'Password', class:"form-label"  %>
+      <%= form.label :password, 'Password', class:"form-label"  %>  
       <%= form.password_field :password, class: "form-control #{user.password_valid}" %>
 
       <% if user.errors[:password].any? %>
@@ -28,6 +29,10 @@
     </div>
   
     <div class="actions mb-3 text-center">
-      <%= submit_tag "Sign Up", class:"btn color_button_green fw-semibold mt-2 mb-4 w-50" %>
+      <% if is_admin %>
+      <%= form.submit user.new_record? ? 'Create User' : 'Edit User', class: 'btn color_button_green fw-semibold' %>
+      <% else %>
+        <%= submit_tag "Sign Up", class:"btn color_button_green fw-semibold mt-2 mb-4 w-50" %>
+      <% end %>
     </div>
 <% end %>

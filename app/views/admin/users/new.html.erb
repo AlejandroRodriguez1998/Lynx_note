@@ -1,0 +1,20 @@
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="text-center mb-3">New User</h2>
+
+      <% if @user.errors.any? %>
+        <div id="error" class="text-danger mb-3 text-center">
+          <% @user.errors.full_messages.each do |message| %>
+            <p class="pb-2 fw-semibold"><%= message %></p> 
+          <% end %>     
+        </div>       
+      <% end %>
+      
+      <%= render 'users/form', user: @user, is_admin: true  %>
+
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag 'fixed' %>

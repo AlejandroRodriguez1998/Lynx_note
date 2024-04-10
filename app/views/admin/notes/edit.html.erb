@@ -1,33 +1,33 @@
+<!-- app/views/notes/edit.html.erb -->
 <div class="container mt-2">
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="d-flex justify-content-between align-items-center">
         <div class="text-center flex-grow-1 margin_text">
-          <h2>Create Note</h2>
+          <h2>Edit Note</h2>
         </div>
         <div>
           <%= link_to 'Go Back', admin_notes_path, class: 'btn color_button_brown fw-semibold' %>
         </div>
       </div>
 
-      <% if @note.errors.any? %>
-        <div id="error" class="text-danger mb-3 text-center">
+      <div id="error" class="text-danger mb-3 text-center">
+        <% if @note.errors.any? %>
           <% @note.errors.full_messages.each do |message| %>
-            <p class="pb-2 fw-semibold"><%= message %></p> 
-          <% end %>     
-        </div>       
-      <% end %>
-      
+            <p class="fw-semibold"><%= message %></p> 
+          <% end %>            
+        <% end %>
+      </div>
+
       <div id="fixed-buttons-container">
-        <div class="field mb-2 text-center">
+        <div class="field mb-3 text-center">
           <button type="button" onclick="addContentType('text')" class="btn color_button_green fw-semibold">Add Text</button>
           <button type="button" onclick="addContentType('list')" class="btn color_button_green fw-semibold">Add List</button>
           <button type="button" onclick="addContentType('file')" class="btn color_button_green fw-semibold">Add Image</button>
         </div>
       </div>
 
-      <%= render 'form', note: @note, collections: @collections %>
-      <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
+      <%= render 'notes/form', note: @note, collections: @collections, is_admin: true %>
 
     </div>
   </div>

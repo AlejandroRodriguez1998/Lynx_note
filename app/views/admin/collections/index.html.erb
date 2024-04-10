@@ -1,0 +1,40 @@
+<h1 class="ms-2">Users</h1>
+
+<% if notice %>
+    <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
+        <strong>Correct!</strong> <%= notice %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+    </div>
+
+    <script>
+        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);       
+    </script>
+<% end %>
+
+<div class="row m-0 p-0">
+  <div class="col-12">
+    <%= link_to 'New Collection', new_admin_collection_path, class: 'btn color_button_green fw-semibold mb-3' %>
+    <table class="table color_card">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Notes</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @collections.each do |collection| %>
+          <tr>
+            <td><%= collection.name %></td>
+            <td><%= "#{collection.notes&.length || 0} associated." %></td>
+            <td>
+              <%= link_to 'Show', admin_collection_path(collection), class: 'btn color_button_green fw-semibold mx-1' %>
+              <%= link_to 'Edit', edit_admin_collection_path(collection), class: 'btn color_button_brown fw-semibold mx-1' %>
+              <button onclick="deleteCollection(true,'<%= collection.id %>')" class="btn color_button_brown fw-semibold mx-1">Delete</button>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -100,7 +100,7 @@ function showNote(noteId) {
 
         var del = document.createElement("button");
         del.setAttribute("class","btn color_button_brown fw-semibold mb-3 ms-2");
-        del.setAttribute("onclick","deleteNote('"+noteId+"')");
+        del.setAttribute("onclick","deleteNote(false,'"+noteId+"')");
         del.innerHTML = "Delete";
         cont.appendChild(del);
 
@@ -150,28 +150,59 @@ function showNote(noteId) {
     });
 }
 
-function deleteNote(noteId) {
+function deleteNote(admin,noteId) {
+    url = admin ? `/admin/notes/${noteId}` : `/notes/${noteId}`;
+
     if (confirm('Are you sure?')) {
-        fetch(`/notes/${noteId}`, {
+        fetch(url, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         }).then(response => {
-            window.location.href = "/notes";
+            if(admin){
+                window.location.href = "/admin/notes";
+            }else{
+                window.location.href = "/notes";
+            }
         }).catch(error => console.error('Error:', error));
     }
 }
 
-function deleteCollection(collectionId) {
+function deleteCollection(admin,collectionId) {
+    url = admin ? `/admin/collections/${collectionId}` : `/collections/${collectionId}`;
+
     if (confirm('Are you sure?')) {
-        fetch(`/collections/${collectionId}`, {
+        fetch(url, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         }).then(response => {
-            window.location.href = "/collections";
+            if (admin) {
+                window.location.href = "/admin/collections";
+            } else {
+                window.location.href = "/collections";
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+}
+
+function deleteUser(admin,userId) {
+    url = admin ? `/admin/users/${userId}` : `/users/${userId}`;
+
+    if (confirm('Are you sure?')) {
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }).then(response => {
+            if(admin){
+                window.location.href = "/admin/users";
+            }else{
+                window.location.href = "/users";
+            }
         }).catch(error => console.error('Error:', error));
     }
 }
