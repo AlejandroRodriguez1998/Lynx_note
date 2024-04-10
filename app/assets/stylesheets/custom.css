@@ -72,6 +72,11 @@
     height: auto;
 }
 
+.imgAdmin {
+    width: 100px;
+    margin-top: 1rem!important;
+}
+
 /* Formularios */
 #fixed-buttons-container {
     display: inline;

@@ -9,9 +9,17 @@ Rails.application.routes.draw do
   resources :users
   resources :session
   resources :collections
+
+  namespace :admin do
+    resources :notes
+    resources :users
+    resources :collections
+  end
+
   root :to => "home#index"
   get 'home', to: 'home#index'
   get 'about', to: 'about#index'
+  get 'admin', to: 'admin#index'
 
   get "logout" => "session#destroy", :as => "logout"
   get "login" => "session#new", :as => "login"

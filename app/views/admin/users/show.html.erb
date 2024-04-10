@@ -1,0 +1,12 @@
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <%= link_to 'Edit',edit_admin_user_path(@user), class: 'btn color_button_green fw-semibold mb-3' %>
+      <button onclick="deleteUser(true,'<%= @user.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+
+      <p><strong>Name:</strong> <%= @user.name %></p>
+      <p><strong>Email:</strong> <%= @user.email %></p>
+       <p><strong>Password:</strong> <%= @user.password.present? ? "Yes" : "No" %></p>
+    </div>
+  </div>
+</div>

@@ -2,16 +2,15 @@
 <div class="container mt-2">
   <div class="row justify-content-center">
     <div class="col-md-8">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-center flex-grow-1 margin_text">
+          <h2>Edit Note</h2>
+        </div>
+        <div>
+          <%= link_to 'Go Back', admin_notes_path, class: 'btn color_button_brown fw-semibold' %>
+        </div>
+      </div>
 
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="text-center flex-grow-1 margin_text">
-        <h2>Edit Note</h2>
-      </div>
-      <div>
-        <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
-      </div>
-    </div>
-    
       <div id="error" class="text-danger mb-3 text-center">
         <% if @note.errors.any? %>
           <% @note.errors.full_messages.each do |message| %>
@@ -28,7 +27,7 @@
         </div>
       </div>
 
-      <%= render 'form', note: @note, collections: @collections %>
+      <%= render 'notes/form', note: @note, collections: @collections, is_admin: true %>
 
     </div>
   </div>
