@@ -1,17 +1,6 @@
 <h1>New collection</h1>
 
-<%= form_with(model: @collection) do |form| %>
-
-  <div class="field mb-3">
-    <%= form.label :name, 'Name of Collection', class:"form-label" %>
-    <%= form.text_field :name, class: "form-control" %>
-  </div>
-
-  <div class="actions mb-3 text-center">
-    <%= submit_tag "New Collection", class:"btn color_button_green fw-semibold mt-2 mb-4 w-50" %>
-  </div>
-<% end %>
-
+<%= render 'form', collection: @collection %>
 
 <div>
   <%= link_to "Back to collections", collections_path %>

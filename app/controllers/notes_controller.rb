@@ -23,6 +23,7 @@ class NotesController < ApplicationController
 
   def new
     @collections = Collection.all
+    @collection_found = []
     @note = Note.new
   end
 
@@ -60,6 +61,7 @@ class NotesController < ApplicationController
         redirect_to notes_path(number: @note.id), notice: 'Note was successfully created.'
       end
     else
+      @collection_found = []
       @collections = Collection.all
       render :new, status: :unprocessable_entity
     end

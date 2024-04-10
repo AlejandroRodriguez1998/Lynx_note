@@ -19,27 +19,9 @@
         </div>
       </div>
 
-      <%= form_with model: @note, html: { multipart: true } do |form| %> 
-        
-        <% @collections.each do |collection| %>
-          <%= form.check_box :collection_ids, { multiple: true }, collection.id, nil %>
-          <%= collection.name %><br>
-        <% end %>
+      <%= render 'form', note: @note, collections: @collections %>
+      <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
 
-        <div class="field mb-2">
-          <%= form.label :title, class:'form-label' %>
-          <%= form.text_field :title, class: 'form-control', placeholder:'Any title you want to add to the note' %>
-        </div>
-        
-        <div id="contentContainer">
-          <!-- Los campos se añadirán aquí -->
-        </div>
-
-        <div class="actions mb-3 text-center">
-          <%= form.submit class: 'btn color_button_green fw-semibold' %>
-          <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold'  %>
-        </div>
-      <% end %>
     </div>
   </div>
 </div>
