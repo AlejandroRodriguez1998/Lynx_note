@@ -57,6 +57,15 @@
     color : black;
 }
 
+.color_button_notes {
+    background-color: #fff; 
+    border-color: #c5d6a1;
+}
+
+.color_button_notes:hover {
+    background-color: #c5d6a1;
+}
+
 /* Tamaño imagenes */
 .size_img {
     width: 100px;
@@ -82,6 +91,10 @@
 .error_form {
     border: 1px solid red;
 }
+
+.margin_text {
+    margin-left: 5rem; 
+  }
 
 /*Modales */
 .modal-backdrop {
