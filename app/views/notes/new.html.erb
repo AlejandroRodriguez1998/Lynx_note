@@ -1,7 +1,15 @@
 <div class="container mt-2">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h2 class="text-center mb-3">New Note</h2>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="text-center flex-grow-1 margin_text">
+        <h2>Create Note</h2>
+      </div>
+      <div>
+        <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
+      </div>
+    </div>
 
       <% if @note.errors.any? %>
         <div id="error" class="text-danger mb-3 text-center">
@@ -20,7 +28,6 @@
       </div>
 
       <%= render 'form', note: @note, collections: @collections %>
-      <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
 
     </div>
   </div>

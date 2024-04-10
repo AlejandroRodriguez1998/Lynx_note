@@ -1,9 +1,14 @@
 <%= form_with(model: note, local: true, html: { multipart: true }) do |form| %>
 
-    <% collections.each do |collection| %>
-      <%= check_box_tag 'note[collection_ids][]', collection.id, @collection_found.include?(collection.id.to_s) %>
-      <%= collection.name %><br>
-    <% end %>
+    <%= label_tag 'Collections', 'Collections of the note', class: 'form-label' %><br>
+    <div class="field mb-3">
+      <% collections.each do |collection| %>
+        <div class="mb-1">
+          <%= check_box_tag 'note[collection_ids][]', collection.id, @collection_found.include?(collection.id.to_s) %>
+          <%= collection.name %><br>
+        </div>
+      <% end %>
+    </div>
   
     <div class="field mb-3">
       <%= form.label :title, class: 'form-label' %>
