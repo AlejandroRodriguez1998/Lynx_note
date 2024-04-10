@@ -162,3 +162,16 @@ function deleteNote(noteId) {
         }).catch(error => console.error('Error:', error));
     }
 }
+
+function deleteCollection(collectionId) {
+    if (confirm('Are you sure?')) {
+        fetch(`/collections/${collectionId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }).then(response => {
+            window.location.href = "/collections";
+        }).catch(error => console.error('Error:', error));
+    }
+}

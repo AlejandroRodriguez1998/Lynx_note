@@ -1,0 +1,36 @@
+<%= form_with(model: note, local: true, html: { multipart: true }) do |form| %>
+
+    <% collections.each do |collection| %>
+      <%= check_box_tag 'note[collection_ids][]', collection.id, @collection_found.include?(collection.id.to_s) %>
+      <%= collection.name %><br>
+    <% end %>
+  
+    <div class="field mb-3">
+      <%= form.label :title, class: 'form-label' %>
+      <%= form.text_field :title, class: 'form-control', rows: '3' %>
+    </div>
+  
+    <% if note.content.present? %>
+      <% note.content.each_with_index do |content_string, index| %>
+        <% item = JSON.parse(content_string) %>
+        <% if item['type'] == 'text' %>
+          <%= render 'notes/partials/text_field', index: index, item: item %>
+        <% elsif item['type'] == 'list' %>
+          <%= render 'notes/partials/list_field', index: index, item: item %>
+        <% elsif item['type'] == 'file' %>
+          <%= render 'notes/partials/file_field', index: index, item: item %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <div id="contentContainer">
+        <!-- Los campos se añadirán aquí -->
+    </div>
+  
+    <div class="actions mb-3 text-center">
+      <%= form.submit note.new_record? ? 'Create Note' : 'Edit Note', class: 'btn color_button_green fw-semibold' %>
+    </div>
+  
+<% end %>
+  
+  
