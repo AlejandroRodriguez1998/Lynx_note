@@ -13,6 +13,7 @@ class CollectionsController < ApplicationController
       
       collection #es como si fuese un return
     end
+    @collections = @collections.sort_by { |collection| -collection.notes.size }
   end
 
   # GET /collections/id

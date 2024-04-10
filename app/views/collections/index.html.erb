@@ -1,22 +1,43 @@
-<p style="color: green"><%= notice %></p>
 
-<h1>Collections</h1>
+<% if notice %>
+    <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
+        <strong>Correct!</strong> <%= notice %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+    </div>
 
-<ul>
-  <% @collections.each do |collection| %> 
-    <li>
-      <%= link_to collection.name, collection_path(collection) %> |
-      <%= link_to "Edit", edit_collection_path(collection) %>
-      <button onclick="deleteCollection('<%= collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-      
-      <% collection.notes.each do |note| %>
-        <div>
-          Note Title: <%= note.title %><br>
+    <script>
+        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
+    </script>
+<% end %>
+
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <h1>Collections</h1>
+      <%= link_to "New Collection", new_collection_path, class: "btn color_button_green fw-semibold mb-3 ms-2" %>
+    </div>
+  </div>
+</div>
+
+<div class="row m-0">
+  <% @collections.each_slice(4) do |collection_batch| %>
+    <% collection_batch.each do |collection| %>
+      <div class="col-md-3 mt-1 mb-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title"><%= collection.name %></h5>
+            <%= link_to "Edit", edit_collection_path(collection), class: "btn color_button_green fw-semibold mb-3 ms-2" %>
+            <button onclick="deleteCollection('<%= collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+            <hr class="mt-0">
+            <h6>Notes:</h6>
+            <% collection.notes.each do |note| %>
+              <p class="card-text">
+                <%= link_to note.title, note_path(note), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
+              </p>
+            <% end %>
+          </div>
         </div>
-      <% end %>
-    </li>
+      </div>
+    <% end %>
   <% end %>
-</ul>
-
-
-<%= link_to "New collection", new_collection_path %>
+</div>
