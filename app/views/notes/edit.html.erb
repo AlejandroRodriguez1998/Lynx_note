@@ -20,70 +20,9 @@
         </div>
       </div>
 
-      <%= form_with(model: @note, html: { multipart: true }, local: true) do |form| %>
-      
-        <div class="field mb-3">
-          <%= form.label :title, class:'form-label'%>
-          <%= form.text_field :title, class: 'form-control', rows:'3'%>
-        </div>
-        
-        <% if @note.content.present? %>
-          <% @note.content.each_with_index do |content_string, index| %>
-            <% item = JSON.parse(content_string)%>
-              <% if item['type'] == 'text' %>
-                <div class="field mb-3">
-                  <%= label_tag 'Text', 'Text', class: 'form-label' %>
-                  <%= hidden_field_tag "note[content][][type]", 'text' %>
-                  <%= text_area_tag "note[content][][value]", item['value'], class: 'form-control', rows: '3' %>
-                </div>
-              <% elsif item['type'] == 'list' %>
-                <div class="field mb-3">
-                  <%= label_tag 'List', 'List', class: 'form-label' %>
-                  <%= hidden_field_tag "note[content][][type]", 'list' %>
-                  <% item['value'].split(';').each do |list_item| %>
-                    <%= text_field_tag "note[content][][value][]",list_item, class:'form-control list-input mb-1' %>
-                  <% end %>
-                  <%= text_field_tag 'note[content][][value][]', nil, class: 'form-control list-input mb-1', placeholder: 'Add another item', oninput: 'checkInput(this)' %>
-                </div>
-              <% elsif item['type'] == 'file' %>
-                <div class="field mb-3">
-                  <%= label_tag 'File', 'File', class: 'form-label' %>
-                  <%= hidden_field_tag "note[content][][type]", 'file' %>
-                  <div class="card-group mb-3">
-                    <div class="card color_card">
-                      <div class="card-body">
-                        <div class="text-center"> 
-                          <img src=<%= item['value'] %> style="width: 150px; height: 150px;">
-                          <%= hidden_field_tag "note[content][][value]", item['value'] %>
-                        </div>
+      <%= render 'form', note: @note, collections: @collections %>
+      <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
 
-                        <div class="form-group">
-                          <%= label_tag 'Replace image', 'Replace image', class: 'form-label' %>
-                          <%= hidden_field_tag "note[images_to_update][][index]", "#{index}" %>
-                          <%= file_field_tag "note[images_to_update][][value]", class: 'form-control' %>
-                        </div>
-
-                        <div class="form-check mt-3">
-                          <%= check_box_tag "note[images_to_delete][]", item['value'], false, class: 'form-check-input'%>
-                          <%= label_tag "image_to_delete", "Delete image", class: 'form-check-label' %>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-          <% end %>
-        <% end %>
-
-        <div id="contentContainer">
-          <!-- Los campos se añadirán aquí -->
-        </div>
-
-        <div class="actions mb-3 text-center">
-          <%= form.submit "Update Note", class: 'btn color_button_green fw-semibold' %>
-          <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold'  %>
-        </div>
-      <% end %>
     </div>
   </div>
 </div>

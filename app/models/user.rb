@@ -12,15 +12,15 @@ class User
   validate :validate_content
 
   def name_valid
-    'error_form' if errors[:name].any? || errors[:base].any?
+    'error_form' if errors[:name].any? 
   end
 
   def email_valid
-    'error_form' if errors[:email].any? || errors[:base].any?
+    'error_form' if errors[:email].any?
   end
 
   def password_valid
-    'error_form' if errors[:password].any? || errors[:base].any?
+    'error_form' if errors[:password].any?
   end
 
   #Sobreescribimos el metodo de asignacion de la password
@@ -44,12 +44,14 @@ class User
 
     def validate_content
       if name.blank? || email.blank? || password.blank?
-        errors.add(:base, "You must provide a name, email, and password.")
-      else
-        if email.present? && !email.match?(URI::MailTo::EMAIL_REGEXP)
-          errors.add(:email, "It is invalid, does not have the format")
-        end
+        errors.add(:name, "You must provide a name.") if name.blank?
+        errors.add(:email, "You must provide an email.") if email.blank?
+        errors.add(:password, "You must provide a password.") if password.blank?
       end
+
+      if email.present? && !email.match?(URI::MailTo::EMAIL_REGEXP)
+        errors.add(:email, "It is invalid, does not have the format")
+      end
+
     end
- 
 end

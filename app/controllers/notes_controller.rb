@@ -22,7 +22,9 @@ class NotesController < ApplicationController
   end
 
   def new
-      @note = Note.new
+    @collections = Collection.all
+    @collection_found = []
+    @note = Note.new
   end
 
   def create
@@ -50,17 +52,24 @@ class NotesController < ApplicationController
     end
 
     if @note.save
+
+      add_collections(@note.id)
+
       if browser.device.mobile?
         redirect_to @note, notice: 'Note was successfully created.' and return
       else
         redirect_to notes_path(number: @note.id), notice: 'Note was successfully created.'
       end
     else
+      @collection_found = []
+      @collections = Collection.all
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
+    @collections = Collection.all
+    @collection_found = get_collection(params[:id].to_s)
     @note = Note.find(params[:id])
   end
   
@@ -119,6 +128,9 @@ class NotesController < ApplicationController
     end
 
     if @note.save
+
+      update_collections(@note.id)
+
       if browser.device.mobile?
         redirect_to @note, notice: 'Note was successfully updated.' and return
       else
@@ -133,11 +145,15 @@ class NotesController < ApplicationController
   def destroy
     @note = Note.find(params[:id])
 
-    @note.content.each do |content_string|
-      content_item = JSON.parse(content_string)
-      
-      if content_item['type'] == 'file'
-        deleteImage(content_item['value'])
+    delete_collections(@note.id)
+
+    unless @note.content.blank?
+      @note.content.each do |content_string|
+        content_item = JSON.parse(content_string)
+        
+        if content_item['type'] == 'file'
+          deleteImage(content_item['value'])
+        end
       end
     end
 
@@ -151,7 +167,8 @@ class NotesController < ApplicationController
         :title, 
         content: [:type,{value: []},:value],
         images_to_update: [:index,:value],
-        images_to_delete: []
+        images_to_delete: [],
+        collection_ids: []
       )
     end
 
@@ -178,4 +195,57 @@ class NotesController < ApplicationController
         end
       end
     end
+
+    def get_collection(note_id)
+      collection_found = @collections.select do |collection|
+        collection.notes.map(&:to_s).include?(note_id)
+      end.map(&:id).map(&:to_s)
+
+      return collection_found
+    end
+
+    def add_collections(note)
+      if !note_params[:collection_ids].blank?
+        note_params[:collection_ids].each do |collection_id|
+          collection = Collection.find(collection_id)
+          collection.notes.push(note)
+          collection.save
+        end
+      end
+    end
+
+    def update_collections(note)
+      #Obtengo las marcadas
+      desired_collection_ids = note_params[:collection_ids] ? note_params[:collection_ids].map { |id| BSON::ObjectId.from_string(id) } : []
+      
+      # Encuentra todas las colecciones que contienen la nota
+      current_collections = Collection.where(:notes.in => [note])
+   
+      # Eliminar la nota de las colecciones que ya no están seleccionadas
+      current_collections.each do |collection|
+        unless desired_collection_ids.include?(collection.id)
+          collection.notes.delete(note)
+          collection.save
+        end
+      end
+    
+      # Añadir la nota a las colecciones seleccionadas
+      desired_collection_ids.each do |collection_id|
+        collection = Collection.find(collection_id)
+        unless collection.notes.include?(note)
+          collection.notes.push(note)
+          collection.save
+        end
+      end
+    end
+
+    def delete_collections(note)
+      current_collections = Collection.where(:notes.in => [note])
+
+      current_collections.each do |collection|
+          collection.notes.delete(note)
+          collection.save
+        end
+    end
+    
 end
