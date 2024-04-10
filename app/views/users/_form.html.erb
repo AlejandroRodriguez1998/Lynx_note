@@ -19,6 +19,23 @@
       <% end %>
     </div>
   
+    <% if is_admin %>
+      <div class="field mb-3">
+      <%= form.label :role, 'Role', class:"form-label"  %>
+      <div class="form-check">
+        <%= form.radio_button :role, 'admin', id: "admin_radio", class: "form-check-input" %>
+        <%= form.label :role_admin, 'Admin', class: "form-check-label", for: "admin_radio" %>
+      </div>
+      <div class="form-check">
+        <%= form.radio_button :role, 'user', id: "user_radio", class: "form-check-input" %>
+        <%= form.label :role_user, 'User', class: "form-check-label", for: "user_radio" %>
+      </div>
+    </div>
+
+    <%= hidden_field_tag "user[password_update]", user.password %>
+
+    <% end %>
+
     <div class="field mb-3">
       <%= form.label :password, 'Password', class:"form-label"  %>  
       <%= form.password_field :password, class: "form-control #{user.password_valid}" %>

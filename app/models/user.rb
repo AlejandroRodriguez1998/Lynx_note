@@ -4,6 +4,8 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  attr_accessor :password_update
+
   field :name, type: String
   field :email, type: String
   field :password, type: String
@@ -25,11 +27,15 @@ class User
 
   #Sobreescribimos el metodo de asignacion de la password
   def password=(unencrypted_password)
-    if unencrypted_password.present?
+    if unencrypted_password.present? && !bcrypt_password_format?(unencrypted_password)
       super(BCrypt::Password.create(unencrypted_password))
     else
       super(unencrypted_password)
     end
+  end
+
+  def bcrypt_password_format?(string)
+    /\A\$2[ayb]\$.{56}\z/.match?(string)
   end
 
   def authenticate(unencrypted_password)
@@ -43,15 +49,24 @@ class User
   private
 
     def validate_content
-      if name.blank? || email.blank? || password.blank?
-        errors.add(:name, "You must provide a name.") if name.blank?
-        errors.add(:email, "You must provide an email.") if email.blank?
-        errors.add(:password, "You must provide a password.") if password.blank?
+      Rails.logger.debug("password_update2: #{password_update}")
+
+
+      if password_update.present?
+        if name.blank? || email.blank?
+          errors.add(:name, "You must provide a name.") if name.blank?
+          errors.add(:email, "You must provide an email.") if email.blank?
+        end
+      else
+        if name.blank? || email.blank? || password.blank?
+          errors.add(:name, "You must provide a name.") if name.blank?
+          errors.add(:email, "You must provide an email.") if email.blank?
+          errors.add(:password, "You must provide a password.") if password.blank?
+        end
       end
 
       if email.present? && !email.match?(URI::MailTo::EMAIL_REGEXP)
         errors.add(:email, "It is invalid, does not have the format")
       end
-
     end
 end

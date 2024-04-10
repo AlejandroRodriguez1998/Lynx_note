@@ -20,6 +20,7 @@
           <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Password</th>
+          <th scope="col">Role</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -29,6 +30,7 @@
             <td><%= user.name %></td>
             <td><%= user.email %></td>
             <td><%= user.password.present? ? "Yes" : "No" %></td>
+            <td><%= user.role %></td>
             <td>
               <%= link_to 'Show', admin_user_path(user), class: 'btn color_button_green fw-semibold mx-1' %>
               <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn color_button_brown fw-semibold mx-1' %>
