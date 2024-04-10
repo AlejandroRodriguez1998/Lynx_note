@@ -2,7 +2,7 @@
 
   <div class="field mb-3">
     <%= form.label :name, 'Name of Collection', class:"form-label" %>
-    <%= form.text_field :name, class: "form-control" %>
+    <%= form.text_field :name, class: "form-control #{collection.name_valid}" %>
   </div>
 
   <div class="actions mb-3 text-center">
