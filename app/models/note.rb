@@ -5,6 +5,8 @@ class Note
     field :title, type: String
     field :content, type: Array
 
+    belongs_to :user
+
     validate :validate_content
 
     private

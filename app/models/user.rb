@@ -11,6 +11,9 @@ class User
   field :password, type: String
   field :role, type: String
 
+  has_many :collections, dependent: :destroy
+  has_many :notes, dependent: :destroy
+
   validate :validate_content
 
   def name_valid
@@ -49,9 +52,6 @@ class User
   private
 
     def validate_content
-      Rails.logger.debug("password_update2: #{password_update}")
-
-
       if password_update.present?
         if name.blank? || email.blank?
           errors.add(:name, "You must provide a name.") if name.blank?

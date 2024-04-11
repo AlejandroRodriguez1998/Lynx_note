@@ -25,7 +25,7 @@ class SessionController < ApplicationController
         session[:user] = @user.name
         session[:role] = @user.role
         session[:user_id] = @user.id
-        cookies[:user_name] = { value: @user.name, expires: 14.days.from_now, httponly: true }
+        cookies[:username] = { value: @user.name, expires: 14.days.from_now, httponly: true }
 
         redirect_to root_url, notice: "Welcome back! #{@user.name.capitalize} ♥" 
       else
@@ -36,9 +36,9 @@ class SessionController < ApplicationController
   end
 
   def destroy
-    session[:user] = nil
+    session.delete :user
     session.delete :role
-    cookies.delete :user_name
+    cookies.delete :username
     redirect_to root_url, notice: "See you soon! ♥"
   end
 end

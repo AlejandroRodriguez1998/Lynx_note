@@ -1,7 +1,14 @@
 <div class="container mt-2">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h2 class="text-center mb-3">New User</h2>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-center flex-grow-1 margin_text">
+          <h2>New User</h2>
+        </div>
+        <div>
+          <%= link_to 'Go Back', admin_users_path, class: 'btn color_button_brown fw-semibold' %>
+        </div>
+      </div>
 
       <% if @user.errors[:base].any? %>
           <div id="error" class="text-danger mb-3 text-center">

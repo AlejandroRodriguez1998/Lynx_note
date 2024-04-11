@@ -1,5 +1,5 @@
 <% is_admin = local_assigns[:is_admin] || false %>
-<%= form_with(model: is_admin ? [:admin, note] : note, local: true) do |form| %>
+<%= form_with model: (is_admin ? [:admin, note] : note), local: true, html: { multipart: true } do |form| %>
 
     <%= label_tag 'Collections', 'Collections of the note', class: 'form-label' %><br>
     <div class="field mb-3">

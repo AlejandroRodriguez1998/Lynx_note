@@ -12,6 +12,14 @@
         </div>
       </div>
 
+      <% if @collection.errors.any? %>
+      <div id="error" class="text-danger mb-3 text-center">
+        <% @collection.errors.full_messages.each do |message| %>
+          <p class="pb-2 fw-semibold"><%= message %></p> 
+        <% end %>     
+      </div>       
+    <% end %>
+
       <%= render 'form', collection: @collection %>
       
     </div>

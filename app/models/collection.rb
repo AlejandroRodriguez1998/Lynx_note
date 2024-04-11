@@ -3,8 +3,9 @@ class Collection
   include Mongoid::Timestamps
 
   field :name, type: String
-  field :user, type: String
   field :notes, type: Array, default: []
+
+  belongs_to :user
 
   validate :validate_title
 

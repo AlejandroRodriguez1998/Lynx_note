@@ -1,5 +1,20 @@
 module Admin
-  class CollectionsController < CollectionsBaseController
+  class CollectionsController < CollectionsController
+
+    def index
+      @collections = Collection.all.map do |collection|
+        notes = []
+      
+        collection.notes.each do |note_id|
+          note = Note.find(note_id)
+          notes << note
+        end
+        collection.assign_attributes(notes: notes)
+        
+        collection #es como si fuese un return
+      end
+    end
+
     protected
     def after_collection_create
       redirect_to admin_collections_path, notice: 'Collection was successfully created.' and return

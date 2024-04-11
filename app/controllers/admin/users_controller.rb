@@ -1,5 +1,5 @@
 module Admin
-  class UsersController < UsersBaseController
+  class UsersController < UsersController
     
     def index
       @users = User.all
@@ -11,6 +11,24 @@ module Admin
 
     def edit
       @user = User.find(params[:id])
+    end
+
+    
+    def create
+      if params[:user][:role].blank?
+        @user = User.new(user_params.merge(role: 'user'))
+      else
+        @user = User.new(user_params)
+      end
+
+      if User.where(email: user_params[:email]).exists?
+        @user.errors.add(:email, "The email already exists")
+        render :new, status: :unprocessable_entity and return
+      elsif @user.save
+        after_user_create
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
 
     def update

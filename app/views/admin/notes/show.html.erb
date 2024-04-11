@@ -1,11 +1,22 @@
 <div class="container mt-2">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <%= link_to 'Edit',edit_admin_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
-      <button onclick="deleteNote(true,'<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-auto me-auto">
+            <%= link_to 'Edit',edit_admin_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
+            <button onclick="deleteNote(true,'<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+          </div>
+          <div class="col-auto">
+            <%= link_to 'Go Back', admin_notes_path, class: 'btn color_button_brown fw-semibold' %>
+          </div>
+        </div>
+      </div>
 
       <h3><%= @note.title %></h3>
-      
+      <p><strong>Created At: </strong> <%= @note.created_at %></p>
+      <p><strong>Updated At: </strong> <%= @note.updated_at %></p>
+
       <% if @note.content.present? %>
         <% @note.content.each do |content_string| %>
           <% item = JSON.parse(content_string)%>
