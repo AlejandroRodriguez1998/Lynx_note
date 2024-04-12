@@ -1,20 +1,14 @@
 class NotesController < ApplicationController
-  before_action :is_login
+  before_action :validate_user
   before_action :is_mine , only: [:edit, :update, :destroy]
 
-  def is_login
-    if !session[:user].present?
-      redirect_to root_url
-    end
-  end
-
   def is_mine
-    if current_user.id.to_s != session[:user_id]["$oid"].to_s
+    @note = Note.find(params[:id])
+    unless @note.user_id == current_user.id
       redirect_to root_url
     end
   end
     
-
   def index
     @browser = Browser.new(request.user_agent)
     @notes = current_user.notes

@@ -1,8 +1,7 @@
 class SessionController < ApplicationController
+  before_action :is_login, only: [:new]
+
   def new
-    if session[:user].present?
-      redirect_to root_url
-    end
   end
 
   def create
@@ -22,11 +21,7 @@ class SessionController < ApplicationController
         flash.now[:alert] = "Email or password is invalid"
         render :new, status: :unprocessable_entity and return
       elsif @user.authenticate(password)
-        session[:user] = @user.name
-        session[:role] = @user.role
         session[:user_id] = @user.id
-        cookies[:username] = { value: @user.name, expires: 14.days.from_now, httponly: true }
-
         redirect_to root_url, notice: "Welcome back! #{@user.name.capitalize} ♥" 
       else
         flash.now[:alert] = "Email or password is invalid"
@@ -36,9 +31,7 @@ class SessionController < ApplicationController
   end
 
   def destroy
-    session.delete :user
-    session.delete :role
-    cookies.delete :username
+    session.delete :user_id
     redirect_to root_url, notice: "See you soon! ♥"
   end
 end

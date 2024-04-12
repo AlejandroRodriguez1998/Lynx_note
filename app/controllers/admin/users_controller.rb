@@ -1,12 +1,7 @@
 module Admin
   class UsersController < UsersController
-    before_action :is_login
-
-    def is_login
-      if session[:role] != "admin" && session[:user].present?
-        redirect_to root_url
-      end
-    end
+    skip_before_action :is_login, only: [:new]
+    before_action :validate_admin
     
     def index
       @users = User.all
@@ -20,7 +15,6 @@ module Admin
       @user = User.find(params[:id])
     end
 
-    
     def create
       if params[:user][:role].blank?
         @user = User.new(user_params.merge(role: 'user'))

@@ -1,11 +1,5 @@
 class UsersController < ApplicationController
-  before_action :is_login
-
-  def is_login
-    if session[:user].present?
-      redirect_to root_url
-    end
-  end
+  before_action :is_login, only: [:new]
 
   def index
   end

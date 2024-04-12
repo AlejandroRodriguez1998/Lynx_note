@@ -1,13 +1,8 @@
 module Admin
   class NotesController < NotesController
-    before_action :is_login
-
-    def is_login
-      if session[:role] != "admin" && session[:user].present?
-        redirect_to root_url
-      end
-    end
-    
+    skip_before_action :is_mine , only: [:edit, :update, :destroy]
+    before_action :validate_admin
+   
     def index
       @browser = Browser.new(request.user_agent)
       @notes = Note.all

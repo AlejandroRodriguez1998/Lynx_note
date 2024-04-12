@@ -1,15 +1,10 @@
 class CollectionsController < ApplicationController
-  before_action :is_login
+  before_action :validate_user
   before_action :is_mine , only: [:edit, :update, :destroy]
 
-  def is_login
-    if !session[:user].present?
-      redirect_to root_url
-    end
-  end
-
   def is_mine
-    if current_user.id.to_s != session[:user_id]["$oid"].to_s
+    @collection = Note.find(params[:id])
+    unless @collection.user_id == current_user.id
       redirect_to root_url
     end
   end

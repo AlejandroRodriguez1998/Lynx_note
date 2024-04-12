@@ -1,8 +1,9 @@
+<h3 class="d-block d-md-none text-center pt-2">System management</h3>
 <div class="row m-0">       
     <div id="columnaOpciones" class="col-4 col-md-3">
         <h2 class="pt-2 text-center d-none d-md-block">Welcome!</h2>
         <div class="border rounded p-2 color_card">
-            <p><b>User:</b> <%= session[:user].capitalize %></p>
+            <p><b>User:</b> <%= current_user.name&.capitalize %></p>
             <p><b>Day:</b> <%= Date.today.strftime("%d/%m/") %><span class="d-none d-md-inline"><%= Date.today.year %></span><span class="d-inline d-md-none"><%= Date.today.strftime("%y") %></span></p>
             <p><b>Remember:</b> Always smile.</p>
             <p class="text-center"><b>Have a nice day</b></p>
