@@ -1,4 +1,19 @@
 class CollectionsController < ApplicationController
+  before_action :is_login
+  before_action :is_mine , only: [:edit, :update, :destroy]
+
+  def is_login
+    if !session[:user].present?
+      redirect_to root_url
+    end
+  end
+
+  def is_mine
+    if current_user.id.to_s != session[:user_id]["$oid"].to_s
+      redirect_to root_url
+    end
+  end
+
   # GET /collections or /collections.json
   def index
     @collections = current_user.collections.map do |collection|

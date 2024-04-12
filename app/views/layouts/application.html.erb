@@ -14,47 +14,55 @@
 
   <body class="color_body d-flex flex-column min-vh-100">
     <header class="container-fluid p-0">
-      <div class="container d-block d-lg-flex justify-content-center">
-          <div class="text-center">
-              <img src="<%= asset_path 'icono.png' %>" alt="Logo" width="120" height="120">
-          </div>
-          <div class="text-center">
-              <p id="nombrePag" class="h1 font-weight-light mt-0s mt-lg-5">Lynx Note</p>
-          </div>
-      </div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary color_navbar">
         <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <a class="navbar-brand me-0" href="<%= root_path %>">
+            <img src="<%= asset_path 'icono.png' %>" alt="Logo" width="40" height="40" class="d-inline-block">
+          </a>
+          <span class="fs-5 fw-semibold"> Lynx Note </span>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link fw-semibold" aria-current="page" href="<%= home_path %>">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-semibold" href="<%= about_path %>">About us</a>
-              </li>
-              <% if session[:user] != nil %>
-                <li>
-                  <a class="nav-link fw-semibold" href="<%= notes_path %>">Notes</a>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link fw-semibold" aria-current="page" href="<%= home_path %>">Home</a>
                 </li>
-                <li>
-                  <a class="nav-link fw-semibold" href="<%= collections_path %>">Collections</a>
+                <li class="nav-item">
+                  <a class="nav-link fw-semibold" href="<%= about_path %>">About us</a>
                 </li>
-              <% end %>
-            </ul>
+                <% if session[:user] != nil %>
+                  <li>
+                    <a class="nav-link fw-semibold" href="<%= notes_path %>">Notes</a>
+                  </li>
+                  <li>
+                    <a class="nav-link fw-semibold" href="<%= collections_path %>">Collections</a>
+                  </li>
+                <% end %>
+              </ul>
+              <div class="d-lg-none d-inline">
+                <% if session[:user] != nil %>
+                  <% if session[:role] == 'admin' %>
+                    <a href="<%= admin_path %>" class="btn color_button_brown fw-semibold me-2">Administration</a>
+                  <% end %>
+                  <a href="<%= logout_path %>" class="btn color_button_brown fw-semibold me-2">Log out</a>
+                <% else %>
+                  <a href="<%= login_path %>" class="btn color_button_brown fw-semibold me-2">Log in</a>
+                <% end %>
+              </div>
+            </div>
           </div>
-          <div id="menu" class="position-absolute end-0">
-            <% if session[:user] != nil %>
-              <% if session[:role] == 'admin' %>
-                <a href="<%= admin_path %>" class="btn color_button_brown fw-semibold me-2">Administration</a>
-              <% end %>
-              <a href="<%= logout_path %>" class="btn color_button_brown fw-semibold me-2">Log out</a>
-            <% else %>
-              <a href="<%= login_path %>" class="btn color_button_brown fw-semibold me-2">Log in</a>
+        </div>
+        <div id="menu" class="position-absolute end-0 d-none d-lg-inline">
+          <% if session[:user] != nil %>
+            <% if session[:role] == 'admin' %>
+              <a href="<%= admin_path %>" class="btn color_button_brown fw-semibold me-2">Administration</a>
             <% end %>
-          </div>
+            <a href="<%= logout_path %>" class="btn color_button_brown fw-semibold me-2">Log out</a>
+          <% else %>
+            <a href="<%= login_path %>" class="btn color_button_brown fw-semibold me-2">Log in</a>
+          <% end %>
         </div>
       </nav>
     </header>

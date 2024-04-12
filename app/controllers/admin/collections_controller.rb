@@ -1,5 +1,12 @@
 module Admin
   class CollectionsController < CollectionsController
+    before_action :is_login
+
+    def is_login
+      if session[:role] != "admin" && session[:user].present?
+        redirect_to root_url
+      end
+    end
 
     def index
       @collections = Collection.all.map do |collection|
