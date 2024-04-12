@@ -3,7 +3,7 @@ class CollectionsController < ApplicationController
   before_action :is_mine , only: [:edit, :update, :destroy]
 
   def is_mine
-    @collection = Note.find(params[:id])
+    @collection = Collection.find(params[:id])
     unless @collection.user_id == current_user.id
       redirect_to root_url
     end
