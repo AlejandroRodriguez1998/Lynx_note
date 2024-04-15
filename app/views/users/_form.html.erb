@@ -21,19 +21,16 @@
   
     <% if is_admin %>
       <div class="field mb-3">
-      <%= form.label :role, 'Role', class:"form-label"  %>
-      <div class="form-check">
-        <%= form.radio_button :role, 'admin', id: "admin_radio", class: "form-check-input" %>
-        <%= form.label :role_admin, 'Admin', class: "form-check-label", for: "admin_radio" %>
+        <%= form.label :role, 'Role', class:"form-label"  %>
+        <div class="form-check">
+          <%= form.radio_button :role, 'admin', id: "admin_radio", class: "form-check-input" %>
+          <%= form.label :role_admin, 'Admin', class: "form-check-label", for: "admin_radio" %>
+        </div>
+        <div class="form-check">
+          <%= form.radio_button :role, 'user', id: "user_radio", class: "form-check-input" %>
+          <%= form.label :role_user, 'User', class: "form-check-label", for: "user_radio" %>
+        </div>
       </div>
-      <div class="form-check">
-        <%= form.radio_button :role, 'user', id: "user_radio", class: "form-check-input" %>
-        <%= form.label :role_user, 'User', class: "form-check-label", for: "user_radio" %>
-      </div>
-    </div>
-
-    <%= hidden_field_tag "user[password_update]", user.password %>
-
     <% end %>
 
     <div class="field mb-3">
@@ -49,7 +46,12 @@
       <% if is_admin %>
       <%= form.submit user.new_record? ? 'Create User' : 'Edit User', class: 'btn color_button_green fw-semibold' %>
       <% else %>
-        <%= submit_tag "Sign Up", class:"btn color_button_green fw-semibold mt-2 mb-4 w-50" %>
+        <div class="field text-center">
+          <a href="/login" class="fw-semibold">Already have an account? Log in</a> 
+        </div>
+        <div class="actions text-center">
+          <%= submit_tag "Sign Up", class:"btn color_button_green fw-semibold mt-3 mb-4 w-50" %>
+        </div>
       <% end %>
     </div>
 <% end %>

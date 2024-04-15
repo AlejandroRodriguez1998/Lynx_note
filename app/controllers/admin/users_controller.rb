@@ -34,11 +34,14 @@ module Admin
 
     def update
       @user = User.find(params[:id])
-      @password_update = params[:user][:password_update]
-
+    
+      if user_params[:password].blank?
+        @user.password_update = @user.password
+      end
+    
       if @user.update(user_params)
         if @user.password.blank?
-          @user.password = @password_update
+          @user.password = @user.password_update
           @user.save
         end
 
@@ -47,6 +50,7 @@ module Admin
         render :edit, status: :unprocessable_entity
       end
     end
+    
 
     def destroy
       @user = User.find(params[:id])

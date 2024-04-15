@@ -18,7 +18,7 @@
       <nav class="navbar navbar-expand-lg bg-body-tertiary color_navbar">
         <div class="container-fluid">
           <a class="navbar-brand me-0" href="<%= root_path %>">
-            <img src="<%= asset_path 'icono.png' %>" alt="Logo" width="41" height="40" class="d-inline-block">
+            <img src="<%= asset_path 'icono.png' %>" alt="Logo" width="41" height="43" class="d-inline-block">
           </a>
           <a href="<%= root_path %>" class="fs-5 fw-semibold text-decoration-none text-black ms-1"> Lynx Note</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,6 +79,14 @@
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
           <li class="nav-item"><a href="<%= home_path %>" class="nav-link px-2 text-white fw-semibold">Home</a></li>
           <li class="nav-item"><a href="<%= about_path %>" class="nav-link px-2 text-white fw-semibold">About</a></li>
+          <% if user_aunthenticated? %>
+            <li class="nav-item">
+              <a class="nav-link px-2 text-white fw-semibold" href="<%= notes_path %>">Notes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-2 text-white fw-semibold" href="<%= collections_path %>">Collections</a>
+            </li>
+          <% end %>
         </ul>
         <p class="text-center text-white">© 2024 Web Systems Development Laboratory, Lynx Notes</p>
       </div>

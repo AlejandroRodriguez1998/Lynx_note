@@ -1,24 +1,81 @@
-<div class="container text-center">    
-    <h1 class="mt-4">About us</h1> 
-    <div class="card-group">
-        <div class="card color_card">
-            <div class="card-body">
-                <img src="<%= asset_path 'masculino.png' %>" class="card-img-top size_img" alt="About Image 1">
-                <p class="card-text fw-semibold">Alejandro Paniagua Rodríguez</p>
-            </div>
-        </div>
-        <div class="card color_card">
-            <div class="card-body">
-                <img src="<%= asset_path 'femenino.png' %>" class="card-img-top size_img" alt="About Image 2">
-                <p class="card-text fw-semibold">Ángela Gijón Flores</p>
-            </div>
-        </div>
-    </div>
-    <div class="container  lh-base text-start mt-2">
+<div class="container px-5">    
+    <h2 class="mt-2 mb-3 text-center">About us</h2>
+    <div class="py-2 lh-base">
         <p>We are two students from ESI passionate about web development. 
         Currently, as part of our studies in Computer Engineering, we are working on developing a 
         note-taking application for our Web Systems Development course. Our aim is to create a 
         user-friendly and efficient tool to help individuals organize their ideas and boost productivity. 
         Stay tuned for updates on our journey!</p>
+    </div>  
+    <div class="mt-3 row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card text-center position-relative box-shadow color_card">
+                <div class="card-header card_about"></div>
+                <div class="divImagen card_image">
+                    <img src="<%= asset_path 'masculino.png' %>" alt="" height="130px" width"130px">
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">Alejandro Paniagua Rodríguez</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12 mt-3 mt-md-0">
+            <div class="card text-center position-relative box-shadow color_card">
+                <div class="card-header card_about"></div>
+                <div class="divImagen card_image">
+                    <img src="<%= asset_path 'femenino.png' %>" alt="" height="130px" width"130px">
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">Ángela Gijón Flores</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="mt-4">
+    <h2>Our logo</h2>
+    <div>
+        <div class="text-center">
+            <img src="<%= asset_path 'icono.png' %>" height="160px" width"160px">
+        </div>
+        <div class="lh-base mt-4">
+            <p> A highly stylised and attractive logo that represents what it is to be a lynx. 
+            The animal is centred in the design and its face occupies most of the space, showing a friendly 
+            and welcoming expression. The lynx's eyes are large and prominent, with dilated pupils 
+            suggesting curiosity and attentiveness, characteristics often associated with wisdom and cunning.</p>
+            <p>The lynx is surrounded by a circle that acts as a frame, giving the logo a complete and bounded look. 
+            Included in the design are several elements that allude to creativity and education, 
+            such as pencils and a paintbrush, which are arranged symmetrically on either side of the lynx. 
+            In addition, there is an open book just below the animal's paws, further reinforcing the theme 
+            of education and learning.</p>
+            <p>The colour palette of the logo is harmonious and consists mainly of earth tones, 
+            with hints of brown and touches of brighter colours in the pencils and brush. 
+            This selection of colours suggests a sense of approachability and warmth.</p>
+        </div>
+    </div>
+    <hr class="mt-1">
+    <h2>Our mission</h2>
+    <div>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class ="my-1">
+                <p>Our mission is a project of the 4th year elective of web systems development with ruby on 
+                rails, bootstrap and mongoDB to create what is mentioned in <strong>the list below</strong>, 
+                apart from making an enjoyable, useful and comfortable web application for future users, 
+                learning the emerging technologies and learning other concepts such as 
+                view - model - controller among others.</p>
+            </div>
+            <div class="my-1">
+                <img src="<%= asset_path 'logo.png' %>" height="100px" width"100px">
+            </div>
+        </div>
+        <div class="lh-base mt-3 mb-5">
+            <h4>Create <i class="bi bi-arrow-down-short"></i></h4>
+            <ul class="list-group color_card">
+                <li class="list-group-item">Note application</li>
+                <li class="list-group-item">Collections</li>
+                <li class="list-group-item">Users</li>
+                <li class="list-group-item">An administration system</li>
+                <li class="list-group-item">Friends and notifications</li>
+            </u>
+        </div>
     </div>
 </div>

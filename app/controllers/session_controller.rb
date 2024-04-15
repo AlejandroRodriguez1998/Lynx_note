@@ -19,12 +19,16 @@ class SessionController < ApplicationController
       @user = User.where(email: email).first
       if @user.nil?
         flash.now[:alert] = "Email or password is invalid"
+        @email_error = true
+        @password_error = true
         render :new, status: :unprocessable_entity and return
       elsif @user.authenticate(password)
         session[:user_id] = @user.id
         redirect_to root_url, notice: "Welcome back! #{@user.name.capitalize} ♥" 
       else
         flash.now[:alert] = "Email or password is invalid"
+        @email_error = true
+        @password_error = true
         render :new, status: :unprocessable_entity
       end
     end

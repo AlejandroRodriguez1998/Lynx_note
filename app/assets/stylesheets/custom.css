@@ -8,13 +8,31 @@
 }
 
 .color_card{
-    background-color: #FDFDF0;
+    background-color: #FDFDF0 !important;
 }
 
 .color_footer{
     background-color: #666666;
 }
 
+.card_about{
+    height: 120px;
+    position: absolute;
+    width: 100%;
+    background-color:#beae97c8 !important;
+}
+
+.card_image{
+    z-index: 1;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.box-shadow {
+    -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
 
 /* Listas */
 .selected {
@@ -77,6 +95,12 @@
     margin-top: 1rem!important;
 }
 
+.iniciarSesion {
+    padding: 2px;
+    padding-left: 10px;
+    width: 210px;
+}
+
 /* Formularios */
 #fixed-buttons-container {
     display: inline;
@@ -94,7 +118,7 @@
 
 .margin_text {
     margin-left: 5rem; 
-  }
+}
 
 /*Modales */
 .modal-backdrop {

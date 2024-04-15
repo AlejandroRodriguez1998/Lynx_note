@@ -1,17 +1,19 @@
-<div class="container mt-2">
-  <div class="row justify-content-center">
-    <div class="col-md-7">
-      <h2 class="text-center mb-3">Sign up</h2>
-
-        <% if @user.errors[:base].any? %>
-          <div id="error" class="text-danger mb-3 text-center">
-            <% @user.errors[:base].each do |message| %>
-                <p class="p-0 m-0 fw-semibold"><%= message %></p> 
-            <% end %>     
-          </div>       
-        <% end %>
-
-        <%= render 'form', user: @user %>
+<div class="container mt-2 mb-5">
+    <h2 class="text-center mb-3">Registration</h2>
+    <div class="border rounded d-md-flex justify-content-center w-75 m-auto color_card box-shadow">
+        <div class="d-block d-md-inline text-center m-auto">
+            <img class="d-inline d-lg-none iniciarSesion" alt="" src="<%= asset_path 'iniciarSesion.png' %>">
+            <img class ="d-none d-lg-inline"alt="" src="<%= asset_path 'iniciarSesion.png' %>">
+        </div>
+        <div class="d-block d-md-inline card-body p-3 mt-0 mt-md-5">
+            <% if @user.errors[:base].any? %>
+              <div id="error" class="text-danger mb-3 text-center">
+                <% @user.errors[:base].each do |message| %>
+                  <p class="p-0 m-0 fw-semibold"><%= message %></p> 
+                <% end %>     
+              </div>       
+            <% end %>
+            <%= render 'form', user: @user %>
+        </div>
     </div>
-  </div>
 </div>
