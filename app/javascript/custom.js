@@ -201,8 +201,17 @@ function deleteUser(admin,userId) {
             if(admin){
                 window.location.href = "/admin/users";
             }else{
-                window.location.href = "/users";
+                window.location.href = "/home?notice=user";         
             }
         }).catch(error => console.error('Error:', error));
     }
 }
+
+$(document).ready(function(){
+    $("#inputCollections").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#listCollections li").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});   

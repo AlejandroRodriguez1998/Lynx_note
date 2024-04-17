@@ -1,10 +1,13 @@
 class UsersController < ApplicationController
   before_action :is_login, only: [:new]
+  before_action :validate_user, only: [:show, :edit, :update, :destroy]
 
   def index
+    redirect_to root_url
   end
 
   def show
+    @user = User.find(current_user.id)
   end
 
   def new
@@ -25,6 +28,33 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = User.find(params[:id])
+  end
+
+
+  def update
+    @user = User.find(params[:id])
+  
+    if user_params[:password].blank?
+      @user.password_update = @user.password
+    end
+  
+    if @user.update(user_params)
+      if @user.password.blank?
+        @user.password = @user.password_update
+        @user.save
+      end
+
+      after_user_update(@user)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    after_user_delete
   end
 
   protected
@@ -32,16 +62,17 @@ class UsersController < ApplicationController
       redirect_to root_url, notice: "Registered, you can now log in"
     end
 
-    def after_user_update
-      redirect_to root_url, notice: "User was successfully updated."
+    def after_user_update(user)
+      redirect_to user, notice: "User was successfully updated."
     end
     
     def after_user_delete
-      redirect_to root_url, notice: "User was successfully destroyed."
+      session.delete(:user_id)
+      head :no_content
     end
 
   private
   def user_params
-      params.require(:user).permit(:name, :email, :password, :role)
+    params.require(:user).permit(:name, :email, :password, :role, :password_update)
   end
 end

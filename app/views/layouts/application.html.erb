@@ -31,7 +31,7 @@
                   <% if user_admin? %>
                     <a href="<%= admin_path %>" class="btn color_button_brown fw-semibold mx-1 my-2"><i class="bi bi-gear"></i> Admin</a>
                   <% end %>
-                    <a href="<%= users_path %>" class="btn color_button_brown fw-semibold mx-1 my-2"><i class="bi bi-person-circle"></i> Profile</a>
+                    <a href="<%= user_path(current_user.id) %>" class="btn color_button_brown fw-semibold mx-1 my-2"><i class="bi bi-person-circle"></i> Profile</a>
                     <a href="<%= logout_path %>" class="btn color_button_brown fw-semibold mx-1 my-2"><i class="bi bi-box-arrow-right"></i></a>
                 <% else %>
                     <a href="<%= login_path %>" class="btn color_button_brown fw-semibold mx-1 my-2">Log in</a>
@@ -61,7 +61,7 @@
             <% if user_admin? %>
               <a href="<%= admin_path %>" class="btn color_button_brown fw-semibold me-2"><i class="bi bi-gear"></i> Admin</a>
             <% end %>
-            <a href="<%= users_path %>" class="btn color_button_brown fw-semibold me-2"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="<%= user_path(current_user.id) %>" class="btn color_button_brown fw-semibold me-2"><i class="bi bi-person-circle"></i> Profile</a>
             <a href="<%= logout_path %>" class="btn color_button_brown me-2"><i class="bi bi-box-arrow-right"></i></a>
           <% else %>
             <a href="<%= login_path %>" class="btn color_button_brown fw-semibold me-2">Log in</a>

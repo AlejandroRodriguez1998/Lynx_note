@@ -120,6 +120,19 @@
     margin-left: 5rem; 
 }
 
+.search_max {
+    max-height: 197px;
+    overflow: auto;
+}
+
+.underline {
+    border-bottom: 1px solid #ccc; /* Borde solo en la parte inferior */
+    border-width: 0 0 2px 0; /* Solo borde inferior */
+    background: none;
+    border-radius: 0%;
+    margin-bottom: 3%;
+}
+
 /*Modales */
 .modal-backdrop {
     background-color: transparent !important;

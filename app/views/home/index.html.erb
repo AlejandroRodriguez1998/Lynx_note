@@ -1,22 +1,35 @@
-<% if notice %>
-    <button type="button" class="d-none" data-bs-toggle="modal" data-bs-target="#modalNotice" id="modal_button_notice"></button>
-
-    <div class="modal fade" id="modalNotice" tabindex="-1" aria-labelledby="modalNoticeLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="alert alert-success alert-dismissible fade show m-0">
-                    <label class="modal-title fs-5" id="modalNoticeLabel"><%= notice %></label> 
-                    <button type="button" class="btn-close mt-1" data-bs-dismiss="modal" aria-label="Close" id="botonCerrar"></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<% if notice %>   
     <script>
         document.getElementById('modal_button_notice').click();
+        document.getElementById('modalNoticeLabel').innerHTML = "<%= notice %>";
         setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);
     </script>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var alert = urlParams.get('notice');
+    
+    if (alert) { 
+      document.getElementById('modal_button_notice').click();
+      document.getElementById('modalNoticeLabel').innerHTML = "Your account has been deleted";
+    }
+  });
+</script>
+
+<button type="button" class="d-none" data-bs-toggle="modal" data-bs-target="#modalNotice" id="modal_button_notice"></button>
+
+<div class="modal fade" id="modalNotice" tabindex="-1" aria-labelledby="modalNoticeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="alert alert-success alert-dismissible fade show m-0">
+                <label class="modal-title fs-5" id="modalNoticeLabel" id="notice"></label> 
+                <button type="button" class="btn-close mt-1" data-bs-dismiss="modal" aria-label="Close" id="botonCerrar"></button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="text-center">
     <h1 class="mt-4">Organize your chaos, simplify your life</h1>
@@ -31,3 +44,4 @@
         workflow</p>
     </div>
 </div>
+
