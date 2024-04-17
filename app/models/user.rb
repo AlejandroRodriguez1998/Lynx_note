@@ -13,8 +13,10 @@ class User
 
   has_many :collections, dependent: :destroy
   has_many :notes, dependent: :destroy
+  has_many :friendships, dependent: :destroy
+  has_many :friends, through: :friendships
 
-  embeds_many :friendships, dependent: :destroy
+  before_destroy :remove_friendships
 
   validate :validate_content
 
@@ -52,6 +54,11 @@ class User
   end
 
   private
+
+    def remove_friendships
+      # Eliminar todas las amistades donde este usuario es el amigo.
+      Friendship.where(friend_id: self.id).destroy_all
+    end
 
     def validate_content
       if password_update.present?
