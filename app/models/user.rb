@@ -14,6 +14,8 @@ class User
   has_many :collections, dependent: :destroy
   has_many :notes, dependent: :destroy
 
+  embeds_many :friendships, dependent: :destroy
+
   validate :validate_content
 
   def name_valid
