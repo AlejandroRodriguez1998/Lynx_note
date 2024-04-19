@@ -35,11 +35,12 @@ class FriendshipsController < ApplicationController
 
     @friend = User.find(params[:friend])
 
-    existing_friendship = current_user.initiated_friendships.find_by(friend_id: @friend.id) ||
-    @friend.initiated_friendships.find_by(friend_id: current_user.id)
-
-    if existing_friendship
-      redirect_to new_friendship_path, notice: 'Friendship already exists.' and return
+    initiated_friendship = current_user.initiated_friendships.where(friend_id: @friend.id).first
+    received_friendship = @friend.initiated_friendships.where(friend_id: current_user.id).first
+  
+    if initiated_friendship || received_friendship
+      redirect_to friendships_path, alert: 'La amistad ya existe.'
+      return
     end
 
     @friendship = current_user.initiated_friendships.build(friend: @friend)

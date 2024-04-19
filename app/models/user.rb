@@ -14,8 +14,8 @@ class User
   has_many :collections, dependent: :destroy
   has_many :notes, dependent: :destroy
   
-  has_many :initiated_friendships, class_name: 'Friendship', inverse_of: :user
-  has_many :received_friendships, class_name: 'Friendship', inverse_of: :friend
+  has_many :initiated_friendships, class_name: 'Friendship', inverse_of: :user, dependent: :destroy
+  has_many :received_friendships, class_name: 'Friendship', inverse_of: :friend, dependent: :destroy
 
   before_destroy :remove_friendships
 
@@ -57,7 +57,7 @@ class User
   private
 
     def remove_friendships
-      friendships.destroy_all
+      self.initiated_friendships.destroy_all
       Friendship.where(friend_id: self.id).destroy_all
     end
 
