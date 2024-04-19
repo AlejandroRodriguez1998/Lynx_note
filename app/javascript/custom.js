@@ -207,10 +207,36 @@ function deleteUser(admin,userId) {
     }
 }
 
+function deleteFriendship(admin,friendShipId) {
+    url = admin ? `/admin/friendships/${friendShipId}` : `/friendships/${friendShipId}`;
+
+    if (confirm('Are you sure?')) {
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }).then(response => {
+            if(admin){
+                window.location.href = "/admin/friendships";
+            }else{
+                window.location.href = "/friendships";         
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+}
+
 $(document).ready(function(){
     $("#inputCollections").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#listCollections li").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    
+    $("#inputFriendship").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#listFriendship li").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });

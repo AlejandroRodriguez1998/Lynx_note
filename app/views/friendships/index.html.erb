@@ -1,14 +1,32 @@
-<p style="color: green"><%= notice %></p>
+<% if notice %>
+    <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
+        <strong>Correct!</strong> <%= notice %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+    </div>
 
-<h1>Friendships</h1>
+    <script>
+        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
+    </script>
+<% end %>
 
-<div id="friendships">
-  <% @friendships.each do |friendship| %>
-    <%= render friendship %>
-    <p>
-      <%= link_to "Show this friendship", friendship %>
-    </p>
-  <% end %>
+<div class="ms-2 mt-1">
+  <h1>Friendships</h1>
+  <%= link_to "New friendship", new_friendship_path, class: "btn color_button_green fw-semibold mb-3" %>
 </div>
 
-<%= link_to "New friendship", new_friendship_path %>
+<div class="row m-0">
+  <% @friendships.each_slice(4) do |friendship_batch| %>
+    <% friendship_batch.each do |friendship| %>
+      <div class="col-md-3 mt-1 mb-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title"><%= friendship[:friend].name %></h5>
+            <button onclick="deleteFriendship(false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+            <hr class="mt-0">
+            <h6>Notes:</h6>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

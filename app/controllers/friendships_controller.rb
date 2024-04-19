@@ -1,70 +1,74 @@
 class FriendshipsController < ApplicationController
-  before_action :set_friendship, only: %i[ show edit update destroy ]
-
-  # GET /friendships or /friendships.json
-  def index
-    @friendships = Friendship.all
+  before_action :not_enter, only: [:show, :edit, :update]
+  before_action :validate_user
+  
+  def not_enter
+    redirect_to friendships_path and return
   end
 
-  # GET /friendships/1 or /friendships/1.json
+  def index
+    @friendships = current_user.initiated_friendships.accepted.map do |f| {
+      id: f.id,
+      friend_id: f.friend_id,
+      friend: f.friend
+    }
+    end + current_user.received_friendships.accepted.map do |f| {
+      id: f.id,
+      friend_id: f.user_id,
+      friend: f.user
+    }
+    end
+  end
+
   def show
   end
 
-  # GET /friendships/new
   def new
+    @users = User.where.not(id: current_user.id)
     @friendship = Friendship.new
   end
 
-  # GET /friendships/1/edit
+  def create
+    if params[:friend].blank?
+      redirect_to new_friendship_path, alert: 'You must select a friend.' and return
+    end
+
+    @friend = User.find(params[:friend])
+
+    existing_friendship = current_user.initiated_friendships.find_by(friend_id: @friend.id) ||
+    @friend.initiated_friendships.find_by(friend_id: current_user.id)
+
+    if existing_friendship
+      redirect_to new_friendship_path, notice: 'Friendship already exists.' and return
+    end
+
+    @friendship = current_user.initiated_friendships.build(friend: @friend)
+
+    if @friendship.save
+      redirect_to friendships_path, notice: 'Notification sent to your friend'
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def edit
   end
 
-  # POST /friendships or /friendships.json
-  def create
-    @friendship = Friendship.new(friendship_params)
-
-    respond_to do |format|
-      if @friendship.save
-        format.html { redirect_to friendship_url(@friendship), notice: "Friendship was successfully created." }
-        format.json { render :show, status: :created, location: @friendship }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @friendship.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /friendships/1 or /friendships/1.json
   def update
-    respond_to do |format|
-      if @friendship.update(friendship_params)
-        format.html { redirect_to friendship_url(@friendship), notice: "Friendship was successfully updated." }
-        format.json { render :show, status: :ok, location: @friendship }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @friendship.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
-  # DELETE /friendships/1 or /friendships/1.json
   def destroy
-    @friendship.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to friendships_url, notice: "Friendship was successfully destroyed." }
-      format.json { head :no_content }
+    @friendship = Friendship.find(params[:id])
+    
+    if @friendship.destroy
+      redirect_to friendships_path, notice: 'Friendship was successfully destroyed.'
+    else
+      redirect_to friendships_path, notice: 'Failed to destroy friendship.'
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_friendship
-      @friendship = Friendship.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
     def friendship_params
-      params.fetch(:friendship, {})
+      params.require(:friendship).permit(:friend_id, :status)
     end
 end
