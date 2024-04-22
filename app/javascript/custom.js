@@ -207,6 +207,47 @@ function deleteUser(admin,userId) {
     }
 }
 
+function rejectFriendship(admin, friendshipId) {
+    url = admin ? `/admin/friendships/${friendshipId}` : `/friendships/${friendshipId}`;
+
+    if (confirm('Are you sure?')) {
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }).then(response => {
+            if (admin) {
+                window.location.href = "/admin/friendships";
+            } else {
+                window.location.href = "/friendships";
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+}
+
+function acceptFriendship(admin, friendshipId) {
+    const url = `/friendships/${friendshipId}/accept`;
+
+    if (confirm('Are you sure you want to accept this friendship?')) {
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (admin) {
+                window.location.href = "/admin/friendships";
+            } else {
+                window.location.href = "/friendships";
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+
 function deleteFriendship(admin,friendShipId) {
     url = admin ? `/admin/friendships/${friendShipId}` : `/friendships/${friendShipId}`;
 
@@ -225,6 +266,7 @@ function deleteFriendship(admin,friendShipId) {
         }).catch(error => console.error('Error:', error));
     }
 }
+
 
 $(document).ready(function(){
     $("#inputCollections").on("keyup", function() {

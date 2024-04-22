@@ -1,4 +1,5 @@
 <% is_admin = local_assigns[:is_admin] || false %>
+
 <%= form_with(model: is_admin ? [:admin, friendship] : friendship) do |form| %>
   <div class="mb-3">
     <%= form.label :friend_id, "Choose a Friend:" %>

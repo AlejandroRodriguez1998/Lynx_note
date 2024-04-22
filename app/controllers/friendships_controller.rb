@@ -7,6 +7,16 @@ class FriendshipsController < ApplicationController
   end
 
   def index
+    received_pending_friendships = current_user.received_friendships.where(status: 'pending').map do |f|
+      {
+        id: f.id,
+        friend_id: f.user_id,
+        friend: f.user,
+        status: f.status
+      }
+    end
+    @friendship_requests = received_pending_friendships
+
     @friendships = current_user.initiated_friendships.accepted.map do |f| {
       id: f.id,
       friend_id: f.friend_id,
@@ -18,15 +28,28 @@ class FriendshipsController < ApplicationController
       friend: f.user
     }
     end
+    
   end
+  
 
   def show
   end
 
   def new
-    @users = User.where.not(id: current_user.id)
     @friendship = Friendship.new
-  end
+  
+    pending_friend_ids = current_user.initiated_friendships.where(status: 'pending').pluck(:friend_id)
+    accepted_friend_ids = current_user.initiated_friendships.where(status: 'accepted').pluck(:friend_id)
+    received_pending_friend_ids = current_user.received_friendships.where(status: 'pending').pluck(:user_id)
+    received_accepted_friend_ids = current_user.received_friendships.where(status: 'accepted').pluck(:user_id)
+  
+    excluded_user_ids = pending_friend_ids + accepted_friend_ids + received_pending_friend_ids + received_accepted_friend_ids
+  
+    @users = User.where.not(id: current_user.id).to_a
+    @users = @users.reject { |user| excluded_user_ids.include?(user.id) }
+    
+  end  
+  
 
   def create
     if params[:friend].blank?
@@ -66,6 +89,24 @@ class FriendshipsController < ApplicationController
     else
       redirect_to friendships_path, notice: 'Failed to destroy friendship.'
     end
+  end
+
+  def accept
+    friendship = Friendship.find(params[:id])
+    if friendship.status == 'pending'
+      friendship.update(status: 'accepted')
+      flash[:notice] = "Friendship accepted!"
+    end
+    redirect_to friendships_path
+  end
+
+  def reject
+    friendship = Friendship.find(params[:id])
+    if friendship.status == 'pending'
+      friendship.destroy
+      flash[:notice] = "Friendship rejected and removed."
+    end
+    redirect_to friendships_path
   end
 
   private

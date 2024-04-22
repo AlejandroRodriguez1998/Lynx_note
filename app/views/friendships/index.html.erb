@@ -1,12 +1,12 @@
 <% if notice %>
-    <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
-        <strong>Correct!</strong> <%= notice %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
-    </div>
+  <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
+    <strong>Correct!</strong> <%= notice %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+  </div>
 
-    <script>
-        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
-    </script>
+  <script>
+    setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
+  </script>
 <% end %>
 
 <div class="ms-2 mt-1">
@@ -14,6 +14,26 @@
   <%= link_to "New friendship", new_friendship_path, class: "btn color_button_green fw-semibold mb-3" %>
 </div>
 
+<h5 class="ms-2">Friendship Requests</h5>
+<div class="row m-0">
+  <% @friendship_requests.each do |friendship| %>
+    <div class="col-md-3 mt-1 mb-3">
+      <div class="card" id="friendship_<%= friendship[:id] %>">
+        <div class="card-body text-center">
+          <% if friendship[:friend] %>
+            <h5 class="card-title"><%= friendship[:friend].name %></h5>
+            <% if friendship[:status] == 'pending' %>
+              <button onclick="acceptFriendship(false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-3 ms-2">Accept</button>
+              <button onclick="rejectFriendship(false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Reject</button>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<h5 class="ms-2 mt-2">Friendships</h5>
 <div class="row m-0">
   <% @friendships.each_slice(4) do |friendship_batch| %>
     <% friendship_batch.each do |friendship| %>
