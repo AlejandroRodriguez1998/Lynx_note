@@ -9,11 +9,13 @@ Rails.application.routes.draw do
   resources :users
   resources :session
   resources :collections
+  resources :friendships
 
   namespace :admin do
     resources :notes
     resources :users
     resources :collections
+    resources :friendships
   end
 
   root :to => "home#index"

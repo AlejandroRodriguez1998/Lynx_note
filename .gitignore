@@ -33,5 +33,7 @@
 /public/uploads/*
 !/public/uploads/.keep
 
+/config/mongoid.yml
+
 # Ignore master key for decrypting credentials and more.
 /config/master.key

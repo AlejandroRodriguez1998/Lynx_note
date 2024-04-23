@@ -13,6 +13,11 @@ class User
 
   has_many :collections, dependent: :destroy
   has_many :notes, dependent: :destroy
+  
+  has_many :initiated_friendships, class_name: 'Friendship', inverse_of: :user, dependent: :destroy
+  has_many :received_friendships, class_name: 'Friendship', inverse_of: :friend, dependent: :destroy
+
+  before_destroy :remove_friendships
 
   validate :validate_content
 
@@ -50,6 +55,11 @@ class User
   end
 
   private
+
+    def remove_friendships
+      self.initiated_friendships.destroy_all
+      Friendship.where(friend_id: self.id).destroy_all
+    end
 
     def validate_content
       if password_update.present?
