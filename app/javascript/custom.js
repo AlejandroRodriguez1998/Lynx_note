@@ -1,3 +1,4 @@
+
 function addContentType(contentType) {
     var container = document.getElementById('contentContainer');
     var contentDiv = document.createElement('div');
@@ -100,7 +101,7 @@ function showNote(noteId) {
 
         var del = document.createElement("button");
         del.setAttribute("class","btn color_button_brown fw-semibold mb-3 ms-2");
-        del.setAttribute("onclick","deleteNote(false,'"+noteId+"')");
+        del.setAttribute("onclick","createToastDelete('note',false,'"+noteId+"')");
         del.innerHTML = "Delete";
         cont.appendChild(del);
 
@@ -153,64 +154,243 @@ function showNote(noteId) {
 function deleteNote(admin,noteId) {
     url = admin ? `/admin/notes/${noteId}` : `/notes/${noteId}`;
 
-    if (confirm('Are you sure?')) {
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        }).then(response => {
-            if(admin){
-                window.location.href = "/admin/notes";
-            }else{
-                window.location.href = "/notes";
-            }
-        }).catch(error => console.error('Error:', error));
-    }
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    }).then(response => {
+        if(admin){
+            window.location.href = "/admin/notes";
+        }else{
+            window.location.href = "/notes";
+        }
+    }).catch(error => console.error('Error:', error));
+    
 }
 
 function deleteCollection(admin,collectionId) {
     url = admin ? `/admin/collections/${collectionId}` : `/collections/${collectionId}`;
 
-    if (confirm('Are you sure?')) {
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        }).then(response => {
-            if (admin) {
-                window.location.href = "/admin/collections";
-            } else {
-                window.location.href = "/collections";
-            }
-        }).catch(error => console.error('Error:', error));
-    }
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    }).then(response => {
+        if (admin) {
+            window.location.href = "/admin/collections";
+        } else {
+            window.location.href = "/collections";
+        }
+    }).catch(error => console.error('Error:', error));
+    
 }
 
 function deleteUser(admin,userId) {
     url = admin ? `/admin/users/${userId}` : `/users/${userId}`;
 
-    if (confirm('Are you sure?')) {
-        fetch(url, {
-            method: 'DELETE',
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    }).then(response => {
+        if(admin){
+            window.location.href = "/admin/users";
+        }else{
+            window.location.href = "/home?notice=user";         
+        }
+    }).catch(error => console.error('Error:', error));
+    
+}
+
+function deleteFriendship(admin,friendShipId) {
+    url = admin ? `/admin/friendships/${friendShipId}` : `/friendships/${friendShipId}`;
+
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    }).then(response => {
+        if(admin){
+            window.location.href = "/admin/friendships";
+        }else{
+            window.location.href = "/friendships";         
+        }
+    }).catch(error => console.error('Error:', error));
+}
+
+function acceptFriendship(admin, friendshipId) {
+    const url = `/friendships/${friendshipId}`;
+
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => {
+        localStorage.removeItem('pendingRequestsChecked');
+        if (admin) {
+            window.location.href = "/admin/friendships";
+        } else {
+            window.location.href = "/friendships";
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function createToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast align-items-center border-0';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+
+    const flexContainer = document.createElement('div');
+    flexContainer.className = 'd-flex';
+
+    const toastBody = document.createElement('div');
+    toastBody.className = 'toast-body';
+    toastBody.textContent = message;
+
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.className = 'btn-close me-2 m-auto';
+    closeButton.setAttribute('data-bs-dismiss', 'toast');
+    closeButton.setAttribute('aria-label', 'Close');
+    closeButton.onclick = function() { toast.remove(); }; 
+
+    flexContainer.appendChild(toastBody);
+    flexContainer.appendChild(closeButton);
+    toast.appendChild(flexContainer);
+
+    document.getElementById('toast-container').appendChild(toast);
+    new bootstrap.Toast(toast).show();
+}
+
+function createToastDelete(type,admin, typeId) {
+    // Crear el contenedor principal del toast
+    const toast = document.createElement('div');
+    toast.className = 'toast align-items-center border-0';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+    toast.setAttribute('data-bs-autohide', 'false');
+
+    // Crear el cuerpo del toast
+    const toastBody = document.createElement('div');
+    toastBody.className = 'toast-body text-center';
+    toastBody.textContent = 'Are you sure?';
+
+    // División para botones
+    const buttonGroup = document.createElement('div');
+    buttonGroup.className = 'mt-2 pt-2 border-top';
+
+    // Botón para tomar acción
+    const actionButton = document.createElement('button');
+    actionButton.type = 'button';
+    actionButton.className = 'btn color_button_green btn-sm me-1';
+    actionButton.textContent = 'Accept';
+    actionButton.onclick = function() { 
+        if(type == "note"){
+            deleteNote(admin, typeId);
+        }else if(type == "collection"){
+            deleteCollection(admin, typeId);
+        }else if(type == "user"){
+            deleteUser(admin, typeId);
+        }else if(type == "friendship"){
+            deleteFriendship(admin, typeId);
+        }else if(type == "acceptFriendship"){
+            acceptFriendship(admin, typeId);
+        }
+    }
+
+    // Botón para cerrar
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.className = 'btn color_button_brown btn-sm';
+    closeButton.setAttribute('data-bs-dismiss', 'toast');
+    closeButton.textContent = 'Cancel';
+    closeButton.onclick = function() { toast.remove(); };
+
+    // Añadir botones al grupo de botones
+    buttonGroup.appendChild(actionButton);
+    buttonGroup.appendChild(closeButton);
+
+    // Añadir grupo de botones y texto al cuerpo del toast
+    toastBody.appendChild(buttonGroup);
+
+    // Añadir cuerpo del toast al contenedor principal
+    toast.appendChild(toastBody);
+
+    document.getElementById('toast-delete').appendChild(toast);
+    new bootstrap.Toast(toast).show();
+}
+
+function showNotification() {
+    if(getCookie('user_name') != null) {
+        url = window.location.pathname != "/friendships"
+
+        if (!localStorage.getItem('pendingRequestsChecked')) {
+            localStorage.setItem('pendingRequests', 0);
+
+            if (url) {
+                localStorage.setItem('pendingRequestsChecked', 'true');
+            }
+        }
+
+        fetch("/friendships/notifications", {
+            method: 'GET',
             headers: {
-                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                'Accept': 'application/json'
             }
-        }).then(response => {
-            if(admin){
-                window.location.href = "/admin/users";
-            }else{
-                window.location.href = "/home?notice=user";         
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(url){
+                if (data.length != localStorage.getItem('pendingRequests')) {
+                    localStorage.setItem('pendingRequests', data.length);
+                    createToast(`You have ${data.length} new friend requests`);
+                }
             }
-        }).catch(error => console.error('Error:', error));
+        })
+        .catch(error => {});
+    }else  {
+        localStorage.removeItem('pendingRequestsChecked');
+        localStorage.removeItem('pendingRequests');
     }
 }
 
 $(document).ready(function(){
+    showNotification();
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var alert = urlParams.get('notice');
+
+    if (alert) { 
+        createToast("Your account has been deleted");
+    }
+
     $("#inputCollections").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#listCollections li").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    
+    $("#inputFriendship").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#listFriendship li").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    $("#inputFriendship_one").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#listFriendship_one li").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });

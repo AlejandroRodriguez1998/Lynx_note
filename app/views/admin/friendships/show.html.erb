@@ -1,0 +1,23 @@
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-auto me-auto">
+            <button onclick="createToastDelete('friendship',true,'<%= @friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3">Delete</button>
+          </div>
+          <div class="col-auto">
+            <%= link_to 'Go Back', admin_friendships_path, class: 'btn color_button_brown fw-semibold' %>
+          </div>
+        </div>
+      </div>
+
+      <p><strong>Friend 1 username:</strong> <%= @friendship[:user].name %></p>
+      <p><strong>Friend 1 email:</strong> <%= @friendship[:user].email %></p>
+      <p><strong>Friend 2 username:</strong> <%= @friendship[:friend].name %></p>
+      <p><strong>Friend 2 email:</strong> <%= @friendship[:friend].email %></p>
+      <p><strong>Status:</strong> <%= @friendship[:status] %></p>
+
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<h1 class="ms-2">Notes</h1>
+<h1 class="ms-2">Friendships</h1>
 
 <% if notice %>
     <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
@@ -13,24 +13,25 @@
 
 <div class="row m-0 p-0">
   <div class="col-12">
-    <%= link_to 'New Note', new_admin_note_path, class: 'btn color_button_green fw-semibold mb-3' %>
+    <%= link_to 'New Frienship', new_admin_friendship_path, class: 'btn color_button_green fw-semibold mb-3' %>
     <table class="table color_card">
       <thead>
         <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Content</th>
+          <th scope="col">Friend 1</th>
+          <th scope="col">Friend 2</th>
+          <th scope="col">Status</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <% @notes.each do |note| %>
+        <% @friendships.each do |friend| %>
           <tr>
-            <td><%= note.title.presence || "No Title" %></td>
-            <td><%= "#{note.content&.length || 0} items." %></td>
+            <td><%= friend[:user].email %></td>
+            <td><%= friend[:friend].email %></td>
+            <td><%= friend[:status] %></td>
             <td>
-              <%= link_to 'Show', admin_note_path(note), class: 'btn color_button_green fw-semibold mx-1' %>
-              <%= link_to 'Edit', edit_admin_note_path(note), class: 'btn color_button_brown fw-semibold mx-1' %>
-              <button onclick="createToastDelete('note', true,'<%= note.id %>')" class="btn color_button_brown fw-semibold mx-1">Delete</button>
+              <%= link_to 'Show', admin_friendship_path(friend[:id]), class: 'btn color_button_green fw-semibold mx-1' %>
+              <button onclick="createToastDelete('friendship',true,'<%= friend[:id] %>')" class="btn color_button_brown fw-semibold mx-1">Delete</button>
             </td>
           </tr>
         <% end %>
@@ -38,3 +39,4 @@
     </table>
   </div>
 </div>
+
