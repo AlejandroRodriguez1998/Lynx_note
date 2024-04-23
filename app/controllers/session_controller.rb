@@ -24,6 +24,7 @@ class SessionController < ApplicationController
         render :new, status: :unprocessable_entity and return
       elsif @user.authenticate(password)
         session[:user_id] = @user.id
+        cookies[:user_name] = @user.name
         redirect_to root_url, notice: "Welcome back! #{@user.name.capitalize} ♥" 
       else
         flash.now[:alert] = "Email or password is invalid"
@@ -36,6 +37,7 @@ class SessionController < ApplicationController
 
   def destroy
     session.delete :user_id
+    cookies.delete :user_name
     redirect_to root_url, notice: "See you soon! ♥"
   end
 end

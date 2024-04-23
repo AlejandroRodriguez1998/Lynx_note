@@ -29,7 +29,7 @@
           <div class="card-body text-center">
             <h5 class="card-title"><%= collection.name %></h5>
             <%= link_to "Edit", edit_collection_path(collection), class: "btn color_button_green fw-semibold mb-3 ms-2" %>
-            <button onclick="deleteCollection(false,'<%= collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+            <button onclick="createToastDelete('collection',false,'<%= collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
             <hr class="mt-0">
             <h6>Notes:</h6>
             <% collection.notes.each do |note| %>

@@ -1,22 +1,8 @@
 <% if notice %>   
     <script>
-        document.getElementById('modal_button_notice').click();
-        document.getElementById('modalNoticeLabel').innerHTML = "<%= notice %>";
-        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);
+        createToast("<%= notice %>")
     </script>
 <% end %>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var alert = urlParams.get('notice');
-    
-    if (alert) { 
-      document.getElementById('modal_button_notice').click();
-      document.getElementById('modalNoticeLabel').innerHTML = "Your account has been deleted";
-    }
-  });
-</script>
 
 <button type="button" class="d-none" data-bs-toggle="modal" data-bs-target="#modalNotice" id="modal_button_notice"></button>
 

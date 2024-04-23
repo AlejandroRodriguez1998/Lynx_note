@@ -1,6 +1,11 @@
 class CollectionsController < ApplicationController
+  before_action :not_enter, only: [:show]
   before_action :validate_user
   before_action :is_mine , only: [:edit, :update, :destroy]
+
+  def not_enter
+    redirect_to collections_path and return
+  end
 
   def is_mine
     @collection = Collection.find(params[:id])

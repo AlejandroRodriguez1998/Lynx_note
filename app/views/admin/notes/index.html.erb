@@ -30,7 +30,7 @@
             <td>
               <%= link_to 'Show', admin_note_path(note), class: 'btn color_button_green fw-semibold mx-1' %>
               <%= link_to 'Edit', edit_admin_note_path(note), class: 'btn color_button_brown fw-semibold mx-1' %>
-              <button onclick="deleteNote(true,'<%= note.id %>')" class="btn color_button_brown fw-semibold mx-1">Delete</button>
+              <button onclick="createToastDelete('note', true,'<%= note.id %>')" class="btn color_button_brown fw-semibold mx-1">Delete</button>
             </td>
           </tr>
         <% end %>

@@ -23,8 +23,8 @@
           <% if friendship[:friend] %>
             <h5 class="card-title"><%= friendship[:friend].name %></h5>
             <% if friendship[:status] == 'pending' %>
-              <button onclick="acceptFriendship(false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-3 ms-2">Accept</button>
-              <button onclick="deleteFriendship(false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Reject</button>
+              <button onclick="createToastDelete('acceptFriendship',false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-3 ms-2">Accept</button>
+              <button onclick="createToastDelete('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Reject</button>
             <% end %>
           <% end %>
         </div>
@@ -41,7 +41,7 @@
         <div class="card">
           <div class="card-body text-center">
             <h5 class="card-title"><%= friendship[:friend].name %></h5>
-            <button onclick="deleteFriendship(false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+            <button onclick="createToastDelete('friendship',false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
             <hr class="mt-0">
             <h6>Notes:</h6>
           </div>

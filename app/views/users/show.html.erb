@@ -30,7 +30,7 @@
     
             <div class="d-flex justify-content-center">
                 <%= link_to "Edit", edit_user_path(@user), class: "btn color_button_green fw-semibold mb-3 ms-2" %>
-                <button onclick="deleteUser(false,'<%= @user.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+                <button onclick="createToastDelete('user', false,'<%= @user.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
             </div>   
             
         </div>

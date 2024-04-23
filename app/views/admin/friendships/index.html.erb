@@ -31,7 +31,7 @@
             <td><%= friend[:status] %></td>
             <td>
               <%= link_to 'Show', admin_friendship_path(friend[:id]), class: 'btn color_button_green fw-semibold mx-1' %>
-              <button onclick="deleteFriendship(true,'<%= friend[:id] %>')" class="btn color_button_brown fw-semibold mx-1">Delete</button>
+              <button onclick="createToastDelete('friendship',true,'<%= friend[:id] %>')" class="btn color_button_brown fw-semibold mx-1">Delete</button>
             </td>
           </tr>
         <% end %>

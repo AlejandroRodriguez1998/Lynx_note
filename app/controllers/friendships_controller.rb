@@ -96,6 +96,13 @@ class FriendshipsController < ApplicationController
     end
   end
 
+  def get_notifications
+    @friendship_requests = current_user.received_friendships.pending.map do |f|
+      { id: f.id }
+    end
+    render json: @friendship_requests
+  end
+
   protected
     def after_friendship_create
       redirect_to friendships_path, notice: 'Friendship was successfully created.' and return
