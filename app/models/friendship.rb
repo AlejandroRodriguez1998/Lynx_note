@@ -8,6 +8,7 @@ class Friendship
   belongs_to :friend, class_name: 'User', inverse_of: :received_friendships
 
   scope :accepted, -> { where(status: 'accepted') }
+  scope :pending, -> { where(status: 'pending') }
 
 end
   

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :notes
     resources :users
     resources :collections
+    resources :friendships
   end
 
   root :to => "home#index"
@@ -26,13 +27,6 @@ Rails.application.routes.draw do
   get "login" => "session#new", :as => "login"
   post "login" => "session#create"
   get "signup" => "users#new", :as => "signup"
-
-  resources :friendships do
-    member do
-      put 'accept', to: 'friendships#accept'
-      delete 'reject', to: 'friendships#reject'
-    end
-  end
 
   # Defines the root path route ("/")
   # root "posts#index"

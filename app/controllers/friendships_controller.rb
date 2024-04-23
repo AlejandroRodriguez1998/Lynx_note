@@ -1,5 +1,5 @@
 class FriendshipsController < ApplicationController
-  before_action :not_enter, only: [:show, :edit, :update]
+  before_action :not_enter, only: [:show, :edit]
   before_action :validate_user
   
   def not_enter
@@ -7,7 +7,7 @@ class FriendshipsController < ApplicationController
   end
 
   def index
-    received_pending_friendships = current_user.received_friendships.where(status: 'pending').map do |f|
+    received_pending_friendships = current_user.received_friendships.pending.map do |f|
       {
         id: f.id,
         friend_id: f.user_id,
@@ -31,17 +31,16 @@ class FriendshipsController < ApplicationController
     
   end
   
-
   def show
   end
 
   def new
     @friendship = Friendship.new
   
-    pending_friend_ids = current_user.initiated_friendships.where(status: 'pending').pluck(:friend_id)
-    accepted_friend_ids = current_user.initiated_friendships.where(status: 'accepted').pluck(:friend_id)
-    received_pending_friend_ids = current_user.received_friendships.where(status: 'pending').pluck(:user_id)
-    received_accepted_friend_ids = current_user.received_friendships.where(status: 'accepted').pluck(:user_id)
+    pending_friend_ids = current_user.initiated_friendships.pending.pluck(:friend_id)
+    accepted_friend_ids = current_user.initiated_friendships.accepted.pluck(:friend_id)
+    received_pending_friend_ids = current_user.received_friendships.pending.pluck(:user_id)
+    received_accepted_friend_ids = current_user.received_friendships.accepted.pluck(:user_id)
   
     excluded_user_ids = pending_friend_ids + accepted_friend_ids + received_pending_friend_ids + received_accepted_friend_ids
   
@@ -69,7 +68,7 @@ class FriendshipsController < ApplicationController
     @friendship = current_user.initiated_friendships.build(friend: @friend)
 
     if @friendship.save
-      redirect_to friendships_path, notice: 'Notification sent to your friend'
+      after_friendship_create
     else
       render :new, status: :unprocessable_entity
     end
@@ -79,36 +78,34 @@ class FriendshipsController < ApplicationController
   end
 
   def update
+    friendship = Friendship.find(params[:id])
+    if friendship.status == 'pending'
+      friendship.update(status: 'accepted')
+      flash[:notice] = "Friendship accepted!"
+    end
+    after_friendship_edit
   end
 
   def destroy
     @friendship = Friendship.find(params[:id])
     
     if @friendship.destroy
-      redirect_to friendships_path, notice: 'Friendship was successfully destroyed.'
+      after_friendship_delete
     else
       redirect_to friendships_path, notice: 'Failed to destroy friendship.'
     end
   end
 
-  def accept
-    friendship = Friendship.find(params[:id])
-    if friendship.status == 'pending'
-      friendship.update(status: 'accepted')
-      flash[:notice] = "Friendship accepted!"
+  protected
+    def after_friendship_create
+      redirect_to friendships_path, notice: 'Friendship was successfully created.' and return
     end
-    redirect_to friendships_path
-  end
-
-  def reject
-    friendship = Friendship.find(params[:id])
-    if friendship.status == 'pending'
-      friendship.destroy
-      flash[:notice] = "Friendship rejected and removed."
+    def after_friendship_edit
+      redirect_to friendships_path, notice: 'Friendship was successfully updated.' and return
     end
-    redirect_to friendships_path
-  end
-
+    def after_friendship_delete
+      redirect_to friendships_path, notice: 'Friendship  was successfully destroy.' and return
+    end
   private
     def friendship_params
       params.require(:friendship).permit(:friend_id, :status)

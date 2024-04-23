@@ -24,7 +24,7 @@
             <h5 class="card-title"><%= friendship[:friend].name %></h5>
             <% if friendship[:status] == 'pending' %>
               <button onclick="acceptFriendship(false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-3 ms-2">Accept</button>
-              <button onclick="rejectFriendship(false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Reject</button>
+              <button onclick="deleteFriendship(false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Reject</button>
             <% end %>
           <% end %>
         </div>
