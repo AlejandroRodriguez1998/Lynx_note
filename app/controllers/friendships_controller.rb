@@ -7,15 +7,13 @@ class FriendshipsController < ApplicationController
   end
 
   def index
-    received_pending_friendships = current_user.received_friendships.pending.map do |f|
-      {
-        id: f.id,
-        friend_id: f.user_id,
-        friend: f.user,
-        status: f.status
-      }
+    @friendship_requests = current_user.received_friendships.pending.map do |f|
+      { id: f.id, friend: f.user }
     end
-    @friendship_requests = received_pending_friendships
+
+    @pending_friendships = current_user.initiated_friendships.pending.map do |f|
+      { id: f.id, friend: f.friend}
+    end
 
     @friendships = current_user.initiated_friendships.accepted.map do |f| {
       id: f.id,
@@ -56,15 +54,6 @@ class FriendshipsController < ApplicationController
     end
 
     @friend = User.find(params[:friend])
-
-    initiated_friendship = current_user.initiated_friendships.where(friend_id: @friend.id).first
-    received_friendship = @friend.initiated_friendships.where(friend_id: current_user.id).first
-  
-    if initiated_friendship || received_friendship
-      redirect_to friendships_path, alert: 'La amistad ya existe.'
-      return
-    end
-
     @friendship = current_user.initiated_friendships.build(friend: @friend)
 
     if @friendship.save
@@ -105,14 +94,17 @@ class FriendshipsController < ApplicationController
 
   protected
     def after_friendship_create
-      redirect_to friendships_path, notice: 'Friendship was successfully created.' and return
+      redirect_to friendships_path, notice: 'Friendship request has been sent.' and return
     end
+
     def after_friendship_edit
-      redirect_to friendships_path, notice: 'Friendship was successfully updated.' and return
+      redirect_to friendships_path, notice: 'Friendship has been accepted.' and return
     end
+
     def after_friendship_delete
       redirect_to friendships_path, notice: 'Friendship  was successfully destroy.' and return
     end
+    
   private
     def friendship_params
       params.require(:friendship).permit(:friend_id, :status)
