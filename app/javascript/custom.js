@@ -332,17 +332,7 @@ function createToastDelete(type,admin, typeId) {
 
 function showNotification() {
     if(getCookie('user_name') != null) {
-        url = window.location.pathname != "/friendships"
-
-        if (!localStorage.getItem('pendingRequestsChecked')) {
-            localStorage.setItem('pendingRequests', 0);
-
-            if (url) {
-                localStorage.setItem('pendingRequestsChecked', 'true');
-            }
-        }
-
-        fetch("/friendships/notifications", {
+        fetch("/notifications", {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -350,17 +340,11 @@ function showNotification() {
         })
         .then(response => response.json())
         .then(data => {
-            if(url){
-                if (data.length != localStorage.getItem('pendingRequests')) {
-                    localStorage.setItem('pendingRequests', data.length);
-                    createToast(`You have ${data.length} new friend requests`);
-                }
+            if (data.length > 0){
+                createToast(`You have ${data.length} new notifications`);
             }
         })
         .catch(error => {});
-    }else  {
-        localStorage.removeItem('pendingRequestsChecked');
-        localStorage.removeItem('pendingRequests');
     }
 }
 

@@ -9,11 +9,8 @@ Rails.application.routes.draw do
   resources :users
   resources :session
   resources :collections
-  resources :friendships do
-    collection do
-      get 'notifications', to: 'friendships#get_notifications', as: 'notifications'
-    end
-  end
+  resources :friendships 
+  resources :notifications
 
   namespace :admin do
     resources :notes

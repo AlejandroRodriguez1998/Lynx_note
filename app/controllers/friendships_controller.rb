@@ -57,6 +57,7 @@ class FriendshipsController < ApplicationController
     @friendship = current_user.initiated_friendships.build(friend: @friend)
 
     if @friendship.save
+      Notification.create(user: @friend, message: "#{current_user.name.capitalize} sent you a friend request.", notification_type: 'friend_request')
       after_friendship_create
     else
       render :new, status: :unprocessable_entity
@@ -67,9 +68,11 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    friendship = Friendship.find(params[:id])
-    if friendship.status == 'pending'
-      friendship.update(status: 'accepted')
+    @friendship = Friendship.find(params[:id])
+    if @friendship.status == 'pending'
+      @friendship.update(status: 'accepted')
+      Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
+      Notification.create(user: @friendship.user, message: "#{current_user.name.capitalize} has accepted your friendship request.", notification_type: 'friend_request')
       flash[:notice] = "Friendship accepted!"
     end
     after_friendship_edit
@@ -77,19 +80,20 @@ class FriendshipsController < ApplicationController
 
   def destroy
     @friendship = Friendship.find(params[:id])
+
+    pending = @friendship.status == 'pending'
     
-    if @friendship.destroy
+    if @friendship.destroy 
+      if pending
+        Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
+      else 
+        Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
+        Notification.create(user: @friendship.user, message: "#{current_user.name.capitalize} has deleted your request.", notification_type: 'friend_request')
+      end
       after_friendship_delete
     else
       redirect_to friendships_path, notice: 'Failed to destroy friendship.'
     end
-  end
-
-  def get_notifications
-    @friendship_requests = current_user.received_friendships.pending.map do |f|
-      { id: f.id }
-    end
-    render json: @friendship_requests
   end
 
   protected
