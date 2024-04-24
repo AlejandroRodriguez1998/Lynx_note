@@ -14,39 +14,68 @@
   <%= link_to "New friendship", new_friendship_path, class: "btn color_button_green fw-semibold mb-3" %>
 </div>
 
-<h5 class="ms-2">Friendship Requests</h5>
-<div class="row m-0">
-  <% @friendship_requests.each do |friendship| %>
-    <div class="col-md-3 mt-1 mb-3">
-      <div class="card" id="friendship_<%= friendship[:id] %>">
-        <div class="card-body text-center">
-          <% if friendship[:friend] %>
-            <h5 class="card-title"><%= friendship[:friend].name %></h5>
-            <% if friendship[:status] == 'pending' %>
-              <button onclick="createToastDelete('acceptFriendship',false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-3 ms-2">Accept</button>
-              <button onclick="createToastDelete('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Reject</button>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-</div>
-
-<h5 class="ms-2 mt-2">Friendships</h5>
-<div class="row m-0">
-  <% @friendships.each_slice(4) do |friendship_batch| %>
-    <% friendship_batch.each do |friendship| %>
+<h5 class="ms-2">Friendship Requests <i class="bi bi-envelope-check"></i></h5>
+<% if @friendship_requests.empty? %>
+  <p class="ms-2">No friendship requests <i class="bi bi-balloon-fill"></i></p>
+<% else %>
+  <div class="row m-0">
+    <% @friendship_requests.each do |friendship| %>
       <div class="col-md-3 mt-1 mb-3">
-        <div class="card">
+        <div class="card" id="friendship_<%= friendship[:id] %>">
           <div class="card-body text-center">
-            <h5 class="card-title"><%= friendship[:friend].name %></h5>
-            <button onclick="createToastDelete('friendship',false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-            <hr class="mt-0">
-            <h6>Notes:</h6>
+            <% if friendship[:friend] %>
+              <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
+              <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
+              <button onclick="createToastDelete('acceptFriendship',false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-2">Accept</button>
+              <button onclick="createToastDelete('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2 ms-2">Decline</button>
+            <% end %>
           </div>
         </div>
       </div>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>
+
+<h5 class="ms-2">Friendship Invitations <i class="bi bi-envelope-arrow-up"></i></h5>
+<% if @pending_friendships.empty? %>
+  <p class="ms-2">No friendship invitations <i class="bi bi-balloon-heart-fill"></i></p>
+<% else %>
+  <div class="row m-0">
+    <% @pending_friendships.each do |friendship| %>
+      <div class="col-md-3 mt-1 mb-3">
+        <div class="card" id="friendship_<%= friendship[:id] %>">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
+            <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
+            <button onclick="createToastDelete('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">Decline</button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<h5 class="ms-2 mt-2">Friendships <i class="bi bi-envelope-heart"></i></h5>
+<% if @friendships.empty? %>
+  <p class="ms-2">No friendship <i class="bi bi-people-fill"></i></p>
+<% else %>
+  <div class="row m-0">
+    <% @friendships.each_slice(4) do |friendship_batch| %>
+      <% friendship_batch.each do |friendship| %>
+        <div class="col-md-3 mt-1 mb-3">
+          <div class="card">
+            <div class="card-body text-center">
+              <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
+              <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
+              <button onclick="createToastDelete('friendship',false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">Delete</button>
+              <hr class="mt-0 mb-2">
+              <h6>Notes:</h6>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+

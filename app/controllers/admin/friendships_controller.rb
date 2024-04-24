@@ -67,20 +67,23 @@ module Admin
     end
 
     protected
-    def after_friendship_create
-      redirect_to admin_friendships_path, notice: 'Friendship was successfully created.' and return
-    end
-    def after_friendship_edit
-      redirect_to admin_friendships_path, notice: 'Friendship was successfully updated.' and return
-    end
-    def after_friendship_delete
-      redirect_to admin_friendships_path, notice: 'Friendship  was successfully destroy.' and return
-    end
+      def after_friendship_create
+        redirect_to admin_friendships_path, notice: 'Friendship was successfully created.' and return
+      end
+      
+      def after_friendship_edit
+        redirect_to admin_friendships_path, notice: 'Friendship was successfully updated.' and return
+      end
+
+      def after_friendship_delete
+        redirect_to admin_friendships_path, notice: 'Friendship  was successfully destroy.' and return
+      end
+
     private
-    def fill_in
-      @friendship = Friendship.new
-      @users = User.all
-      @is_admin = true
-    end
+      def fill_in
+        @friendship = Friendship.new
+        @users = User.all
+        @is_admin = true
+      end
   end
 end
