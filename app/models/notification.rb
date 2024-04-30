@@ -4,7 +4,6 @@ class Notification
 
     field :message, type: String
     field :notification_type, type: String
-    field :read, type: Boolean, default: false
 
     belongs_to :user
 end

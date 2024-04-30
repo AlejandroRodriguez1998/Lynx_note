@@ -13,8 +13,7 @@ class CollectionsController < ApplicationController
       redirect_to root_url
     end
   end
-
-  # GET /collections or /collections.json
+  
   def index
     @collections = current_user.collections.map do |collection|
       notes = []
@@ -26,25 +25,17 @@ class CollectionsController < ApplicationController
       collection.assign_attributes(notes: notes)
       
       collection #es como si fuese un return
-    end
+    end.sort_by { |collection| -collection.notes.size } #para mostrar la que mas notas tiene primero
   end
 
-  # GET /collections/id
   def show
     @collection = Collection.find(params[:id])
   end
 
-  # GET /collections/new
   def new
     @collection = Collection.new
   end
 
-  # GET /collections/id/edit
-  def edit
-    @collection = Collection.find(params[:id])
-  end
-
-  # POST /collections
   def create
     @collection = Collection.new(collection_params)
     @collection.user = current_user
@@ -56,7 +47,10 @@ class CollectionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /collections/id 
+  def edit
+    @collection = Collection.find(params[:id])
+  end
+
   def update
     @collection = Collection.find(params[:id])
     if @collection.update(collection_params)
@@ -67,7 +61,6 @@ class CollectionsController < ApplicationController
     end
   end
 
-  # DELETE /collections/id
   def destroy
       @collection = Collection.find(params[:id])
       @collection.destroy

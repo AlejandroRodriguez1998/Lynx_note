@@ -5,4 +5,10 @@ class NotificationsController < ApplicationController
         @notifications = current_user.notifications.all
         render json: @notifications
     end
+
+    def destroy
+        @notification = Notification.find(params[:id])
+        @notification.destroy
+    end
+
 end

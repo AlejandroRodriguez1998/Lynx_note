@@ -24,8 +24,8 @@
       <div class="col-12">
         <%= form.label :friend_id, "Choose a Friend:" %>
     <%end%>
-        <input class="form-control mt-2 <%= 'error_form' if flash[:alert].present? %>" id="inputFriendship" type="text" placeholder="Search...">
-        <ul class="list-group search_max mt-1 text-start" id="listFriendship">
+        <input class="form-control mt-2 <%= 'error_form' if flash[:alert].present? %>" id="inputContent" type="text" placeholder="Search...">
+        <ul class="list-group search_max mt-1 text-start" id="listContent">
             <% @users.each do |user| %>
               <li class="list-group-item">
                 <div class="form-check mb-0">

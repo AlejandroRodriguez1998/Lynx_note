@@ -15,16 +15,10 @@ class FriendshipsController < ApplicationController
       { id: f.id, friend: f.friend}
     end
 
-    @friendships = current_user.initiated_friendships.accepted.map do |f| {
-      id: f.id,
-      friend_id: f.friend_id,
-      friend: f.friend
-    }
-    end + current_user.received_friendships.accepted.map do |f| {
-      id: f.id,
-      friend_id: f.user_id,
-      friend: f.user
-    }
+    @friendships = current_user.initiated_friendships.accepted.map do |f| 
+      { id: f.id, friend: f.friend }
+    end + current_user.received_friendships.accepted.map do |f| 
+      { id: f.id, friend: f.user }
     end
     
   end
@@ -57,7 +51,9 @@ class FriendshipsController < ApplicationController
     @friendship = current_user.initiated_friendships.build(friend: @friend)
 
     if @friendship.save
+      Notification.where(user: @friend, notification_type: 'friend_request').destroy_all
       Notification.create(user: @friend, message: "#{current_user.name.capitalize} sent you a friend request.", notification_type: 'friend_request')
+      
       after_friendship_create
     else
       render :new, status: :unprocessable_entity
@@ -71,10 +67,13 @@ class FriendshipsController < ApplicationController
     @friendship = Friendship.find(params[:id])
     if @friendship.status == 'pending'
       @friendship.update(status: 'accepted')
+
       Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
       Notification.create(user: @friendship.user, message: "#{current_user.name.capitalize} has accepted your friendship request.", notification_type: 'friend_request')
+      
       flash[:notice] = "Friendship accepted!"
     end
+
     after_friendship_edit
   end
 
@@ -84,12 +83,10 @@ class FriendshipsController < ApplicationController
     pending = @friendship.status == 'pending'
     
     if @friendship.destroy 
-      if pending
-        Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
-      else 
-        Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
-        Notification.create(user: @friendship.user, message: "#{current_user.name.capitalize} has deleted your request.", notification_type: 'friend_request')
-      end
+      Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
+      messageContent = pending && @friendship.friend == current_user ? "#{current_user.name.capitalize} has declined your request." : "#{current_user.name.capitalize} has deleted your friendship."
+      Notification.create(user: @friendship.user, message: messageContent, notification_type: 'friend_request')
+      
       after_friendship_delete
     else
       redirect_to friendships_path, notice: 'Failed to destroy friendship.'

@@ -9,40 +9,38 @@
   </script>
 <% end %>
 
-<div class="container mt-2">
+<div class="container mt-3">
   <div class="row justify-content-center">
-    <div class="col-md-8">
-      <%= link_to 'Edit', edit_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
-      <button onclick="createToastDelete('note',false,'<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-
-      <h3><%= @note.title %></h3>
-      
-      <% if @note.content.present? %>
-        <% @note.content.each do |content_string| %>
-          <% item = JSON.parse(content_string)%>
-          <% if item['type'] == 'text' %>
-            <p><%= item['value'] %></p>
-          <% elsif item['type'] == 'list' %>
-            <ul>
-              <% item['value'].split(';').each do |list_item| %>
-                <li><%= list_item %></li>
-              <% end %>
-            </ul>
-          <% elsif item['type'] == 'file' %>
-          <div class="card-group mb-3">
-            <div class="card color_card">
-              <div class="card-body text-center">
-                <img src=<%= item['value'] %> style="width: 150px; height: 150px;">
+    <div class="col-md-12">
+      <div class="container border rounded color_card box-shadow mb-5">
+        <div class="text-center">
+          <h3><%= @note.title %></h3>
+          <%= link_to 'Edit', edit_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
+          <button onclick="createToastConfirm('note',false,'<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+        </div>
+        <% if @note.content.present? %>
+          <% @note.content.each do |content_string| %>
+            <% item = JSON.parse(content_string)%>
+            <% if item['type'] == 'text' %>
+              <p><%= item['value'] %></p>
+            <% elsif item['type'] == 'list' %>
+              <ul>
+                <% item['value'].split(';').each do |list_item| %>
+                  <li><%= list_item %></li>
+                <% end %>
+              </ul>
+            <% elsif item['type'] == 'file' %>
+            <div class="card-group mb-3">
+              <div class="card color_card">
+                <div class="card-body text-center">
+                  <img src=<%= item['value'] %> style="width: 150px; height: 150px;">
+                </div>
               </div>
             </div>
-          </div>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
-      
-      
-
-      
+      </div>
     </div>
   </div>
 </div>
