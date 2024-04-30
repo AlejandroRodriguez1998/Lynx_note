@@ -15,20 +15,22 @@ class FriendshipsController < ApplicationController
       { id: f.id, friend: f.friend}
     end
 
-    @friendships = current_user.initiated_friendships.accepted.map do |f| 
-      { id: f.id, 
+    @friendships = current_user.initiated_friendships.accepted.map do |f|
+      {
+        id: f.id, 
         friend: f.friend, 
-        notes: f.friend.shared_notes, 
-        collections: f.friend.shared_collections 
+        notes: current_user.shared_notes_by(f.friend),  
+        collections: current_user.shared_collections_by(f.friend)
       }
     end + current_user.received_friendships.accepted.map do |f| 
-      { id: f.id, 
+      {
+        id: f.id, 
         friend: f.user,
-        notes: f.user.shared_notes, 
-        collections: f.user.shared_collections 
+        notes: current_user.shared_notes_by(f.user),  
+        collections: current_user.shared_collections_by(f.user)  
       }
     end
-    
+  
   end
   
   def show

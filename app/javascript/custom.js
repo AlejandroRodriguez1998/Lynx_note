@@ -93,6 +93,12 @@ function showNote(noteId) {
     .then(data => {
         cont.innerHTML = "";
 
+        var id = document.createElement("p");
+        id.setAttribute("id","id_note");
+        id.setAttribute("class","d-none");
+        id.innerHTML = "index;" + noteId;
+        cont.appendChild(id);
+
         var edit = document.createElement("a");
         edit.setAttribute("href","/notes/"+noteId+"/edit");
         edit.setAttribute("class","btn color_button_green fw-semibold mb-3");
@@ -112,10 +118,14 @@ function showNote(noteId) {
         sharing.innerHTML = 'Share';
         cont.appendChild(sharing);
 
-        refillSharing(noteId, 'new');
+        if (data.shared) {
+            refillSharing(data.shared_id.$oid, 'edit');
+        }else {
+            refillSharing(noteId, 'new');
+        }
 
-        if (data.content !== null) {
-            data.content.forEach(element => {
+        if (data.note.content !== null) {
+            data.note.content.forEach(element => {
                 element = JSON.parse(element);
 
                 if (element.type == "text") {
@@ -281,7 +291,14 @@ function deleteSharing(admin, sharingId) {
     })
     .then(response => {
         if (page == 'Notes') {
-            
+            note = document.getElementById('id_note').innerHTML.split(';');
+
+            if (note[0] === "index") {
+                window.location.href = "/notes?number="+note[1];
+            } else if (note[0] === "show") {
+                window.location.href = "/notes/" + note[1];
+            }
+
         } else {
             window.location.href = "/collections";
         }
@@ -331,7 +348,6 @@ function createToast(message) {
 }
 
 function createToastConfirm(type,admin, typeId) {
-    
     const toast = document.createElement('div');
     toast.className = 'toast align-items-center border-0';
     toast.setAttribute('role', 'alert');
@@ -441,17 +457,27 @@ function showNotification(){
     }
 }
 
+function filterSharing(event) {
+    var value = $($(event.target)).val().toLowerCase();
+    $("#listContent li").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+}
+
+
 $(document).ready(function(){
     var userStatus = document.querySelector('meta[name="status"]').getAttribute('content');
 
     if (userStatus === 'true') {
         var urlParams = new URLSearchParams(window.location.search);
+        
+        
         var alert = urlParams.get('notice');
+        var IDNote = urlParams.get('number');
         var timer;
 
-        if (alert) { 
-            createToast("Your account has been deleted");
-        }
+        if (alert) { createToast("Your account has been deleted"); }
+        if (IDNote) { showNote(IDNote); }
  
         putNotification();
 

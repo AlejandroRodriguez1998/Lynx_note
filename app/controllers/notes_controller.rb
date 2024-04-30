@@ -16,10 +16,16 @@ class NotesController < ApplicationController
 
   def show
     @note = Note.find(params[:id])
+    @shared = @note.sharings.any?
+    @shared_id = @note.sharings.first&.id
     
     respond_to do |format|
       format.html
-      format.json { render json: @note }
+      format.json { render json: {
+        note: @note,
+        shared: @shared,
+        shared_id: @shared_id
+       } }
     end
   end
 

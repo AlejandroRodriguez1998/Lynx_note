@@ -1,27 +1,13 @@
-<% if alert %>
-    <div class="alert alert-warning alert-dismissible fade show mx-2 my-3" role="alert">
-        <strong>Warning!</strong> <%= alert %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+<% if alert || notice %>
+    <div class="<%= alert ? 'alert alert-warning' : 'alert alert-success' %> alert-dismissible fade show mx-2 my-3" role="alert">
+        <strong><%= alert ? 'Warning!' : 'Correct!' %></strong> <%= alert || notice %>
+        <button id="botonCerrar" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" class="alert-close-button"></button>
     </div>
 
-
     <script>
-        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
+        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);  
     </script>
 <% end %>
-
-<% if notice %>
-    <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
-        <strong>Correct!</strong> <%= notice %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
-    </div>
-
-
-    <script>
-        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
-    </script>
-<% end %>
-
 
 <div class="ms-2 mt-1">
   <h1 id="namePage">Collections</h1>

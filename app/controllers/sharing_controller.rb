@@ -1,4 +1,10 @@
 class SharingController < ApplicationController
+    before_action :validate_user
+    before_action :browser_check, only: [:create, :update, :destroy]
+
+    def browser_check
+        @browser = Browser.new(request.user_agent)
+    end
 
     def new
         @sharing = Sharing.new
@@ -30,21 +36,32 @@ class SharingController < ApplicationController
             @sharing.shared_with = params[:sharing][:shared_with]
         else
             if note
-                redirect_to notes_path(number: note._id), alert: 'Please select a friend to share the note with' and return
+                if browser.device.mobile?
+                    redirect_to note, alert: 'Please select a friend to share the note.' and return
+                else
+                    redirect_to notes_path(number: note._id), alert: 'Please select a friend to share the note.' and return
+                end
             elsif collection
-                redirect_to collections_path, alert: 'Please select a friend to share the collection with' and return
+                redirect_to collections_path, alert: 'Please select a friend to share the collection.' and return
             end
         end
         if @sharing.save
             if note
                 messageContent = "The user #{current_user.name.capitalize} has shared a note with you"
                 type = "note_request"
-                redirect_to notes_path(number: note._id), notice: 'The note has been shared'
+
+                if browser.device.mobile?
+                    redirect_to note, notice: 'The note has been shared.' and return
+                else
+                    redirect_to notes_path(number: note._id), notice: 'The note has been shared,'
+                end
             elsif collection
                 messageContent = "The user #{current_user.name.capitalize} has shared a collection with you"
                 type = "collection_request"
-                redirect_to collections_path, notice: 'The collection has been shared'
+
+                redirect_to collections_path, notice: 'The collection has been shared.'
             end
+
             @sharing.shared_with.each do |friend_id|
                 user = User.find(friend_id)
                 Notification.create(user: user.id, message: messageContent, notification_type: type)
@@ -74,7 +91,11 @@ class SharingController < ApplicationController
             friends_ids = params[:sharing][:shared_with]
         else
             if @sharing.shareable_type == 'Note'
-                redirect_to notes_path(number: @sharing.shareable._id), alert: 'You cannot remove all friends from the note' and return
+                if browser.device.mobile?
+                    redirect_to "/note/#{@sharing.shareable._id}", alert: 'You cannot remove all friends from the note.' and return
+                else
+                    redirect_to notes_path(number: @sharing.shareable._id), alert: 'You cannot remove all friends from the note.' and return
+                end
             elsif @sharing.shareable_type == 'Collection'
                 redirect_to collections_path, alert: 'You cannot remove all friends from the collection.' and return
             end
@@ -85,6 +106,7 @@ class SharingController < ApplicationController
 
         removed_friend_ids = current_shared_friend_ids - new_friend_ids
         removed_friend_ids.each do |id|
+
             if @sharing.shareable_type == 'Note'
                 messageContent = "The user #{current_user.name.capitalize} has deleted a note with you"
                 type = "note_request"
@@ -92,8 +114,10 @@ class SharingController < ApplicationController
                 messageContent = "The user #{current_user.name.capitalize} has deleted a collection with you"
                 type = "collection_request"
             end
+
             user = User.find(id)
             Notification.create(user: user.id, message: messageContent, notification_type: type)
+
             @sharing.shared_with.delete(id)
         end
 
@@ -106,12 +130,19 @@ class SharingController < ApplicationController
             if @sharing.shareable_type == 'Note'
                 messageContent = "The user #{current_user.name.capitalize} has shared a note with you"
                 type = "note_request"
-                redirect_to notes_path(number: @sharing.shareable._id), notice: 'The note has been shared'
+
+                if browser.device.mobile?
+                    redirect_to "/note/#{@sharing.shareable._id}", notice: 'The note has been shared.' and return
+                else
+                    redirect_to notes_path(number: @sharing.shareable._id), notice: 'The note has been shared.'
+                end
             elsif @sharing.shareable_type == 'Collection'
                 messageContent = "The user #{current_user.name.capitalize} has shared a collection with you"
                 type = "collection_request"
-                redirect_to collections_path, notice: 'The collection has been shared'
+
+                redirect_to collections_path, notice: 'The collection has been shared.'
             end
+
             added_friend_ids.each do |friend_id|
                 user = User.find(friend_id)
                 Notification.create(user: user.id, message: messageContent, notification_type: type)
@@ -128,12 +159,15 @@ class SharingController < ApplicationController
         if @sharing.shareable_type == 'Note'
             messageContent = "The user #{current_user.name.capitalize} has deleted a note with you"
             type = "note_request"
+
             redirect_to notes_path, notice: 'The note has been unshared'
         elsif @sharing.shareable_type == 'Collection'
             messageContent = "The user #{current_user.name.capitalize} has deleted a collection with you"
             type = "collection_request"
+
             redirect_to collections_path, notice: 'The collection has been unshared'
         end
+
         @sharing.shared_with.each do |friend_id|
             user = User.find(friend_id)
             Notification.create(user: user.id, message: messageContent, notification_type: type)

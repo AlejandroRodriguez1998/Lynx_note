@@ -58,14 +58,14 @@ class User
     end
   end
 
-  def shared_notes
-    note_ids = Sharing.where(:shared_with.in => [self.id], shareable_type: 'Note').pluck(:shareable_id)
-    Note.find(note_ids) #es un return
+  def shared_notes_by(friend)
+    note_ids = Sharing.where(owner: friend, shared_with: self.id.to_s, shareable_type: 'Note').pluck(:shareable_id)
+    Note.where(:id.in => note_ids)
   end
 
-  def shared_collections
-    collection_ids = Sharing.where(:shared_with.in => [self.id], shareable_type: 'Collection').pluck(:shareable_id)
-    Collection.find(collection_ids) #es un return
+  def shared_collections_by(friend)
+    collection_ids = Sharing.where(owner: friend, shared_with: self.id.to_s, shareable_type: 'Collection').pluck(:shareable_id)
+    Collection.where(:id.in => collection_ids)
   end
 
   private

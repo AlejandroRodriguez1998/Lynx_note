@@ -70,13 +70,25 @@
               <button onclick="createToastConfirm('friendship',false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">Delete</button>
               <hr class="mt-0 mb-2">
               <div class="row m-0">
-                <div class="col-6 col-md-12 col-lg-6">
-                  <h6>Notes:</h6>
-                  <p class="text-muted"><%= friendship[:notes] %></p>
+                <div class="col-6 col-md-12 col-xl-6">
+                  <% if friendship[:notes].any? %>
+                    <h6>Notes:</h6>
+                    <ul class="p-0">
+                      <% friendship[:notes].each do |note| %>
+                        <%= link_to note.title, note_path(note.id), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
+                      <% end %>
+                    </ul>
+                  <% end %>
                 </div>
-                <div class="col-6 col-md-12 col-lg-6">
-                  <h6>Collections:</h6>
-                  <p class="text-muted"><%= friendship[:collections] %></p>
+                <div class="col-6 col-md-12 col-xl-6">
+                  <% if friendship[:collections].any? %>
+                    <h6>Collections:</h6>
+                    <ul class="p-0">
+                      <% friendship[:collections].each do |collection| %>
+                        <%= link_to collection.name, collection_path(collection.id), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
+                      <% end %>
+                    </ul>
+                  <% end %>
                 </div>
               </div>
             </div>

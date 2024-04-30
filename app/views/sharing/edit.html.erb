@@ -1,12 +1,12 @@
 <%= form_tag("/sharing_update/#{@sharing.id}", method: "post") do %>
     <div class="row">
         <div class="col-12">
-            <input class="form-control mt-2" id="inputContent" type="text" placeholder="Search...">
+            <input class="form-control mt-2" id="inputContent" type="text" placeholder="Search..." onkeyup="filterSharing(event)">
             <ul class="list-group search_max mt-1 text-start" id="listContent">
                 <% @friendships.each do |friendship| %>
                     <% friend = friendship[:friend] %>
                     <li class="list-group-item">
-                    <div class="form-check mb-0">
+                    <div class="form-check mb-0 p-0">
                         <%= check_box_tag 'sharing[shared_with][]', friend[:_id], @friendship_shared.include?(friend[:_id].to_s) %>
                         <%= label_tag "friend_#{friend[:_id]}", friend[:name] %>
                     </div>
@@ -21,3 +21,4 @@
         </div>
     </div>  
 <% end %>
+
