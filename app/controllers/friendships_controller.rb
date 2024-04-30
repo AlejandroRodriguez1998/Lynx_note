@@ -83,10 +83,12 @@ class FriendshipsController < ApplicationController
     pending = @friendship.status == 'pending'
     
     if @friendship.destroy 
-      Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
-      messageContent = pending && @friendship.friend == current_user ? "#{current_user.name.capitalize} has declined your request." : "#{current_user.name.capitalize} has deleted your friendship."
-      Notification.create(user: @friendship.user, message: messageContent, notification_type: 'friend_request')
-      
+      unless user_admin?
+        Notification.where(user: @friendship.friend, notification_type: 'friend_request').destroy_all
+        messageContent = pending && @friendship.friend == current_user ? "#{current_user.name.capitalize} has declined your request." : "#{current_user.name.capitalize} has deleted your friendship."
+        Notification.create(user: @friendship.user, message: messageContent, notification_type: 'friend_request')
+      end
+
       after_friendship_delete
     else
       redirect_to friendships_path, notice: 'Failed to destroy friendship.'
