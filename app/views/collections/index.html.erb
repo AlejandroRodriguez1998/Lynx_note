@@ -1,3 +1,14 @@
+<% if alert %>
+    <div class="alert alert-warning alert-dismissible fade show mx-2 my-3" role="alert">
+        <strong>Warning!</strong> <%= alert %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+    </div>
+
+
+    <script>
+        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
+    </script>
+<% end %>
 
 <% if notice %>
     <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
@@ -13,7 +24,7 @@
 
 
 <div class="ms-2 mt-1">
-  <h1>Collections</h1>
+  <h1 id="namePage">Collections</h1>
   <%= link_to "New Collection", new_collection_path, class: "btn color_button_green fw-semibold mb-3" %>
 </div>
 
@@ -26,6 +37,11 @@
             <h5 class="card-title"><%= collection.name %></h5>
             <%= link_to "Edit", edit_collection_path(collection), class: "btn color_button_green fw-semibold mb-3 ms-2" %>
             <button onclick="createToastConfirm('collection',false,'<%= collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+            <% if collection.sharing[:shared] %>
+              <button onclick="shareContent('<%= collection.sharing[:id] %>', 'edit')" class="btn color_button_green fw-semibold mb-3 ms-2">Share</button>
+            <% else %>
+              <button onclick="shareContent('<%= collection.id %>', 'new')" class="btn color_button_green fw-semibold mb-3 ms-2">Share</button>
+            <% end %>
             <hr class="mt-0">
             <h6>Notes:</h6>
             <% collection.notes.each do |note| %>
@@ -38,4 +54,19 @@
       </div>
     <% end %>
   <% end %>
+</div>
+
+<button class="d-none" data-bs-toggle="modal" data-bs-target="#modalShare" id="buttonModalShare"></button>
+<div class="modal fade" id="modalShare" tabindex="-1" aria-labelledby="modalShareLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="modalShareLabel">Who do you want to share?</h3>
+        <button id="modalClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="contentSharing">
+
+      </div>
+    </div>
+  </div>
 </div>

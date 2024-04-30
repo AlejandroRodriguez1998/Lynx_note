@@ -19,6 +19,8 @@ class User
   has_many :initiated_friendships, class_name: 'Friendship', inverse_of: :user, dependent: :destroy
   has_many :received_friendships, class_name: 'Friendship', inverse_of: :friend, dependent: :destroy
 
+  has_many :sharings, as: :owner, dependent: :destroy
+
   before_destroy :remove_friendships
 
   validate :validate_content
@@ -54,6 +56,16 @@ class User
     else
       false
     end
+  end
+
+  def shared_notes
+    note_ids = Sharing.where(:shared_with.in => [self.id], shareable_type: 'Note').pluck(:shareable_id)
+    Note.find(note_ids) #es un return
+  end
+
+  def shared_collections
+    collection_ids = Sharing.where(:shared_with.in => [self.id], shareable_type: 'Collection').pluck(:shareable_id)
+    Collection.find(collection_ids) #es un return
   end
 
   private

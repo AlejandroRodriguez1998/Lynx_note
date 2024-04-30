@@ -39,6 +39,12 @@ Rails.application.routes.draw do
   # URL que no sean resources ya que no tienen vistas
   get 'getNotifications', to: 'notifications#index', as: 'get_notifications'
   delete 'deleteNotification/:id', to: 'notifications#destroy', as: 'deleteNotification'
-  
+
+  # URL para compartir
+  get 'sharing/:object', to: 'sharing#new', as: 'sharing_new'
+  post 'sharing_create', to: 'sharing#create', as: 'sharing_create'
+  get 'sharing_edit/:id', to: 'sharing#edit', as: 'sharing_edit'
+  post 'sharing_update/:id', to: 'sharing#update', as: 'sharing_update'
+  delete 'sharing_delete/:id', to: 'sharing#destroy', as: 'sharing_delete'
 
 end

@@ -1,4 +1,16 @@
-<h1 class="ms-2">Notes</h1>
+<h1 class="ms-2" id="namePage">Notes</h1>
+
+<% if alert %>
+    <div class="alert alert-warning alert-dismissible fade show mx-2 my-3" role="alert">
+        <strong>Warning!</strong> <%= alert %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+    </div>
+
+
+    <script>
+        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
+    </script>
+<% end %>
 
 <% if notice %>
     <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
@@ -48,4 +60,18 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="modalShare" tabindex="-1" aria-labelledby="modalShareLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="modalShareLabel">Who do you want to share?</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="contentSharing">
+
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,9 +1,11 @@
 class Collection
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Attributes::Dynamic
 
   field :name, type: String
   field :notes, type: Array, default: []
+  has_many :sharings, as: :shareable, dependent: :destroy
 
   belongs_to :user
 

@@ -105,6 +105,15 @@ function showNote(noteId) {
         del.innerHTML = "Delete";
         cont.appendChild(del);
 
+        const sharing = document.createElement('button');
+        sharing.setAttribute('class', 'btn color_button_green fw-semibold mb-3 ms-2');
+        sharing.setAttribute('data-bs-toggle', 'modal');
+        sharing.setAttribute('data-bs-target', '#modalShare');
+        sharing.innerHTML = 'Share';
+        cont.appendChild(sharing);
+
+        refillSharing(noteId, 'new');
+
         if (data.content !== null) {
             data.content.forEach(element => {
                 element = JSON.parse(element);
@@ -147,6 +156,33 @@ function showNote(noteId) {
         }
     })
     .catch(error => console.error('Error:', error));
+}
+
+function refillSharing(objectId, typeMethod) {
+    var sharing = document.getElementById('contentSharing');
+    sharing.innerHTML = "";
+
+    url = typeMethod == "new" ? `/sharing/object=${objectId}` : `/sharing_edit/${objectId}`;
+
+    fetch(url,{
+        method: 'GET',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+    }).then(response => response.text())
+    .then(html => {
+        sharing.innerHTML = html;
+    }).catch(error => console.error('Error loading the form:', error));
+}
+
+function shareContent(objectId, typeMethod) {
+    refillSharing(objectId, typeMethod);
+    document.getElementById('buttonModalShare').click();
+}
+
+function shareDelete(sharingId) {
+    document.getElementById("modalClose").click();
+    createToastConfirm('sharing', false, sharingId);
 }
 
 function deleteNote(admin,noteId) {
@@ -234,6 +270,24 @@ function deleteFriendship(admin,friendShipId) {
     }).catch(error => console.error('Error:', error));
 }
 
+function deleteSharing(admin, sharingId) {
+    page = document.getElementById('namePage').innerHTML;
+
+    fetch(`/sharing_delete/${sharingId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => {
+        if (page == 'Notes') {
+            
+        } else {
+            window.location.href = "/collections";
+        }
+    })
+}
+
 function acceptFriendship(admin, friendshipId) {
     fetch(`/friendships/${friendshipId}`, {
         method: 'PUT',
@@ -297,7 +351,8 @@ function createToastConfirm(type,admin, typeId) {
         collection: deleteCollection,
         user: deleteUser,
         friendship: deleteFriendship,
-        acceptFriendship: acceptFriendship
+        acceptFriendship: acceptFriendship,
+        sharing: deleteSharing
     };
 
     const actionButton = document.createElement('button');

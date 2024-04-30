@@ -23,9 +23,11 @@ class CollectionsController < ApplicationController
         notes << note
       end
       collection.assign_attributes(notes: notes)
+      collection.assign_attributes(sharing: {shared: collection.sharings.any?, id: collection.sharings.first&.id})
       
       collection #es como si fuese un return
     end.sort_by { |collection| -collection.notes.size } #para mostrar la que mas notas tiene primero
+
   end
 
   def show
