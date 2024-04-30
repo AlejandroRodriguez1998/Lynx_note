@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-auto me-auto">
             <%= link_to 'Edit',edit_admin_collection_path(@collection), class: 'btn color_button_green fw-semibold mb-3' %>
-            <button onclick="createToastDelete('collection',true,'<%= @collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+            <button onclick="createToastConfirm('collection',true,'<%= @collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
           </div>
           <div class="col-auto">
             <%= link_to 'Go Back', admin_collections_path, class: 'btn color_button_brown fw-semibold' %>

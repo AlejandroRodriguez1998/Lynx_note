@@ -1,45 +1,63 @@
 <div class="container mt-2">
   <div class="row justify-content-center">
+    <h3 class="text-center mb-3">Note</h3>
     <div class="col-md-8">
-      <div class="container text-center">
-        <div class="row">
-          <div class="col-auto me-auto">
-            <%= link_to 'Edit',edit_admin_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
-            <button onclick="createToastDelete('note',true,'<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-          </div>
-          <div class="col-auto">
-            <%= link_to 'Go Back', admin_notes_path, class: 'btn color_button_brown fw-semibold' %>
-          </div>
+      <div class="row">
+        <div class="col-auto me-auto">
+          <%= link_to 'Edit',edit_admin_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
+          <button onclick="createToastConfirm('note',true,'<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+        </div>
+        <div class="col-auto">
+          <%= link_to 'Go Back', admin_notes_path, class: 'btn color_button_brown fw-semibold' %>
         </div>
       </div>
-
-      <h3><%= @note.title %></h3>
-      <p><strong>Created At: </strong> <%= @note.created_at %></p>
-      <p><strong>Updated At: </strong> <%= @note.updated_at %></p>
-
-      <% if @note.content.present? %>
-        <% @note.content.each do |content_string| %>
-          <% item = JSON.parse(content_string)%>
-          <% if item['type'] == 'text' %>
-            <p><%= item['value'] %></p>
-          <% elsif item['type'] == 'list' %>
-            <ul>
-              <% item['value'].split(';').each do |list_item| %>
-                <li><%= list_item %></li>
-              <% end %>
-            </ul>
-          <% elsif item['type'] == 'file' %>
-          <div class="card-group mb-3">
-            <div class="card color_card">
-              <div class="card-body text-center">
-                <img src=<%= item['value'] %> style="width: 150px; height: 150px;">
+      <div class="container border rounded color_card box-shadow mb-5">
+        <div class="form-group mt-3">
+          <label class="fw-semibold">Title:</label>
+          <span class="form-control underline" disabled><%= @note.title.capitalize %></span>
+        </div>
+        <div class="form-group mt-3">
+          <label class="fw-semibold">Owner:</label>
+          <span class="form-control underline" disabled><%= @note.user.email %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Created At:</label>
+          <span class="form-control underline" disabled><%= @note.created_at %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Updated At:</label>
+          <span class="form-control underline" disabled><%= @note.updated_at %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Content:</label>
+          <% if @note.content.present? %>
+              <div class="p-1" disabled>
+                <% @note.content.each do |content_string| %>
+                  <% item = JSON.parse(content_string)%>
+                  <% if item['type'] == 'text' %>
+                    <p><%= item['value'] %></p>
+                  <% elsif item['type'] == 'list' %>
+                    <ul>
+                      <% item['value'].split(';').each do |list_item| %>
+                        <li><%= list_item %></li>
+                      <% end %>
+                    </ul>
+                  <% elsif item['type'] == 'file' %>
+                    <div class="card-group mb-3">
+                      <div class="card color_card">
+                        <div class="card-body text-center">
+                          <img src=<%= item['value'] %> style="width: 150px; height: 150px;">
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
               </div>
             </div>
-          </div>
+          <% else %>
+            <span class="form-control underline" disabled>No content.</span>
           <% end %>
-        <% end %>
-      <% end %>
-      
+      </div>     
     </div>
   </div>
 </div>

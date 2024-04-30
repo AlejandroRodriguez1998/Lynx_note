@@ -101,7 +101,7 @@ function showNote(noteId) {
 
         var del = document.createElement("button");
         del.setAttribute("class","btn color_button_brown fw-semibold mb-3 ms-2");
-        del.setAttribute("onclick","createToastDelete('note',false,'"+noteId+"')");
+        del.setAttribute("onclick","createToastConfirm('note',false,'"+noteId+"')");
         del.innerHTML = "Delete";
         cont.appendChild(del);
 
@@ -146,9 +146,7 @@ function showNote(noteId) {
             });
         }
     })
-    .catch(error => {
-        console.log('Error:', error);
-    });
+    .catch(error => console.error('Error:', error));
 }
 
 function deleteNote(admin,noteId) {
@@ -205,6 +203,20 @@ function deleteUser(admin,userId) {
     
 }
 
+function deleteNotification(notificationId) {
+    fetch(`/deleteNotification/${notificationId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => {
+        console.log('Notification deleted');
+        putNotification();
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 function deleteFriendship(admin,friendShipId) {
     url = admin ? `/admin/friendships/${friendShipId}` : `/friendships/${friendShipId}`;
 
@@ -223,21 +235,14 @@ function deleteFriendship(admin,friendShipId) {
 }
 
 function acceptFriendship(admin, friendshipId) {
-    const url = `/friendships/${friendshipId}`;
-
-    fetch(url, {
+    fetch(`/friendships/${friendshipId}`, {
         method: 'PUT',
         headers: {
             'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     })
     .then(response => {
-        localStorage.removeItem('pendingRequestsChecked');
-        if (admin) {
-            window.location.href = "/admin/friendships";
-        } else {
-            window.location.href = "/friendships";
-        }
+        window.location.href = "/friendships";
     })
     .catch(error => console.error('Error:', error));
 }
@@ -271,8 +276,8 @@ function createToast(message) {
     new bootstrap.Toast(toast).show();
 }
 
-function createToastDelete(type,admin, typeId) {
-    // Crear el contenedor principal del toast
+function createToastConfirm(type,admin, typeId) {
+    
     const toast = document.createElement('div');
     toast.className = 'toast align-items-center border-0';
     toast.setAttribute('role', 'alert');
@@ -280,35 +285,34 @@ function createToastDelete(type,admin, typeId) {
     toast.setAttribute('aria-atomic', 'true');
     toast.setAttribute('data-bs-autohide', 'false');
 
-    // Crear el cuerpo del toast
     const toastBody = document.createElement('div');
     toastBody.className = 'toast-body text-center';
     toastBody.textContent = 'Are you sure?';
 
-    // División para botones
     const buttonGroup = document.createElement('div');
     buttonGroup.className = 'mt-2 pt-2 border-top';
 
-    // Botón para tomar acción
+    const actionMap = {
+        note: deleteNote,
+        collection: deleteCollection,
+        user: deleteUser,
+        friendship: deleteFriendship,
+        acceptFriendship: acceptFriendship
+    };
+
     const actionButton = document.createElement('button');
     actionButton.type = 'button';
     actionButton.className = 'btn color_button_green btn-sm me-1';
     actionButton.textContent = 'Accept';
     actionButton.onclick = function() { 
-        if(type == "note"){
-            deleteNote(admin, typeId);
-        }else if(type == "collection"){
-            deleteCollection(admin, typeId);
-        }else if(type == "user"){
-            deleteUser(admin, typeId);
-        }else if(type == "friendship"){
-            deleteFriendship(admin, typeId);
-        }else if(type == "acceptFriendship"){
-            acceptFriendship(admin, typeId);
+        const action = actionMap[type];
+        if (action) {
+            action(admin, typeId);
+        } else {
+            console.error('Action not defined for type:', type);
         }
     }
 
-    // Botón para cerrar
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
     closeButton.className = 'btn color_button_brown btn-sm';
@@ -316,74 +320,102 @@ function createToastDelete(type,admin, typeId) {
     closeButton.textContent = 'Cancel';
     closeButton.onclick = function() { toast.remove(); };
 
-    // Añadir botones al grupo de botones
     buttonGroup.appendChild(actionButton);
     buttonGroup.appendChild(closeButton);
-
-    // Añadir grupo de botones y texto al cuerpo del toast
     toastBody.appendChild(buttonGroup);
-
-    // Añadir cuerpo del toast al contenedor principal
     toast.appendChild(toastBody);
 
     document.getElementById('toast-delete').appendChild(toast);
     new bootstrap.Toast(toast).show();
 }
 
-function showNotification() {
-    if(getCookie('user_name') != null) {
-        url = window.location.pathname != "/friendships"
+function putNotification() {
+    number = document.getElementById('numberNotification');
+    content = document.getElementById('contentNotification');
+    
+    fetch('/getNotifications', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        number.innerHTML = "";
+        content.innerHTML = "";
 
-        if (!localStorage.getItem('pendingRequestsChecked')) {
-            localStorage.setItem('pendingRequests', 0);
+        number.innerHTML = data.length;
 
-            if (url) {
-                localStorage.setItem('pendingRequestsChecked', 'true');
-            }
+        if (data.length == 0) {
+            var p_not = document.createElement("p");
+            p_not.className = 'text-center my-2';
+            p_not.innerHTML = 'No Notifications';
+            content.appendChild(p_not);
         }
 
-        fetch("/friendships/notifications", {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
+        data.forEach(element => {
+            var divFlex = document.createElement('div');
+            divFlex.className = 'd-flex bd-highlight mt-2 ms-1';
+
+            var p = document.createElement("p");
+            p.className = 'me-auto mb-2 bd-highlight';
+            p.innerHTML = element.message;
+
+            var i = document.createElement("i");
+            i.className = 'bi bi-x bd-highlight';
+            i.onclick = function() {
+                deleteNotification(element._id.$oid);
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(url){
-                if (data.length != localStorage.getItem('pendingRequests')) {
-                    localStorage.setItem('pendingRequests', data.length);
-                    createToast(`You have ${data.length} new friend requests`);
-                }
-            }
-        })
-        .catch(error => {});
-    }else  {
-        localStorage.removeItem('pendingRequestsChecked');
-        localStorage.removeItem('pendingRequests');
+
+            divFlex.appendChild(p);
+            divFlex.appendChild(i);
+            content.appendChild(divFlex);
+        });
+        
+    })
+    .catch(error => console.error('Error:', error)); 
+}
+
+function showNotification(){
+    var $notificationBox = $('#contentNotification');
+
+    if ($notificationBox.css('display') === 'none') {
+        $notificationBox.show(); 
+    } else {
+        $notificationBox.hide();
     }
 }
 
 $(document).ready(function(){
-    showNotification();
+    var userStatus = document.querySelector('meta[name="status"]').getAttribute('content');
 
-    var urlParams = new URLSearchParams(window.location.search);
-    var alert = urlParams.get('notice');
+    if (userStatus === 'true') {
+        var urlParams = new URLSearchParams(window.location.search);
+        var alert = urlParams.get('notice');
+        var timer;
 
-    if (alert) { 
-        createToast("Your account has been deleted");
-    }
+        if (alert) { 
+            createToast("Your account has been deleted");
+        }
+ 
+        putNotification();
 
-    $("#inputCollections").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#listCollections li").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        $('#contentNotification').mouseenter(function() {
+            clearTimeout(timer); 
+        }).mouseleave(function() {
+            if ($(this).is(':visible')) { timer = setTimeout(showNotification, 2300); }
+        }).click(function() {
+            if (!$(this).is(':visible')) { 
+                clearTimeout(timer); 
+            } else {
+                timer = setTimeout(showNotification, 2300); 
+            }
         });
-    });
-    
-    $("#inputFriendship").on("keyup", function() {
+    }
+   
+    $("#inputContent").on("keyup", function() {
         var value = $(this).val().toLowerCase();
-        $("#listFriendship li").filter(function() {
+        $("#listContent li").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
@@ -392,6 +424,23 @@ $(document).ready(function(){
         var value = $(this).val().toLowerCase();
         $("#listFriendship_one li").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    $("#tableContentTD").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#contentTable tr").filter(function() {
+            var cellText = $(this).find('#tdSearch').text().toLowerCase();
+            $(this).toggle(cellText.indexOf(value) > -1);
+        });
+    });
+
+    $("#tableContentTDs").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#contentTable tr").filter(function() {
+            var cellText1 = $(this).find('#tdSearch1').text().toLowerCase();
+            var cellText2 = $(this).find('#tdSearch2').text().toLowerCase();
+            $(this).toggle(cellText1.indexOf(value) > -1 || cellText2.indexOf(value) > -1);
         });
     });
 });   

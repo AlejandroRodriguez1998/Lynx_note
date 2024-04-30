@@ -13,6 +13,8 @@ class User
 
   has_many :collections, dependent: :destroy
   has_many :notes, dependent: :destroy
+
+  has_many :notifications, dependent: :destroy
   
   has_many :initiated_friendships, class_name: 'Friendship', inverse_of: :user, dependent: :destroy
   has_many :received_friendships, class_name: 'Friendship', inverse_of: :friend, dependent: :destroy

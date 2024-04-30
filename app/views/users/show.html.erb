@@ -11,7 +11,8 @@
 
 <div class="container mt-2 mb-5">
     <h2 class="text-center mb-3">Profile</h2>
-    <div class="row border rounded justify-content-center w-50 m-auto color_card box-shadow">
+
+    <div id="profile" class="row border rounded justify-content-center w-50 m-auto color_card box-shadow">
         <div class="d-block text-center m-auto">
             <img class="d-inline mt-3" alt="" height="135px" width="135px" src="<%= asset_path 'usuario.png' %>">
         </div>
@@ -29,8 +30,8 @@
             </div>
     
             <div class="d-flex justify-content-center">
-                <%= link_to "Edit", edit_user_path(@user), class: "btn color_button_green fw-semibold mb-3 ms-2" %>
-                <button onclick="createToastDelete('user', false,'<%= @user.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+                <%= link_to "Edit", edit_user_path(@user), class: "btn color_button_green fw-semibold mb-3 ms-2 mt-3 mt-md-0" %>
+                <button onclick="createToastConfirm('user', false,'<%= @user.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2 mt-3 mt-md-0">Delete</button>
             </div>   
             
         </div>

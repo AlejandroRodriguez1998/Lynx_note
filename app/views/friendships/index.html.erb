@@ -21,13 +21,13 @@
   <div class="row m-0">
     <% @friendship_requests.each do |friendship| %>
       <div class="col-md-3 mt-1 mb-3">
-        <div class="card" id="friendship_<%= friendship[:id] %>">
+        <div class="card color_card box-shadow" id="friendship_<%= friendship[:id] %>">
           <div class="card-body text-center">
             <% if friendship[:friend] %>
               <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
               <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
-              <button onclick="createToastDelete('acceptFriendship',false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-2">Accept</button>
-              <button onclick="createToastDelete('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2 ms-2">Decline</button>
+              <button onclick="createToastConfirm('acceptFriendship',false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-2">Accept</button>
+              <button onclick="createToastConfirm('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2 ms-2">Decline</button>
             <% end %>
           </div>
         </div>
@@ -43,11 +43,11 @@
   <div class="row m-0">
     <% @pending_friendships.each do |friendship| %>
       <div class="col-md-3 mt-1 mb-3">
-        <div class="card" id="friendship_<%= friendship[:id] %>">
+        <div class="card color_card box-shadow" id="friendship_<%= friendship[:id] %>">
           <div class="card-body text-center">
             <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
             <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
-            <button onclick="createToastDelete('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">Decline</button>
+            <button onclick="createToastConfirm('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">Decline</button>
           </div>
         </div>
       </div>
@@ -63,13 +63,19 @@
     <% @friendships.each_slice(4) do |friendship_batch| %>
       <% friendship_batch.each do |friendship| %>
         <div class="col-md-3 mt-1 mb-3">
-          <div class="card">
+          <div class="card color_card box-shadow">
             <div class="card-body text-center">
               <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
               <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
-              <button onclick="createToastDelete('friendship',false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">Delete</button>
+              <button onclick="createToastConfirm('friendship',false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">Delete</button>
               <hr class="mt-0 mb-2">
-              <h6>Notes:</h6>
+              <div class="row m-0">
+                <div class="col-6 col-md-12 col-lg-6">
+                  <h6>Notes:</h6>
+                </div>
+                <div class="col-6 col-md-12 col-lg-6">
+                  <h6>Collections:</h6>
+                </div>
             </div>
           </div>
         </div>

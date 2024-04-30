@@ -1,6 +1,6 @@
 module Admin
   class NotesController < NotesController
-    skip_before_action :is_mine , only: [:edit, :update, :destroy]
+    skip_before_action :is_mine , only: [:show, :edit, :update, :destroy]
     before_action :validate_admin
    
     def index
