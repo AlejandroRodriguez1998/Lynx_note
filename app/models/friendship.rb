@@ -14,11 +14,11 @@ class Friendship
 
   private
     def cleanup_sharings
-      Sharing.where(:shared_with.in => [self.friend.id]).each do |sharing|
-        sharing.pull(shared_with: self.friend_id)
+      Sharing.where(:shared_with.in => [self.friend.id.to_s]).each do |sharing|
+        sharing.pull(shared_with: self.friend.id.to_s)
       end
-      Sharing.where(:shared_with.in => [self.user.id]).each do |sharing|
-        sharing.pull(shared_with: self.user_id)
+      Sharing.where(:shared_with.in => [self.user.id.to_s]).each do |sharing|
+        sharing.pull(shared_with: self.user.id.to_s)
       end
     end
 

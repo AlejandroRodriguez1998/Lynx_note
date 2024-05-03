@@ -1,10 +1,19 @@
 class NotesController < ApplicationController
   before_action :validate_user
-  before_action :is_mine , only: [:show, :edit, :update, :destroy]
+  before_action :is_mine , only: [:destroy]
+  before_action :is_shared , only: [:show, :edit, :update]
 
   def is_mine
     @note = Note.find(params[:id])
     unless @note.user_id == current_user.id
+      redirect_to root_url
+    end
+  end
+
+  def is_shared
+    @note = Note.find(params[:id])
+    @friend_sharing = @note.sharings.any? && !(@note.user_id == current_user.id)
+    unless @note.sharings.any? || @note.user_id == current_user.id
       redirect_to root_url
     end
   end
@@ -30,7 +39,7 @@ class NotesController < ApplicationController
   end
 
   def new
-    @collections = current_user.collections
+    @collections = get_collections_and_shared
     @collection_found = []
     @note = Note.new
   end
@@ -66,7 +75,7 @@ class NotesController < ApplicationController
         after_note_create
       else
         @collection_found = []
-        @collections = current_user.collections
+        @collections = get_collections_and_shared
         render :new, status: :unprocessable_entity
       end
   end
@@ -74,7 +83,7 @@ class NotesController < ApplicationController
   def edit
     @note = Note.find(params[:id])
 
-    @collections = current_user.collections
+    @collections = get_collections_and_shared
     service = CollectionsNotesService.new(@note)
     @collection_found = service.get_collections(@collections)
   end
@@ -140,7 +149,7 @@ class NotesController < ApplicationController
     else
       @note.reload
 
-      @collections = current_user.collections
+      @collections = get_collections_and_shared
       service = CollectionsNotesService.new(@note)
       @collection_found = service.get_collections(@collections)
 
@@ -178,10 +187,14 @@ class NotesController < ApplicationController
     end
 
     def after_note_update
-      if browser.device.mobile?
+      if @friend_sharing
         redirect_to @note, notice: 'Note was successfully updated.' and return
       else
-        redirect_to notes_path(number: @note.id), notice: 'Note was successfully updated.'
+        if browser.device.mobile?
+          redirect_to @note, notice: 'Note was successfully updated.' and return
+        else
+          redirect_to notes_path(number: @note.id), notice: 'Note was successfully updated.'
+        end
       end
     end
 
@@ -223,5 +236,15 @@ class NotesController < ApplicationController
             return "/uploads/#{file_name}"
           end
       end
+    end
+
+    def get_collections_and_shared
+      collections = current_user.collections
+      Rails.logger.debug "Collections: #{collections}"
+      collection_shared = current_user.shared_collections
+      Rails.logger.debug "Collections Shared: #{collection_shared}"
+      collections_and_shared = (collections + collection_shared).uniq
+      Rails.logger.debug "Collections and Shared: #{collections_and_shared}"
+      return collections_and_shared
     end
 end

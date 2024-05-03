@@ -42,6 +42,31 @@
   <% end %>
 </div>
 
+<div class="ms-2 mt-1">
+  <h3>Collections Shared</h3>
+</div>
+
+<div class="row m-0">
+  <% @collections_shared.each_slice(4) do |collection_shared_batch| %>
+    <% collection_shared_batch.each do |collection| %>
+      <div class="col-md-3 mt-1 mb-3">
+        <div class="card color_card box-shadow">
+          <div class="card-body text-center">
+            <h5 class="card-title"><%= collection.name %></h5>
+            <hr>
+            <h6>Notes:</h6>
+            <% collection.notes.each do |note| %>
+              <p class="card-text">
+                <%= link_to note.title, note_path(note), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
 <button class="d-none" data-bs-toggle="modal" data-bs-target="#modalShare" id="buttonModalShare"></button>
 <div class="modal fade" id="modalShare" tabindex="-1" aria-labelledby="modalShareLabel" aria-hidden="true">
   <div class="modal-dialog">

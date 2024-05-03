@@ -14,7 +14,7 @@
 <div class="row m-0 p-0 mb-4">
     <div class="col-12 col-md-3">
         <ul class="list-group">
-            <li> <%= link_to 'New Note', new_note_path, class:'btn color_button_green fw-semibold w-100 mb-2' %></li>
+            <li class="decoration-none"> <%= link_to 'New Note', new_note_path, class:'btn color_button_green fw-semibold w-100 mb-2' %></li>
             <% @notes.each do |note| %>
                 <% if @browser.device.mobile? %>
                     <li class="list-group-item color_card">

@@ -53,7 +53,7 @@ class SharingController < ApplicationController
                 if browser.device.mobile?
                     redirect_to note, notice: 'The note has been shared.' and return
                 else
-                    redirect_to notes_path(number: note._id), notice: 'The note has been shared,'
+                    redirect_to notes_path(number: note._id), notice: 'The note has been shared.'
                 end
             elsif collection
                 messageContent = "The user #{current_user.name.capitalize} has shared a collection with you"

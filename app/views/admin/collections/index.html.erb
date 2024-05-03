@@ -38,8 +38,8 @@
               <td id="tdSearch"><%= collection.name %></td>
               <td><%= "#{collection.notes&.length || 0} associated." %></td>
               <td class="text-center">
-                <%= link_to 'Show', admin_collection_path(collection), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' %>
-                <%= link_to 'Edit', edit_admin_collection_path(collection), class: 'btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0' %>
+                <%= link_to 'Show', admin_collection_path(collection), class: 'btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0' %>
+                <%= link_to 'Edit', edit_admin_collection_path(collection), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' %>
                 <button onclick="createToastConfirm('collection',true,'<%= collection.id %>')" class="btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0">Delete</button>
               </td>
             </tr>

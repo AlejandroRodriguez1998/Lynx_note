@@ -68,6 +68,11 @@ class User
     Collection.where(:id.in => collection_ids)
   end
 
+  def shared_collections
+    collection_ids = Sharing.where(:shared_with.in => [self.id.to_s], shareable_type: 'Collection').pluck(:shareable_id)
+    Collection.find(collection_ids) #es un return
+  end
+
   private
 
     def remove_friendships

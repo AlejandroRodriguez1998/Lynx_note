@@ -75,6 +75,10 @@
     z-index: 1030;
 }
 
+.decoration-none {
+    list-style: none !important;
+}
+
 /* Listas */
 .selected {
     background-color: #fdfdf088 !important;

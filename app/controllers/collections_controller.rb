@@ -1,15 +1,19 @@
 class CollectionsController < ApplicationController
-  before_action :not_enter, only: [:show]
   before_action :validate_user
-  before_action :is_mine , only: [:edit, :update, :destroy]
-
-  def not_enter
-    redirect_to collections_path and return
-  end
+  before_action :is_mine , only: [:destroy]
+  before_action :is_shared , only: [:show, :edit, :update]
 
   def is_mine
     @collection = Collection.find(params[:id])
     unless @collection.user_id == current_user.id
+      redirect_to root_url
+    end
+  end
+
+  def is_shared
+    @collection = Collection.find(params[:id])
+    @friend_sharing = @collection.sharings.any? && !(@collection.user_id == current_user.id)
+    unless @collection.sharings.any? || @collection.user_id == current_user.id
       redirect_to root_url
     end
   end
@@ -20,7 +24,9 @@ class CollectionsController < ApplicationController
     
       collection.notes.each do |note_id|
         note = Note.find(note_id)
-        notes << note
+        if note.user_id == current_user.id
+          notes << note
+        end
       end
       collection.assign_attributes(notes: notes)
       collection.assign_attributes(sharing: {shared: collection.sharings.any?, id: collection.sharings.first&.id})
@@ -28,10 +34,27 @@ class CollectionsController < ApplicationController
       collection #es como si fuese un return
     end.sort_by { |collection| -collection.notes.size } #para mostrar la que mas notas tiene primero
 
+    @collections_shared = current_user.shared_collections.map do |collection|
+      notes = []
+    
+      collection.notes.each do |note_id|
+        note = Note.find(note_id)
+        if note.user_id == current_user.id
+          notes << note
+        end
+      end
+      collection.assign_attributes(notes: notes)
+  
+      collection #es como si fuese un return
+    end.sort_by { |collection| -collection.notes.size } #para mostrar la que mas notas tiene primero
   end
 
   def show
-    @collection = Collection.find(params[:id])
+    if @friend_sharing
+      @collection = Collection.find(params[:id])
+    else
+      redirect_to collections_path
+    end
   end
 
   def new
@@ -75,7 +98,11 @@ class CollectionsController < ApplicationController
     end
 
     def after_collection_update
-      redirect_to collections_path, notice: "Collection was successfully updated." and return
+      if @friend_sharing
+        redirect_to collection_path(@collection), notice: "Collection was successfully updated." and return
+      else 
+        redirect_to collections_path, notice: "Collection was successfully updated." and return
+      end
     end
 
     def after_collection_delete

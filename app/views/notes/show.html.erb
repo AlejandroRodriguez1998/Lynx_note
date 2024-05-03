@@ -10,20 +10,29 @@
 <% end %>
 
 <div class="container mt-3">
+  <div class="d-flex justify-content-end mb-3">
+    <% if @friend_sharing %>
+      <%= link_to 'Go Back', friendships_path, class: 'btn color_button_brown fw-semibold' %>
+    <% else %>
+      <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
+    <% end %>
+  </div>
   <div class="row justify-content-center">
     <div class="col-md-12">
       <div class="container border rounded color_card box-shadow mb-5">
         <div class="text-center">
           <h1 class="d-none" id="namePage">Notes</h1>
           <p class="d-none" id="id_note">show;<%= @note.id %></p>
-          <h3><%= @note.title %></h3>
+          <h3 class="mt-2"><%= @note.title %></h3>
           <%= link_to 'Edit', edit_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
-          <button onclick="createToastConfirm('note',false,'<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-          <% if @shared %>
+          <% unless @friend_sharing %>
+            <button onclick="createToastConfirm('note',false,'<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
+            <% if @shared %>
               <button onclick="shareContent('<%= @shared_id %>', 'edit')" class="btn color_button_green fw-semibold mb-3 ms-2">Share</button>
             <% else %>
               <button onclick="shareContent('<%= @note.id %>', 'new')" class="btn color_button_green fw-semibold mb-3 ms-2">Share</button>
             <% end %>
+          <% end %>
         </div>
         <% if @note.content.present? %>
           <% @note.content.each do |content_string| %>

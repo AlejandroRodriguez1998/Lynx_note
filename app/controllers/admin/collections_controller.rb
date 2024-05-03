@@ -1,7 +1,7 @@
 module Admin
   class CollectionsController < CollectionsController
-    skip_before_action :is_mine , only: [:edit, :update, :destroy]
-    skip_before_action :not_enter, only: [:show]
+    skip_before_action :is_mine , only: [:destroy]
+    skip_before_action :is_shared , only: [:show, :edit, :update]
     before_action :validate_admin
 
     def index

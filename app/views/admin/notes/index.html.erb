@@ -37,8 +37,8 @@
               <td id="tdSearch"><%= note.title.presence || "No Title" %></td>
               <td><%= "#{note.content&.length || 0} items." %></td>
               <td class="text-center">
-                <%= link_to 'Show', admin_note_path(note), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' %>
-                <%= link_to 'Edit', edit_admin_note_path(note), class: 'btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0' %>
+                <%= link_to 'Show', admin_note_path(note), class: 'btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0' %>
+                <%= link_to 'Edit', edit_admin_note_path(note), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' %>
                 <button onclick="createToastConfirm('note', true,'<%= note.id %>')" class="btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0">Delete</button>
               </td>
             </tr>

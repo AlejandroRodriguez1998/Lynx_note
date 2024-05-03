@@ -1,23 +1,32 @@
+<% if notice %>
+  <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
+      <strong>Correct!</strong> <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+  </div>
+
+  <script>
+      setTimeout(() => { document.getElementById('botonCerrar').click(); }, 5000);
+  </script>
+<% end %>
+
 <div class="container mt-2">
   <div class="row justify-content-center">
+    <h3 class="text-center mb-3">Collection</h3>
     <div class="col-md-8">
-      <div class="container text-center">
-        <div class="row">
-          <div class="col-auto me-auto">
-            <%= link_to 'Edit',edit_admin_collection_path(@collection), class: 'btn color_button_green fw-semibold mb-3' %>
-            <button onclick="createToastConfirm('collection',true,'<%= @collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-          </div>
-          <div class="col-auto">
-            <%= link_to 'Go Back', admin_collections_path, class: 'btn color_button_brown fw-semibold' %>
-          </div>
+      <div class="row">
+        <div class="col-auto me-auto">
+          <%= link_to 'Edit', edit_collection_path(@collection), class: 'btn color_button_green fw-semibold mb-3' %>
+        </div>
+        <div class="col-auto">
+          <%= link_to 'Go Back', friendships_path, class: 'btn color_button_brown fw-semibold' %>
         </div>
       </div>
-
-      <p><strong>Title: </strong> <%= @collection.name %></p>
-      <p><strong>Notes: </strong><%= "#{@collection.notes&.length || 0} associated." %></p>
-      <p><strong>Created At: </strong> <%= @collection.created_at %></p>
-      <p><strong>Updated At: </strong> <%= @collection.updated_at %></p>
-  
+      <div class="container border rounded color_card box-shadow mb-5">
+        <div class="form-group mt-3">
+          <label class="fw-semibold">Title:</label>
+          <span class="form-control underline" disabled><%= @collection.name.capitalize %></span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
