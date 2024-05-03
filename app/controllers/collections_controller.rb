@@ -19,39 +19,39 @@ class CollectionsController < ApplicationController
   end
   
   def index
-    @collections = current_user.collections.map do |collection|
+    @collections = (current_user.collections + current_user.shared_collections).map do |collection|
       notes = []
-    
-      collection.notes.each do |note_id|
-        note = Note.find(note_id)
-        if note.user_id == current_user.id
-          notes << note
-        end
-      end
-      collection.assign_attributes(notes: notes)
-      collection.assign_attributes(sharing: {shared: collection.sharings.any?, id: collection.sharings.first&.id})
       
-      collection #es como si fuese un return
-    end.sort_by { |collection| -collection.notes.size } #para mostrar la que mas notas tiene primero
-
-    @collections_shared = current_user.shared_collections.map do |collection|
-      notes = []
-    
       collection.notes.each do |note_id|
         note = Note.find(note_id)
-        if note.user_id == current_user.id
-          notes << note
-        end
+        notes << note if note.user_id == current_user.id
       end
+
       collection.assign_attributes(notes: notes)
-  
-      collection #es como si fuese un return
-    end.sort_by { |collection| -collection.notes.size } #para mostrar la que mas notas tiene primero
+      collection.assign_attributes(sharing: {
+        shared: collection.sharings.any?,
+        id: collection.sharings.first&.id,
+        is_shared: !current_user.collections.include?(collection)
+      })
+      
+      collection 
+    end.sort_by { |collection| -collection.notes.size }
   end
 
   def show
     if @friend_sharing
-      @collection = Collection.find(params[:id])
+      @collection = Collection.find(params[:id]).tap do |collection|
+        notes = []
+
+        collection.notes.each do |note_id|
+          note = Note.find(note_id)
+          notes << note
+        end
+
+        collection.assign_attributes(notes: notes)
+      
+        collection
+      end
     else
       redirect_to collections_path
     end

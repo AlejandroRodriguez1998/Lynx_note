@@ -28,7 +28,7 @@
           <tr>
             <th scope="col">Title</th>
             <th scope="col">Content</th>
-            <th scope="col" class="text-center">Actions</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody id="contentTable">
@@ -36,10 +36,16 @@
             <tr>
               <td id="tdSearch"><%= note.title.presence || "No Title" %></td>
               <td><%= "#{note.content&.length || 0} items." %></td>
-              <td class="text-center">
-                <%= link_to 'Show', admin_note_path(note), class: 'btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0' %>
-                <%= link_to 'Edit', edit_admin_note_path(note), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' %>
-                <button onclick="createToastConfirm('note', true,'<%= note.id %>')" class="btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0">Delete</button>
+              <td>
+                <%= link_to admin_note_path(note), class: 'btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0' do %>
+                  <i class="bi bi-eye-fill"></i>
+                <% end %>
+                <%= link_to edit_admin_note_path(note), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' do %>
+                  <i class="bi bi-pencil-square"></i>
+                <% end %>
+                <button onclick="createToastConfirm('note', true,'<%= note.id %>')" class="btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
               </td>
             </tr>
           <% end %>

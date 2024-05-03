@@ -11,20 +11,32 @@
 
 <div class="container mt-2">
   <div class="row justify-content-center">
-    <h3 class="text-center mb-3">Collection</h3>
     <div class="col-md-8">
       <div class="row">
         <div class="col-auto me-auto">
-          <%= link_to 'Edit', edit_collection_path(@collection), class: 'btn color_button_green fw-semibold mb-3' %>
+          <%= link_to edit_collection_path(@collection), class: 'btn color_button_green fw-semibold mb-3' do %>
+            <i class="bi bi-pencil-square"></i>
+          <% end %>
         </div>
         <div class="col-auto">
           <%= link_to 'Go Back', friendships_path, class: 'btn color_button_brown fw-semibold' %>
         </div>
       </div>
       <div class="container border rounded color_card box-shadow mb-5">
-        <div class="form-group mt-3">
-          <label class="fw-semibold">Title:</label>
-          <span class="form-control underline" disabled><%= @collection.name.capitalize %></span>
+        <div class="mt-3">
+          <h2 class="text-center"><%= @collection.name.capitalize %></h2>
+        </div>
+        <h5 class="mt-2">Notes:</h5>
+        <div class="row mb-5">
+          <div class="col-12">
+            <div class="list-group">
+              <% @collection.notes.each do |note| %>
+                <a href="<%= note_path(note) %>"  class="list-group-item list-group-item-action">
+                  <%= note.title %>
+                </a>
+              <% end %>
+            </div>
+          </div>
         </div>
       </div>
     </div>

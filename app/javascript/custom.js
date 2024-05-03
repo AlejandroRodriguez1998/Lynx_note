@@ -102,20 +102,20 @@ function showNote(noteId) {
         var edit = document.createElement("a");
         edit.setAttribute("href","/notes/"+noteId+"/edit");
         edit.setAttribute("class","btn color_button_green fw-semibold mb-3");
-        edit.innerHTML = "Edit";
+        edit.innerHTML = "<i class='bi bi-pencil-square'></i>";
         cont.appendChild(edit);
 
         var del = document.createElement("button");
         del.setAttribute("class","btn color_button_brown fw-semibold mb-3 ms-2");
         del.setAttribute("onclick","createToastConfirm('note',false,'"+noteId+"')");
-        del.innerHTML = "Delete";
+        del.innerHTML = "<i class='bi bi-trash-fill'></i>";
         cont.appendChild(del);
 
         const sharing = document.createElement('button');
         sharing.setAttribute('class', 'btn color_button_green fw-semibold mb-3 ms-2');
         sharing.setAttribute('data-bs-toggle', 'modal');
         sharing.setAttribute('data-bs-target', '#modalShare');
-        sharing.innerHTML = 'Share';
+        sharing.innerHTML = "<i class='bi bi-share-fill'></i>";
         cont.appendChild(sharing);
 
         if (data.shared) {

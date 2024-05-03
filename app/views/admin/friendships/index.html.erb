@@ -32,7 +32,7 @@
             </th>
             <th scope="col" class="d-none d-md-table-cell">Friend 2</th>
             <th scope="col" class="d-none d-md-table-cell">Status</th>
-            <th scope="col" class="text-center">Actions</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody id="contentTable">
@@ -44,9 +44,13 @@
               </td>
               <td id="tdSearch2" class="d-none d-md-table-cell"><%= friend[:friend].email %></td>
               <td class="d-none d-md-table-cell"><%= friend[:status] %></td>
-              <td class="text-center">
-                <%= link_to 'Show', admin_friendship_path(friend[:id]), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' %>
-                <button onclick="createToastConfirm('friendship',true,'<%= friend[:id] %>')" class="btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0">Delete</button>
+              <td>
+                <%= link_to admin_friendship_path(friend[:id]), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' do %>
+                  <i class="bi bi-eye-fill"></i>
+                <% end %>
+                <button onclick="createToastConfirm('friendship',true,'<%= friend[:id] %>')" class="btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
               </td>
             </tr>
           <% end %>

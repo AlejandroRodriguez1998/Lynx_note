@@ -21,45 +21,33 @@
         <div class="card color_card box-shadow">
           <div class="card-body text-center">
             <h5 class="card-title"><%= collection.name %></h5>
-            <%= link_to "Edit", edit_collection_path(collection), class: "btn color_button_green fw-semibold mb-3 ms-2" %>
-            <button onclick="createToastConfirm('collection',false,'<%= collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-            <% if collection.sharing[:shared] %>
-              <button onclick="shareContent('<%= collection.sharing[:id] %>', 'edit')" class="btn color_button_green fw-semibold mb-3 ms-2">Share</button>
+            <% if collection.sharing[:is_shared] %>
+              <small class="text-muted d-block text-center my-3 py-1">Shared with you <i class="bi bi-person-hearts"></i></small>
             <% else %>
-              <button onclick="shareContent('<%= collection.id %>', 'new')" class="btn color_button_green fw-semibold mb-3 ms-2">Share</button>
+              <%= link_to edit_collection_path(collection), class: "btn color_button_green fw-semibold mb-3 ms-2" do %>
+                <i class="bi bi-pencil-square"></i>
+              <% end %>              
+              <button onclick="createToastConfirm('collection',false,'<%= collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+              
+              <% if collection.sharing[:shared] %>
+                <button onclick="shareContent('<%= collection.sharing[:id] %>', 'edit')" class="btn color_button_green fw-semibold mb-3 ms-2">
+                  <i class="bi bi-share-fill"></i>
+                </button>
+              <% else %>
+                <button onclick="shareContent('<%= collection.id %>', 'new')" class="btn color_button_green fw-semibold mb-3 ms-2">
+                  <i class="bi bi-share-fill"></i>
+                </button>
+              <% end %>
             <% end %>
-            <hr class="mt-0">
-            <h6>Notes:</h6>
-            <% collection.notes.each do |note| %>
-              <p class="card-text">
-                <%= link_to note.title, note_path(note), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
-              </p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-</div>
-
-<div class="ms-2 mt-1">
-  <h3>Collections Shared</h3>
-</div>
-
-<div class="row m-0">
-  <% @collections_shared.each_slice(4) do |collection_shared_batch| %>
-    <% collection_shared_batch.each do |collection| %>
-      <div class="col-md-3 mt-1 mb-3">
-        <div class="card color_card box-shadow">
-          <div class="card-body text-center">
-            <h5 class="card-title"><%= collection.name %></h5>
-            <hr>
-            <h6>Notes:</h6>
-            <% collection.notes.each do |note| %>
-              <p class="card-text">
-                <%= link_to note.title, note_path(note), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
-              </p>
-            <% end %>
+              <hr class="mt-0">
+              <h6>Notes</h6>
+              <% collection.notes.each do |note| %>
+                <p class="card-text">
+                  <%= link_to note.title, note_path(note), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
+                </p>
+              <% end %>
           </div>
         </div>
       </div>
@@ -72,7 +60,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title fs-5" id="modalShareLabel">Who do you want to share?</h3>
+        <h3 class="modal-title fs-5" id="modalShareLabel">Share</h3>
         <button id="modalClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="contentSharing">

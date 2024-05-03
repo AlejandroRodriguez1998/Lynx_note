@@ -4,7 +4,9 @@
     <div class="col-md-8">
       <div class="row">
         <div class="col-auto me-auto">
-          <button onclick="createToastConfirm('friendship',true,'<%= @friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3">Delete</button>
+          <button onclick="createToastConfirm('friendship',true,'<%= @friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3">
+            <i class="bi bi-trash-fill"></i>
+          </button>
         </div>
         <div class="col-auto">
           <%= link_to 'Go Back', admin_friendships_path, class: 'btn color_button_brown fw-semibold' %>

@@ -1,3 +1,5 @@
+<h6 class="text-muted text-center">Who do you want?</h6>
+    
 <%= form_tag("/sharing_update/#{@sharing.id}", method: "post") do %>
     <div class="row">
         <div class="col-12">
@@ -17,7 +19,9 @@
         </div>
         <div class="text-center">
             <%= submit_tag "Sharing", class:"btn color_button_green fw-semibold mt-3 mb-4 me-2" %>
-            <a class="btn color_button_brown fw-semibold mt-3 mb-4" onclick="shareDelete('<%= @sharing.id %>')">Delete</a>
+            <a class="btn color_button_brown fw-semibold mt-3 mb-4" onclick="shareDelete('<%= @sharing.id %>')">
+                <i class="bi bi-trash-fill"></i>
+            </a>
         </div>
     </div>  
 <% end %>

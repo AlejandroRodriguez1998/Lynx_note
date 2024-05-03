@@ -18,6 +18,10 @@ module Admin
       end
     end
 
+    def show
+      @collection = Collection.find(params[:id])
+    end
+
     protected
     def after_collection_create
       redirect_to admin_collections_path, notice: 'Collection was successfully created.' and return
