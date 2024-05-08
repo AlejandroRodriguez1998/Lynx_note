@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   rescue Mongoid::Errors::DocumentNotFound
-    session.delete(:user_id)
+    session.delete :user_id
     nil
   end
 

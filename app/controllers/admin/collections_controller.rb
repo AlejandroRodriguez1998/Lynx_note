@@ -1,6 +1,7 @@
 module Admin
   class CollectionsController < CollectionsController
-    skip_before_action :is_mine , only: [:edit, :update, :destroy]
+    skip_before_action :is_mine , only: [:destroy]
+    skip_before_action :is_shared , only: [:show, :edit, :update]
     before_action :validate_admin
 
     def index
@@ -15,6 +16,10 @@ module Admin
         
         collection #es como si fuese un return
       end
+    end
+
+    def show
+      @collection = Collection.find(params[:id])
     end
 
     protected

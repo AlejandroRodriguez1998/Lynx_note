@@ -14,6 +14,15 @@ class User
   has_many :collections, dependent: :destroy
   has_many :notes, dependent: :destroy
 
+  has_many :notifications, dependent: :destroy
+  
+  has_many :initiated_friendships, class_name: 'Friendship', inverse_of: :user, dependent: :destroy
+  has_many :received_friendships, class_name: 'Friendship', inverse_of: :friend, dependent: :destroy
+
+  has_many :sharings, as: :owner, dependent: :destroy
+
+  before_destroy :remove_friendships
+
   validate :validate_content
 
   def name_valid
@@ -49,7 +58,27 @@ class User
     end
   end
 
+  def shared_notes_by(friend)
+    note_ids = Sharing.where(owner: friend, shared_with: self.id.to_s, shareable_type: 'Note').pluck(:shareable_id)
+    Note.where(:id.in => note_ids)
+  end
+
+  def shared_collections_by(friend)
+    collection_ids = Sharing.where(owner: friend, shared_with: self.id.to_s, shareable_type: 'Collection').pluck(:shareable_id)
+    Collection.where(:id.in => collection_ids)
+  end
+
+  def shared_collections
+    collection_ids = Sharing.where(:shared_with.in => [self.id.to_s], shareable_type: 'Collection').pluck(:shareable_id)
+    Collection.find(collection_ids) #es un return
+  end
+
   private
+
+    def remove_friendships
+      self.initiated_friendships.destroy_all
+      Friendship.where(friend_id: self.id).destroy_all
+    end
 
     def validate_content
       if password_update.present?

@@ -1,0 +1,104 @@
+<% if notice %>
+  <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
+    <strong>Correct!</strong> <%= notice %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+  </div>
+
+  <script>
+    setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);        
+  </script>
+<% end %>
+
+<div class="ms-2 mt-1">
+  <h1>Friendships</h1>
+  <%= link_to "New friendship", new_friendship_path, class: "btn color_button_green fw-semibold mb-3" %>
+</div>
+
+<h5 class="ms-2">Friendship Requests <i class="bi bi-envelope-check"></i></h5>
+<% if @friendship_requests.empty? %>
+  <p class="ms-2">No friendship requests <i class="bi bi-balloon-fill"></i></p>
+<% else %>
+  <div class="row m-0">
+    <% @friendship_requests.each do |friendship| %>
+      <div class="col-md-3 mt-1 mb-3">
+        <div class="card color_card box-shadow" id="friendship_<%= friendship[:id] %>">
+          <div class="card-body text-center">
+            <% if friendship[:friend] %>
+              <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
+              <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
+              <button onclick="createToastConfirm('acceptFriendship',false, '<%= friendship[:id] %>')" class="btn color_button_green fw-semibold mb-2">Accept</button>
+              <button onclick="createToastConfirm('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2 ms-2">Decline</button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<h5 class="ms-2">Friendship Invitations <i class="bi bi-envelope-arrow-up"></i></h5>
+<% if @pending_friendships.empty? %>
+  <p class="ms-2">No friendship invitations <i class="bi bi-balloon-heart-fill"></i></p>
+<% else %>
+  <div class="row m-0">
+    <% @pending_friendships.each do |friendship| %>
+      <div class="col-md-3 mt-1 mb-3">
+        <div class="card color_card box-shadow" id="friendship_<%= friendship[:id] %>">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
+            <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
+            <button onclick="createToastConfirm('friendship',false, '<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">Decline</button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<h5 class="ms-2 mt-2">Friendships <i class="bi bi-envelope-heart"></i></h5>
+<% if @friendships.empty? %>
+  <p class="ms-2">No friendship <i class="bi bi-people-fill"></i></p>
+<% else %>
+  <div class="row m-0">
+    <% @friendships.each_slice(4) do |friendship_batch| %>
+      <% friendship_batch.each do |friendship| %>
+        <div class="col-md-3 mt-1 mb-3">
+          <div class="card color_card box-shadow">
+            <div class="card-body text-center">
+              <h5 class="card-title mb-0"><%= friendship[:friend].name.capitalize %></h5>
+              <small class="text-muted d-block text-center mb-2"><%= friendship[:friend].email %></small>
+              <button onclick="createToastConfirm('friendship',false,'<%= friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-2">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+              <hr class="mt-0 mb-2">
+              <div class="row m-0">
+                <div class="col-6 col-md-12 col-xl-6">
+                  <% if friendship[:notes].any? %>
+                    <h6>Notes</h6>
+                    <ul class="p-0">
+                      <% friendship[:notes].each do |note| %>
+                        <%= link_to note.title, note_path(note.id), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
+                      <% end %>
+                    </ul>
+                  <% end %>
+                </div>
+                <div class="col-6 col-md-12 col-xl-6">
+                  <% if friendship[:collections].any? %>
+                    <h6>Collections</h6>
+                    <ul class="p-0">
+                      <% friendship[:collections].each do |collection| %>
+                        <%= link_to collection.name, collection_path(collection.id), class: "btn color_button_notes btn-sm fw-semibold w-100" %>
+                      <% end %>
+                    </ul>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+

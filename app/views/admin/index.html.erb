@@ -2,10 +2,10 @@
 <div class="row m-0">       
     <div id="columnaOpciones" class="col-4 col-md-3">
         <h2 class="pt-2 text-center d-none d-md-block">Welcome!</h2>
-        <div class="border rounded p-2 color_card">
+        <div class="border rounded p-2 color_card box-shadow">
             <p><b>User:</b> <%= current_user.name&.capitalize %></p>
             <p><b>Day:</b> <%= Date.today.strftime("%d/%m/") %><span class="d-none d-md-inline"><%= Date.today.year %></span><span class="d-inline d-md-none"><%= Date.today.strftime("%y") %></span></p>
-            <p><b>Remember:</b> Always smile.</p>
+            <p><b>Remember:</b> <label class="d-block d-md-inline">Always smile.</label></p>
             <p class="text-center"><b>Have a nice day</b></p>
             <p class="text-center">ʕ•ᴥ•ʔ</p>
         </div>
@@ -15,7 +15,7 @@
         <h2 id="tituloZona" class="text-center pt-2 d-none d-md-block">System management</h2>
         <div id="tarjetasZona" class="row">
             <div class="col-md-6 col-lg-6 mb-4">
-                <div class="card h-100 color_card">
+                <div class="card h-100 color_card box-shadow">
                     <div class="card-body text-center">
                         <img class="card-img-top imgAdmin" alt="administradores" src="<%= asset_path 'users.png' %>">
                         <h5 class="card-text m-3"><a href="<%= admin_users_path %>">Users</a></h5>
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 mb-4">
-                <div class="card h-100 color_card">
+                <div class="card h-100 color_card box-shadow">
                     <div class="card-body text-center">
                         <img class="card-img-top imgAdmin" alt="animales" src="<%= asset_path 'collections.png' %>">
                         <h5 class="card-text m-3"><a href="<%= admin_collections_path %>">Collections</a></h5>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 mb-4">
-                <div class="card h-100 color_card">
+                <div class="card h-100 color_card box-shadow">
                     <div class="card-body text-center">
                         <img class="card-img-top imgAdmin" alt="clientes" src="<%= asset_path 'notes.png' %>">
                         <h5 class="card-text m-3"><a href="<%= admin_notes_path %>">Notes</a></h5>
@@ -39,10 +39,10 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 mb-4">
-                <div class="card h-100 color_card">
+                <div class="card h-100 color_card box-shadow">
                     <div class="card-body text-center">
                         <img class="card-img-top imgAdmin" alt="citas" src="<%= asset_path 'relationships.png' %>">
-                        <h5 class="card-text m-3"><a href="">Relationships</a></h5>
+                        <h5 class="card-text m-3"><a href="<%= admin_friendships_path %>">Friendships</a></h5>
                     </div>
                 </div>
             </div>

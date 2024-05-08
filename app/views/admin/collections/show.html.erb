@@ -1,23 +1,42 @@
 <div class="container mt-2">
   <div class="row justify-content-center">
+    <h3 class="text-center mb-3">Collection</h3>
     <div class="col-md-8">
-      <div class="container text-center">
-        <div class="row">
-          <div class="col-auto me-auto">
-            <%= link_to 'Edit',edit_admin_collection_path(@collection), class: 'btn color_button_green fw-semibold mb-3' %>
-            <button onclick="deleteCollection(true,'<%= @collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-          </div>
-          <div class="col-auto">
-            <%= link_to 'Go Back', admin_collections_path, class: 'btn color_button_brown fw-semibold' %>
-          </div>
+      <div class="row">
+        <div class="col-auto me-auto">
+          <%= link_to edit_admin_collection_path(@collection), class: 'btn color_button_green fw-semibold mb-3' do %>
+            <i class="bi bi-pencil-square"></i>
+          <% end %>
+          <button onclick="createToastConfirm('collection', true,'<%= @collection.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </div>
+        <div class="col-auto">
+          <%= link_to 'Go Back', admin_collections_path, class: 'btn color_button_brown fw-semibold' %>
         </div>
       </div>
-
-      <p><strong>Title: </strong> <%= @collection.name %></p>
-      <p><strong>Notes: </strong><%= "#{@collection.notes&.length || 0} associated." %></p>
-      <p><strong>Created At: </strong> <%= @collection.created_at %></p>
-      <p><strong>Updated At: </strong> <%= @collection.updated_at %></p>
-  
+      <div class="container border rounded color_card box-shadow mb-5">
+        <div class="form-group mt-3">
+          <label class="fw-semibold">Title:</label>
+          <span class="form-control underline" disabled><%= @collection.name.capitalize %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Notes:</label>
+          <span class="form-control underline" disabled><%= "#{@collection.notes&.length || 0} associated." %></span>
+        </div>
+        <div class="form-group mt-3">
+          <label class="fw-semibold">Owner:</label>
+          <span class="form-control underline" disabled><%= @collection.user.email %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Created At:</label>
+          <span class="form-control underline" disabled><%= @collection.created_at %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Updated At:</label>
+          <span class="form-control underline" disabled><%= @collection.updated_at %></span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

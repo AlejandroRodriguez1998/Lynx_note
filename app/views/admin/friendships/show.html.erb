@@ -1,0 +1,39 @@
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <h3 class="text-center mb-3">Friendship</h3>
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-auto me-auto">
+          <button onclick="createToastConfirm('friendship',true,'<%= @friendship[:id] %>')" class="btn color_button_brown fw-semibold mb-3">
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </div>
+        <div class="col-auto">
+          <%= link_to 'Go Back', admin_friendships_path, class: 'btn color_button_brown fw-semibold' %>
+        </div>
+      </div>
+      <div class="container border rounded color_card box-shadow mb-5">
+        <div class="form-group mt-3">
+          <label class="fw-semibold">Friend 1 username:</label>
+          <span class="form-control underline" disabled><%= @friendship[:user].name.capitalize %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Friend 1 email:</label>
+          <span class="form-control underline" disabled><%= @friendship[:user].email %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Friend 2 username:</label>
+          <span class="form-control underline" disabled><%= @friendship[:friend].name.capitalize %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Friend 2 email:</label>
+          <span class="form-control underline" disabled><%= @friendship[:friend].email %></span>
+        </div>
+        <div class="form-group">
+          <label class="fw-semibold">Status:</label>
+          <span class="form-control underline" disabled><%= @friendship[:status] %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

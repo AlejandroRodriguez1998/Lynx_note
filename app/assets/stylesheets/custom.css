@@ -1,3 +1,36 @@
+/* Estilos dispositivos */
+@media (max-width: 991px) {
+
+    #menu {
+      position: static !important;
+      width: 100%; 
+      text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+
+    #profile {
+        width: 75% !important;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .notification-box {
+        width: 1300% !important;
+        left: 0 !important;
+        margin-top: 10px !important;
+    } 
+}
+
+@media (max-width: 350px) {
+
+    .notification-box {
+        width: 1200% !important;
+    } 
+}
+
 /* General */
 .color_body {
     background-color: #efeddc;
@@ -32,6 +65,18 @@
     -webkit-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     -moz-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.toast_delete {
+    position: fixed !important;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.decoration-none {
+    list-style: none !important;
 }
 
 /* Listas */
@@ -126,8 +171,8 @@
 }
 
 .underline {
-    border-bottom: 1px solid #ccc; /* Borde solo en la parte inferior */
-    border-width: 0 0 2px 0; /* Solo borde inferior */
+    border-bottom: 1px solid #ccc;
+    border-width: 0 0 2px 0;
     background: none;
     border-radius: 0%;
     margin-bottom: 3%;
@@ -152,6 +197,7 @@ body.modal-open {
     z-index: 1051;
 }
 
+/* Notificaciones */
 .toast {
     background-color: #fff;
     border-radius: 0.5rem;
@@ -171,3 +217,70 @@ body.modal-open {
 .toast .btn {
     padding: 0.375rem 0.75rem;
 }
+
+.notification {
+    position: relative;
+    display: inline-block;
+}
+
+#bellIcon {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff6961;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+}
+
+.notification-box {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 10px;
+    width: 2000%;
+    z-index: 100;
+    max-height: 150px;
+    overflow: auto;
+    scrollbar-width: thin; 
+}
+
+/* Chrome, Safari */
+.notification-box::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.notification-box::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 4px;
+}
+
+.notification-box::-webkit-scrollbar-track {
+  background-color: #f1f1f1; 
+}
+
+.notification-box div {
+    margin: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-box div:last-child {
+    border-bottom: none;
+}
+
+.bi-x {
+    cursor: pointer;
+}
+

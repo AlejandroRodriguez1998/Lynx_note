@@ -5,27 +5,47 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # URLs de los recursos con vistas
   resources :notes
   resources :users
-  resources :session
   resources :collections
+  resources :friendships
 
+  # URLs de CRUD para el admin
   namespace :admin do
     resources :notes
     resources :users
     resources :collections
+    resources :friendships
   end
 
   root :to => "home#index"
-  get 'home', to: 'home#index'
-  get 'about', to: 'about#index'
-  get 'admin', to: 'admin#index'
 
-  get "logout" => "session#destroy", :as => "logout"
-  get "login" => "session#new", :as => "login"
-  post "login" => "session#create"
-  get "signup" => "users#new", :as => "signup"
+  # as => "login" creates a login_path or login_url helper
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Paginas estaticas sin nada mas
+  get 'home', to: 'home#index', as: 'home'
+  get 'about', to: 'about#index', as: 'about'
+  get 'admin', to: 'admin#index', as: 'admin'
+
+  # Inicio y desconexion de sesion
+  get 'login', to: 'session#new', as: 'login'
+  post 'login', to: 'session#create', as: 'login_post' 
+  get 'logout', to: 'session#destroy', as: 'logout' 
+
+  # Registro de usuarios
+  get 'signup', to: 'users#new', as: 'signup'
+  
+  # URL que no sean resources ya que no tienen vistas
+  get 'getNotifications', to: 'notifications#index', as: 'get_notifications'
+  delete 'deleteNotification/:id', to: 'notifications#destroy', as: 'deleteNotification'
+
+  # URL para compartir
+  get 'sharing/:object', to: 'sharing#new', as: 'sharing_new'
+  post 'sharing_create', to: 'sharing#create', as: 'sharing_create'
+  get 'sharing_edit/:id', to: 'sharing#edit', as: 'sharing_edit'
+  post 'sharing_update/:id', to: 'sharing#update', as: 'sharing_update'
+  delete 'sharing_delete/:id', to: 'sharing#destroy', as: 'sharing_delete'
+  delete 'unsharing/:id', to: 'sharing#unsharing', as: 'unsharing'
+
 end

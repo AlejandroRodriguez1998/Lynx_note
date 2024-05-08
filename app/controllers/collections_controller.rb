@@ -1,6 +1,7 @@
 class CollectionsController < ApplicationController
   before_action :validate_user
-  before_action :is_mine , only: [:edit, :update, :destroy]
+  before_action :is_mine , only: [:destroy]
+  before_action :is_shared , only: [:show, :edit, :update]
 
   def is_mine
     @collection = Collection.find(params[:id])
@@ -9,37 +10,62 @@ class CollectionsController < ApplicationController
     end
   end
 
-  # GET /collections or /collections.json
+  def is_shared
+    @collection = Collection.find(params[:id])
+    sharing = Sharing.where(shareable_id: @collection.id).first
+    @friend_sharing = @collection.sharings.any? && sharing&.shared_with&.include?(current_user.id)
+
+    unless sharing&.shared_with&.include?(current_user.id) || @collection.user_id == current_user.id
+      redirect_to root_url
+    end
+  end
+  
   def index
-    @collections = current_user.collections.map do |collection|
+    @collections = (current_user.collections + current_user.shared_collections).map do |collection|
       notes = []
-    
+      
       collection.notes.each do |note_id|
         note = Note.find(note_id)
-        notes << note
+        notes << note if note.user_id == current_user.id
       end
+
       collection.assign_attributes(notes: notes)
+      collection.assign_attributes(sharing: {
+        shared: collection.sharings.any?,
+        id: collection.sharings.first&.id,
+        is_shared: !current_user.collections.include?(collection)
+      })
       
-      collection #es como si fuese un return
+      collection 
+    end.sort_by { |collection| -collection.notes.size }
+  end
+
+  def show
+    if @friend_sharing
+      @collection = Collection.find(params[:id]).tap do |collection|
+        notes = []
+
+        collection.notes.each do |note_id|
+          note = Note.find(note_id)
+          notes << note
+        end
+
+        collection.assign_attributes(notes: notes)
+      
+        collection
+      end
+      
+      @shared_id = Sharing.where(shareable_id: @collection.id).first.id
+
+    else
+      redirect_to collections_path
     end
   end
 
-  # GET /collections/id
-  def show
-    @collection = Collection.find(params[:id])
-  end
-
-  # GET /collections/new
   def new
     @collection = Collection.new
   end
 
-  # GET /collections/id/edit
-  def edit
-    @collection = Collection.find(params[:id])
-  end
-
-  # POST /collections
   def create
     @collection = Collection.new(collection_params)
     @collection.user = current_user
@@ -51,7 +77,10 @@ class CollectionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /collections/id 
+  def edit
+    @collection = Collection.find(params[:id])
+  end
+
   def update
     @collection = Collection.find(params[:id])
     if @collection.update(collection_params)
@@ -62,7 +91,6 @@ class CollectionsController < ApplicationController
     end
   end
 
-  # DELETE /collections/id
   def destroy
       @collection = Collection.find(params[:id])
       @collection.destroy
@@ -75,7 +103,11 @@ class CollectionsController < ApplicationController
     end
 
     def after_collection_update
-      redirect_to collections_path, notice: "Collection was successfully updated." and return
+      if @friend_sharing
+        redirect_to collection_path(@collection), notice: "Collection was successfully updated." and return
+      else 
+        redirect_to collections_path, notice: "Collection was successfully updated." and return
+      end
     end
 
     def after_collection_delete

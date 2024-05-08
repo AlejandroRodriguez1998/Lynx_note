@@ -1,10 +1,20 @@
 class NotesController < ApplicationController
   before_action :validate_user
-  before_action :is_mine , only: [:edit, :update, :destroy]
+  before_action :is_mine , only: [:destroy]
+  before_action :is_shared , only: [:show, :edit, :update]
 
   def is_mine
     @note = Note.find(params[:id])
     unless @note.user_id == current_user.id
+      redirect_to root_url
+    end
+  end
+
+  def is_shared
+    @note = Note.find(params[:id])
+    sharing = Sharing.where(shareable_id: @note.id).first
+    @friend_sharing = @note.sharings.any? && sharing&.shared_with&.include?(current_user.id)
+    unless sharing&.shared_with&.include?(current_user.id) || @note.user_id == current_user.id
       redirect_to root_url
     end
   end
@@ -13,24 +23,31 @@ class NotesController < ApplicationController
     @browser = Browser.new(request.user_agent)
     @notes = current_user.notes
   end
-
+6
   def show
     @note = Note.find(params[:id])
+    @shared = @note.sharings.any?
+    @shared_id = @note.sharings.first&.id
     
     respond_to do |format|
       format.html
-      format.json { render json: @note }
+      format.json { render json: {
+        note: @note,
+        shared: @shared,
+        shared_id: @shared_id
+       } }
     end
   end
 
   def new
-    @collections = current_user.collections
+    @collections = get_collections_and_shared
     @collection_found = []
     @note = Note.new
   end
 
   def create
       @note = Note.new(title: note_params[:title])
+      service = CollectionsNotesService.new(@note)
       @note.user = current_user
   
       if !params[:note][:content].blank?
@@ -55,25 +72,28 @@ class NotesController < ApplicationController
       end
 
       if @note.save
-        add_collections(@note.id)
+        service.add_collections(note_params[:collection_ids])
         after_note_create
       else
         @collection_found = []
-        @collections = current_user.collections
+        @collections = get_collections_and_shared
         render :new, status: :unprocessable_entity
       end
   end
 
   def edit
-    @collections = current_user.collections
-    @collection_found = get_collection(params[:id].to_s)
     @note = Note.find(params[:id])
+
+    @collections = get_collections_and_shared
+    service = CollectionsNotesService.new(@note)
+    @collection_found = service.get_collections(@collections)
   end
   
   def update
     @note = Note.find(params[:id])
-    browser = Browser.new(request.user_agent)
     image_to_delete = params[:note][:images_to_delete]
+    service = CollectionsNotesService.new(@note)
+    browser = Browser.new(request.user_agent)
     image_to_update = {}
 
     @note.title = note_params[:title]
@@ -125,21 +145,25 @@ class NotesController < ApplicationController
     end
 
     if @note.save
-      update_collections(@note.id)
+      service.update_collections(note_params[:collection_ids])
       after_note_update
     else
-      @collections = current_user.collections
-      @collection_found = get_collection(params[:id].to_s)
       @note.reload
+
+      @collections = get_collections_and_shared
+      service = CollectionsNotesService.new(@note)
+      @collection_found = service.get_collections(@collections)
+
       render :edit, status: :unprocessable_entity
     end
   end
   
   def destroy
     @note = Note.find(params[:id])
-
-    delete_collections(@note.id)
-
+      
+    service = CollectionsNotesService.new(@note)
+    service.delete_collections
+  
     unless @note.content.blank?
       @note.content.each do |content_string|
         content_item = JSON.parse(content_string)
@@ -164,10 +188,14 @@ class NotesController < ApplicationController
     end
 
     def after_note_update
-      if browser.device.mobile?
+      if @friend_sharing
         redirect_to @note, notice: 'Note was successfully updated.' and return
       else
-        redirect_to notes_path(number: @note.id), notice: 'Note was successfully updated.'
+        if browser.device.mobile?
+          redirect_to @note, notice: 'Note was successfully updated.' and return
+        else
+          redirect_to notes_path(number: @note.id), notice: 'Note was successfully updated.'
+        end
       end
     end
 
@@ -211,55 +239,13 @@ class NotesController < ApplicationController
       end
     end
 
-    def get_collection(note_id)
-      collection_found = @collections.select do |collection|
-        collection.notes.map(&:to_s).include?(note_id)
-      end.map(&:id).map(&:to_s)
-
-      return collection_found
-    end
-
-    def add_collections(note)
-      if !note_params[:collection_ids].blank?
-        note_params[:collection_ids].each do |collection_id|
-          collection = Collection.find(collection_id)
-          collection.notes.push(note)
-          collection.save
-        end
-      end
-    end
-
-    def update_collections(note)
-      #Obtengo las marcadas
-      desired_collection_ids = note_params[:collection_ids] ? note_params[:collection_ids].map { |id| BSON::ObjectId.from_string(id) } : []
-      
-      # Encuentra todas las colecciones que contienen la nota
-      current_collections = Collection.where(:notes.in => [note])
-
-      # Eliminar la nota de las colecciones que ya no están seleccionadas
-      current_collections.each do |collection|
-        unless desired_collection_ids.include?(collection.id)
-          collection.notes.delete(note)
-          collection.save
-        end
-      end
-
-      # Añadir la nota a las colecciones seleccionadas
-      desired_collection_ids.each do |collection_id|
-        collection = Collection.find(collection_id)
-        unless collection.notes.include?(note)
-          collection.notes.push(note)
-          collection.save
-        end
-      end
-    end
-
-    def delete_collections(note)
-      current_collections = Collection.where(:notes.in => [note])
-
-      current_collections.each do |collection|
-        collection.notes.delete(note)
-        collection.save
-      end
+    def get_collections_and_shared
+      collections = current_user.collections
+      Rails.logger.debug "Collections: #{collections}"
+      collection_shared = current_user.shared_collections
+      Rails.logger.debug "Collections Shared: #{collection_shared}"
+      collections_and_shared = (collections + collection_shared).uniq
+      Rails.logger.debug "Collections and Shared: #{collections_and_shared}"
+      return collections_and_shared
     end
 end
