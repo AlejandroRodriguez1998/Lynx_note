@@ -13,8 +13,9 @@ class NotesController < ApplicationController
   def is_shared
     @note = Note.find(params[:id])
     sharing = Sharing.where(shareable_id: @note.id).first
-    @friend_sharing = @note.sharings.any? && sharing&.shared_with&.include?(current_user.id)
-    unless sharing&.shared_with&.include?(current_user.id) || @note.user_id == current_user.id
+    @friend_sharing = @note.sharings.any? && sharing&.shared_with&.include?(current_user.id.to_s)
+
+    unless @note.user_id == current_user.id || sharing&.shared_with&.include?(current_user.id.to_s)
       redirect_to root_url
     end
   end

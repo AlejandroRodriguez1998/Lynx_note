@@ -13,9 +13,9 @@ class CollectionsController < ApplicationController
   def is_shared
     @collection = Collection.find(params[:id])
     sharing = Sharing.where(shareable_id: @collection.id).first
-    @friend_sharing = @collection.sharings.any? && sharing&.shared_with&.include?(current_user.id)
+    @friend_sharing = @collection.sharings.any? && sharing&.shared_with&.include?(current_user.id.to_s)
 
-    unless sharing&.shared_with&.include?(current_user.id) || @collection.user_id == current_user.id
+    unless @collection.user_id == current_user.id || sharing&.shared_with&.include?(current_user.id.to_s)  
       redirect_to root_url
     end
   end
