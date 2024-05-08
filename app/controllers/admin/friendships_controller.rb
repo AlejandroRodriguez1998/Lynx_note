@@ -75,7 +75,7 @@ module Admin
         redirect_to admin_friendships_path, notice: 'Friendship was successfully updated.' and return
       end
 
-      def after_friendship_delete
+      def after_friendship_delete(friendship)
         redirect_to admin_friendships_path, notice: 'Friendship  was successfully destroy.' and return
       end
 

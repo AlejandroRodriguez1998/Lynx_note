@@ -174,6 +174,18 @@ class SharingController < ApplicationController
         end
     end
 
+    def unsharing
+        @sharing = Sharing.find(params[:id])
+        @sharing.pull(shared_with: current_user.id.to_s)
+        @sharing.save
+
+        if @sharing.shareable_type == 'Note'
+            redirect_to friendships_path, notice: 'The note has been unshared'
+        elsif @sharing.shareable_type == 'Collection'
+            redirect_to friendships_path, notice: 'The collection has been unshared'
+        end
+    end
+
     private
     def sharing_params
         params.require(:sharing).permit(:shareable_id, :owner, shared_with: [])

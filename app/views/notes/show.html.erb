@@ -30,6 +30,10 @@
                 <i class="bi bi-share-fill"></i>
               </button>
             <% end %>
+          <% else %>
+            <button onclick="createToastConfirm('unsharing', false, '<%= @shared_id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">
+              <i class="bi bi-trash-fill"></i>
+            </button>
           <% end %>
         </div>
         <div class="col-auto">

@@ -34,11 +34,20 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    user_email = user_params[:email]
+
   
     if user_params[:password].blank?
       @user.password_update = @user.password
     end
-  
+    
+    if user_email != @user.email
+      if User.where(email: user_params[:email]).exists?
+        @user.errors.add(:email, "The email already exists")
+        render :edit, status: :unprocessable_entity and return
+      end
+    end
+
     if @user.update(user_params)
       if @user.password.blank?
         @user.password = @user.password_update

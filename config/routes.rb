@@ -46,5 +46,6 @@ Rails.application.routes.draw do
   get 'sharing_edit/:id', to: 'sharing#edit', as: 'sharing_edit'
   post 'sharing_update/:id', to: 'sharing#update', as: 'sharing_update'
   delete 'sharing_delete/:id', to: 'sharing#destroy', as: 'sharing_delete'
+  delete 'unsharing/:id', to: 'sharing#unsharing', as: 'unsharing'
 
 end

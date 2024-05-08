@@ -252,6 +252,23 @@ body.modal-open {
     padding: 10px;
     width: 2000%;
     z-index: 100;
+    max-height: 150px;
+    overflow: auto;
+    scrollbar-width: thin; 
+}
+
+/* Chrome, Safari */
+.notification-box::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.notification-box::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 4px;
+}
+
+.notification-box::-webkit-scrollbar-track {
+  background-color: #f1f1f1; 
 }
 
 .notification-box div {

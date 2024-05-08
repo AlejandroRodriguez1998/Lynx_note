@@ -305,6 +305,19 @@ function deleteSharing(admin, sharingId) {
     })
 }
 
+function unsharing(admin, sharingId) {
+    fetch(`/unsharing/${sharingId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => {
+        window.location.href = "/friendships";
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 function acceptFriendship(admin, friendshipId) {
     fetch(`/friendships/${friendshipId}`, {
         method: 'PUT',
@@ -368,7 +381,8 @@ function createToastConfirm(type,admin, typeId) {
         user: deleteUser,
         friendship: deleteFriendship,
         acceptFriendship: acceptFriendship,
-        sharing: deleteSharing
+        sharing: deleteSharing,
+        unsharing: unsharing
     };
 
     const actionButton = document.createElement('button');
@@ -480,6 +494,7 @@ $(document).ready(function(){
         if (IDNote) { showNote(IDNote); }
  
         putNotification();
+        clearTimeout(timer); 
 
         $('#contentNotification').mouseenter(function() {
             clearTimeout(timer); 

@@ -12,8 +12,10 @@ class CollectionsController < ApplicationController
 
   def is_shared
     @collection = Collection.find(params[:id])
-    @friend_sharing = @collection.sharings.any? && !(@collection.user_id == current_user.id)
-    unless @collection.sharings.any? || @collection.user_id == current_user.id
+    sharing = Sharing.where(shareable_id: @collection.id).first
+    @friend_sharing = @collection.sharings.any? && sharing&.shared_with&.include?(current_user.id)
+
+    unless sharing&.shared_with&.include?(current_user.id) || @collection.user_id == current_user.id
       redirect_to root_url
     end
   end
@@ -52,6 +54,9 @@ class CollectionsController < ApplicationController
       
         collection
       end
+      
+      @shared_id = Sharing.where(shareable_id: @collection.id).first.id
+
     else
       redirect_to collections_path
     end

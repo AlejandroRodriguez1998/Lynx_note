@@ -12,8 +12,9 @@ class NotesController < ApplicationController
 
   def is_shared
     @note = Note.find(params[:id])
-    @friend_sharing = @note.sharings.any? && !(@note.user_id == current_user.id)
-    unless @note.sharings.any? || @note.user_id == current_user.id
+    sharing = Sharing.where(shareable_id: @note.id).first
+    @friend_sharing = @note.sharings.any? && sharing&.shared_with&.include?(current_user.id)
+    unless sharing&.shared_with&.include?(current_user.id) || @note.user_id == current_user.id
       redirect_to root_url
     end
   end
@@ -22,7 +23,7 @@ class NotesController < ApplicationController
     @browser = Browser.new(request.user_agent)
     @notes = current_user.notes
   end
-
+6
   def show
     @note = Note.find(params[:id])
     @shared = @note.sharings.any?

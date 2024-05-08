@@ -17,6 +17,9 @@
           <%= link_to edit_collection_path(@collection), class: 'btn color_button_green fw-semibold mb-3' do %>
             <i class="bi bi-pencil-square"></i>
           <% end %>
+          <button onclick="createToastConfirm('unsharing', false, '<%= @shared_id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">
+            <i class="bi bi-trash-fill"></i>
+          </button>
         </div>
         <div class="col-auto">
           <%= link_to 'Go Back', friendships_path, class: 'btn color_button_brown fw-semibold' %>
