@@ -1,0 +1,60 @@
+<h1 class="ms-2">Users</h1>
+
+<% if notice %>
+    <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
+        <strong>Correct!</strong> <%= notice %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
+    </div>
+
+    <script>
+        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);       
+    </script>
+<% end %>
+
+<div class="row m-0 p-0">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="flex-grow-1">
+        <%= link_to 'New User', new_admin_user_path, class: 'btn color_button_green fw-semibold mb-3' %>
+      </div>
+      <div>
+        <%= link_to 'Go Back', admin_path, class: 'btn color_button_brown fw-semibold mb-3' %>
+      </div>
+    </div>
+    <input id="tableContentTD" type="text" class="form-control mb-3" placeholder="Search by Email...">
+    <div class="table-responsive">
+      <table class="table color_card border rounded box-shadow ">
+        <thead>
+          <tr>
+            <th scope="col" class="d-none d-md-table-cell">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col" class="d-none d-md-table-cell">Password</th>
+            <th scope="col" class="d-none d-md-table-cell">Role</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="contentTable">
+          <% @users.each do |user| %>
+            <tr>
+              <td class="d-none d-md-table-cell"><%= user.name %></td>
+              <td id="tdSearch"><%= user.email %></td>
+              <td class="d-none d-md-table-cell"><%= user.password.present? ? "Yes" : "No" %></td>
+              <td class="d-none d-md-table-cell"><%= user.role %></td>
+              <td>
+                <%= link_to admin_user_path(user), class: 'btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0' do %>
+                  <i class="bi bi-eye-fill"></i>
+                <% end %>
+                <%= link_to edit_admin_user_path(user), class: 'btn color_button_green fw-semibold mx-1 mt-1 my-mt-0' do %>
+                  <i class="bi bi-pencil-square"></i>
+                <% end %>
+                <button onclick="createToastConfirm('user', true,'<%= user.id %>')" class="btn color_button_brown fw-semibold mx-1 mt-1 my-mt-0">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

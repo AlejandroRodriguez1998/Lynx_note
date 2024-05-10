@@ -4,6 +4,9 @@ class Note
   
     field :title, type: String
     field :content, type: Array
+    has_many :sharings, as: :shareable, dependent: :destroy
+
+    belongs_to :user
 
     validate :validate_content
 

@@ -1,7 +1,15 @@
 <div class="container mt-2">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h2 class="text-center mb-3">New Note</h2>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="text-center flex-grow-1 margin_text">
+        <h2>Create Note</h2>
+      </div>
+      <div>
+        <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
+      </div>
+    </div>
 
       <% if @note.errors.any? %>
         <div id="error" class="text-danger mb-3 text-center">
@@ -19,22 +27,10 @@
         </div>
       </div>
 
-      <%= form_with model: @note, html: { multipart: true } do |form| %>
-        
-        <div class="field mb-2">
-          <%= form.label :title, class:'form-label' %>
-          <%= form.text_field :title, class: 'form-control', placeholder:'Any title you want to add to the note' %>
-        </div>
-        
-        <div id="contentContainer">
-          <!-- Los campos se añadirán aquí -->
-        </div>
+      <%= render 'form', note: @note, collections: @collections %>
 
-        <div class="actions mb-3 text-center">
-          <%= form.submit class: 'btn color_button_green fw-semibold' %>
-          <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold'  %>
-        </div>
-      <% end %>
     </div>
   </div>
 </div>
+
+<%= javascript_include_tag 'fixed' %>

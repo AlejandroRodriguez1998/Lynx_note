@@ -1,0 +1,28 @@
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="text-center mb-3">New Note</h2>
+
+      <% if @note.errors.any? %>
+        <div id="error" class="text-danger mb-3 text-center">
+          <% @note.errors.full_messages.each do |message| %>
+            <p class="pb-2 fw-semibold"><%= message %></p> 
+          <% end %>     
+        </div>       
+      <% end %>
+      
+      <div id="fixed-buttons-container">
+        <div class="field mb-2 text-center">
+          <button type="button" onclick="addContentType('text')" class="btn color_button_green fw-semibold">Add Text</button>
+          <button type="button" onclick="addContentType('list')" class="btn color_button_green fw-semibold">Add List</button>
+          <button type="button" onclick="addContentType('file')" class="btn color_button_green fw-semibold">Add Image</button>
+        </div>
+      </div>
+
+      <%= render 'notes/form', note: @note, collections: @collections, is_admin: true %>
+
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag 'fixed' %>

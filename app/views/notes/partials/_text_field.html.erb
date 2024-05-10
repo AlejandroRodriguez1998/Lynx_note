@@ -1,0 +1,5 @@
+<div class="field mb-3">
+    <%= label_tag 'Text', 'Text', class: 'form-label' %>
+    <%= hidden_field_tag "note[content][][type]", 'text' %>
+    <%= text_area_tag "note[content][][value]", item['value'], class: 'form-control', rows: '3' %>
+</div>

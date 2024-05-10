@@ -1,48 +1,95 @@
-<% if notice %>
-  <div class="alert alert-success alert-dismissible fade show mx-2 my-3" role="alert">
-      <strong>Correct!</strong> <%= notice %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="botonCerrar"></button>
-  </div>
+<% if alert || notice %>
+    <div class="<%= alert ? 'alert alert-warning' : 'alert alert-success' %> alert-dismissible fade show mx-2 my-3" role="alert">
+        <strong><%= alert ? 'Warning!' : 'Correct!' %></strong> <%= alert || notice %>
+        <button id="botonCerrar" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" class="alert-close-button"></button>
+    </div>
 
-  <script>
-      setTimeout(() => { document.getElementById('botonCerrar').click(); }, 5000);
-  </script>
+    <script>
+        setTimeout(() => { document.getElementById('botonCerrar').click(); }, 3500);  
+    </script>
 <% end %>
 
-<div class="container mt-2">
+<div class="container mt-3">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <%= link_to 'Edit', edit_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' %>
-      <button onclick="deleteNote('<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">Delete</button>
-
-      <h3><%= @note.title %></h3>
-      
-      <% if @note.content.present? %>
-        <% @note.content.each do |content_string| %>
-          <% item = JSON.parse(content_string)%>
-          <% if item['type'] == 'text' %>
-            <p><%= item['value'] %></p>
-          <% elsif item['type'] == 'list' %>
-            <ul>
-              <% item['value'].split(';').each do |list_item| %>
-                <li><%= list_item %></li>
-              <% end %>
-            </ul>
-          <% elsif item['type'] == 'file' %>
-          <div class="card-group mb-3">
-            <div class="card color_card">
-              <div class="card-body text-center">
-                <img src=<%= item['value'] %> style="width: 150px; height: 150px;">
-              </div>
-            </div>
-          </div>
+      <div class="row">
+        <div class="col-auto me-auto">
+          <%= link_to edit_note_path(@note), class: 'btn color_button_green fw-semibold mb-3' do %>
+            <i class="bi bi-pencil-square"></i>
           <% end %>
-        <% end %>
-      <% end %>
-      
-      
+          <% unless @friend_sharing %>
+            <button onclick="createToastConfirm('note', false, '<%= @note.id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">
+              <i class="bi bi-trash-fill"></i>
+            </button>
+            <% if @shared %>
+              <button onclick="shareContent('<%= @shared_id %>', 'edit')" class="btn color_button_green fw-semibold mb-3 ms-2">
+                <i class="bi bi-share-fill"></i>
+              </button>
+            <% else %>
+              <button onclick="shareContent('<%= @note.id %>', 'new')" class="btn color_button_green fw-semibold mb-3 ms-2">
+                <i class="bi bi-share-fill"></i>
+              </button>
+            <% end %>
+          <% else %>
+            <button onclick="createToastConfirm('unsharing', false, '<%= @shared_id %>')" class="btn color_button_brown fw-semibold mb-3 ms-2">
+              <i class="bi bi-trash-fill"></i>
+            </button>
+          <% end %>
+        </div>
+        <div class="col-auto">
+          <% if @friend_sharing %>
+            <%= link_to 'Go Back', friendships_path, class: 'btn color_button_brown fw-semibold' %>
+          <% else %>
+            <%= link_to 'Go Back', notes_path, class: 'btn color_button_brown fw-semibold' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="container border rounded color_card box-shadow mb-5">
+        <div class="text-center">
+          <h1 class="d-none" id="namePage">Notes</h1>
+          <p class="d-none" id="id_note">show;<%= @note.id %></p>
+          <h3 class="mt-2"><%= @note.title %></h3>
+        </div>
+        <div class="mb-5">
+          <% if @note.content.present? %>
+            <% @note.content.each do |content_string| %>
+              <% item = JSON.parse(content_string)%>
+              <% if item['type'] == 'text' %>
+                <p><%= item['value'] %></p>
+              <% elsif item['type'] == 'list' %>
+                <ul>
+                  <% item['value'].split(';').each do |list_item| %>
+                    <li><%= list_item %></li>
+                  <% end %>
+                </ul>
+              <% elsif item['type'] == 'file' %>
+              <div class="card-group mb-3">
+                <div class="card color_card">
+                  <div class="card-body text-center">
+                    <img src=<%= item['value'] %> style="width: 150px; height: 150px;">
+                  </div>
+                </div>
+              </div>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-      
+<button class="d-none" data-bs-toggle="modal" data-bs-target="#modalShare" id="buttonModalShare"></button>
+<div class="modal fade" id="modalShare" tabindex="-1" aria-labelledby="modalShareLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="modalShareLabel">Share</h3>
+        <button id="modalClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="contentSharing">
+
+      </div>
     </div>
   </div>
 </div>

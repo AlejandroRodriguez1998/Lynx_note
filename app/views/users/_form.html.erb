@@ -1,0 +1,59 @@
+<% is_admin = local_assigns[:is_admin] || false %>
+<%= form_with(model: is_admin ? [:admin, user] : user) do |form| %>
+              
+    <div class="field mb-3">
+      <%= form.label :name, 'Username', class:"form-label" %>
+      <%= form.text_field :name, class: "form-control #{user.name_valid}" %>
+
+      <% if user.errors[:name].any? %>
+        <p class="text-danger text-center mt-1 mb-0 fw-semibold"><%= user.errors[:name].first %></p>
+      <% end %>
+    </div>
+
+    <div class="field mb-3">
+      <%= form.label :email, 'Email', class:"form-label"  %>
+      <%= form.text_field :email, class: "form-control #{user.email_valid}" %>
+
+      <% if user.errors[:email].any? %>
+        <p class="text-danger text-center mt-1 mb-0 fw-semibold"><%= user.errors[:email].first %></p>
+      <% end %>
+    </div>
+  
+    <% if is_admin %>
+      <div class="field mb-3">
+        <%= form.label :role, 'Role', class:"form-label"  %>
+        <div class="form-check">
+          <%= form.radio_button :role, 'admin', id: "admin_radio", class: "form-check-input" %>
+          <%= form.label :role_admin, 'Admin', class: "form-check-label", for: "admin_radio" %>
+        </div>
+        <div class="form-check">
+          <%= form.radio_button :role, 'user', id: "user_radio", class: "form-check-input" %>
+          <%= form.label :role_user, 'User', class: "form-check-label", for: "user_radio" %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="field mb-3">
+      <%= form.label :password, 'Password', class:"form-label"  %>  
+      <%= form.password_field :password, class: "form-control #{user.password_valid}" %>
+
+      <% if user.errors[:password].any? %>
+        <p class="text-danger text-center mt-1 mb-0 fw-semibold"><%= user.errors[:password].first %></p>
+      <% end %>
+    </div>
+  
+    <div class="actions mb-3 text-center">
+      <% if is_admin %>
+      <%= form.submit user.new_record? ? 'Create User' : 'Edit User', class: 'btn color_button_green fw-semibold' %>
+      <% else %>
+      <% if user.new_record? %>
+        <div class="field text-center">
+          <a href="/login" class="fw-semibold">Already have an account? Log in</a> 
+        </div>
+      <% end %>
+        <div class="actions text-center">
+        <%= form.submit user.new_record? ? 'Sign Up' : 'Edit User', class: 'btn color_button_green fw-semibold mt-3 mb-4 w-50' %>
+        </div>
+      <% end %>
+    </div>
+<% end %>
