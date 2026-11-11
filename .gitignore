@@ -37,3 +37,20 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Video sources and final deliverables are versioned; local tooling and drafts are not.
+/mi-video/node_modules/
+/mi-video/exports/*
+!/mi-video/exports/lynx-note-tutorial.mp4
+!/mi-video/exports/lynx-note-portada.png
+!/mi-video/exports/lynx-note-subtitulos.srt
+!/mi-video/exports/youtube-descripcion.txt
+!/mi-video/exports/quality-report.json
+!/mi-video/exports/audio-analysis.json
+/mi-video/.venv/
+/mi-video/public/captures/*
+!/mi-video/public/captures/*.mp4
+!/mi-video/public/captures/note.png
+!/mi-video/public/captures/verification.json
+/mi-video/.remotion/
+/mi-video/scripts/__pycache__/

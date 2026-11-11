@@ -1,0 +1,26 @@
+{
+  "name": "lynx-note-portfolio-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tutorial en español con capturas reales de Lynx Note y montaje en Remotion",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts LynxNote exports/lynx-note-tutorial.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p --concurrency=4",
+    "cover": "remotion still src/index.ts LynxCover exports/lynx-note-portada.png",
+    "capture": "python3 scripts/capture.py",
+    "audio": "python3 scripts/audio.py",
+    "finalize": "python3 scripts/finalize.py",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.542",
+    "@remotion/media": "4.0.542",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.542"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "typescript": "5.9.3"
+  }
+}

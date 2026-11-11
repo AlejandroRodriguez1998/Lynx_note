@@ -1,0 +1,26 @@
+Lynx Note | Tutorial y demo: notas, colecciones y colaboración
+
+Una demostración de Lynx Note, una aplicación web para crear notas con texto, listas e imágenes, organizarlas en colecciones y compartir contenido con amigos. Incluye el panel de administración y una vista de la interfaz en móvil.
+
+Desarrollado por Alejandro Paniagua Rodríguez y Ángela Gijón Flores para Sistemas Web de Ingeniería Informática (ESI, UCLM).
+
+CAPÍTULOS
+00:00 Presentación
+00:12 Registro e inicio de sesión
+00:28 Notes → selecciona una nota
+00:43 New Note → texto, listas e imágenes → Create Note
+01:10 Collections → New Collection → asigna tus notas
+01:32 Friends → solicitudes, invitaciones y amigos
+01:51 Abre una nota → compartir → elige un amigo
+02:09 Cuenta de Sara → Friends → nota compartida
+02:26 Cuenta administradora → Admin
+02:44 La misma aplicación, en una pantalla pequeña
+03:00 Ruby on Rails · MongoDB · Bootstrap
+
+Código fuente: https://github.com/AlejandroRodriguez1998/Lynx_note
+
+Tecnologías: Ruby on Rails, MongoDB (Mongoid), JavaScript y Bootstrap.
+Vídeo montado con Remotion a partir de grabaciones reales. Narración sintética en español; música instrumental original. Todas las cuentas y los datos de la demostración son ficticios.
+
+Visibilidad sugerida: oculto, para enlazar desde el portfolio.
+#LynxNote #RubyOnRails #Portfolio #DesarrolloWeb

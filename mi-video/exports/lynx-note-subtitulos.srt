@@ -1,0 +1,151 @@
+1
+00:00:00,600 --> 00:00:04,977
+Esto es Lynx Note una aplicación web para guardar ideas organizar apuntes
+
+2
+00:00:04,840 --> 00:00:09,450
+y compartir notas con tus amigos Vamos a verla en funcionamiento
+
+3
+00:00:12,600 --> 00:00:16,107
+Puedes crear una cuenta desde Sign up o entrar con tu correo y contraseña
+
+4
+00:00:15,970 --> 00:00:20,813
+en Log in. Al iniciar sesión aparecen las secciones de notas colecciones
+
+5
+00:00:20,675 --> 00:00:23,717
+y amigos junto a tu perfil y las notificaciones
+
+6
+00:00:28,600 --> 00:00:33,198
+En Notes tienes tus notas a la izquierda Selecciona una para consultar
+
+7
+00:00:33,060 --> 00:00:38,247
+su contenido en el panel principal Desde aquí puedes editarla eliminarla
+
+8
+00:00:38,109 --> 00:00:40,232
+o abrir las opciones para compartirla
+
+9
+00:00:43,600 --> 00:00:48,675
+Pulsa New Note y escribe un título Con Add Text añades un bloque de texto
+
+10
+00:00:49,371 --> 00:00:53,491
+Add List permite introducir varios elementos y Add Image adjunta una imagen
+
+11
+00:00:53,353 --> 00:00:59,043
+desde tu equipo Puedes combinar estos bloques en una misma nota Termina
+
+12
+00:00:58,905 --> 00:01:01,837
+con Create Note para guardarla y consultar el resultado
+
+13
+00:01:10,600 --> 00:01:14,439
+Para agrupar el contenido entra en Collections y crea una colección con
+
+14
+00:01:14,301 --> 00:01:19,523
+un nombre Después al crear o editar una nota marca la colección a la que
+
+15
+00:01:19,385 --> 00:01:24,021
+quieres añadirla y guarda los cambios Así puedes separar tus apuntes de
+
+16
+00:01:23,883 --> 00:01:26,900
+clase tus ideas y los materiales de cada proyecto
+
+17
+00:01:32,600 --> 00:01:36,868
+La sección Friends reúne las solicitudes recibidas las invitaciones enviadas
+
+18
+00:01:36,730 --> 00:01:41,413
+y tus amistades Puedes buscar a otra persona y enviarle una solicitud
+
+19
+00:01:41,545 --> 00:01:46,143
+o aceptar las que recibas En la tarjeta de cada amigo también aparecen
+
+20
+00:01:46,005 --> 00:01:48,704
+las notas y colecciones que ha compartido contigo
+
+21
+00:01:51,600 --> 00:01:55,708
+Para compartir una nota pulsa el icono de compartir selecciona a uno de
+
+22
+00:01:55,571 --> 00:02:00,290
+tus amigos y confirma con Sharing El contenido queda accesible para esa
+
+23
+00:02:00,152 --> 00:02:05,070
+persona Las colecciones también tienen opciones para compartir y gestionar
+
+24
+00:02:04,932 --> 00:02:06,136
+sus destinatarios
+
+25
+00:02:09,600 --> 00:02:14,161
+Ahora entramos con la cuenta de Sara La campana muestra el aviso de la
+
+26
+00:02:14,023 --> 00:02:18,486
+nota compartida Desde Friends puede abrir el contenido que Alex le ha
+
+27
+00:02:18,349 --> 00:02:23,572
+enviado Así se ve el recorrido completo desde el envío hasta la consulta
+
+28
+00:02:26,600 --> 00:02:31,381
+Las cuentas con rol de administrador tienen acceso a Admin Este panel
+
+29
+00:02:31,243 --> 00:02:35,793
+centraliza la gestión de usuarios colecciones notas y relaciones de amistad
+
+30
+00:02:36,489 --> 00:02:40,205
+Cada sección permite consultar los registros y acceder a sus operaciones
+
+31
+00:02:40,067 --> 00:02:42,080
+de gestión desde la propia aplicación
+
+32
+00:02:44,600 --> 00:02:49,369
+La interfaz también se adapta al móvil El menú se recoge y las notas se
+
+33
+00:02:49,231 --> 00:02:53,720
+abren en una vista individual Puedes consultar el contenido y moverte
+
+34
+00:02:53,582 --> 00:02:57,212
+entre las secciones desde el navegador sin instalar una aplicación de
+
+35
+00:02:57,074 --> 00:02:57,959
+escritorio
+
+36
+00:03:00,600 --> 00:03:04,855
+Lynx Note reúne notas colecciones y colaboración en una aplicación web
+
+37
+00:03:05,550 --> 00:03:09,891
+Un proyecto de Alejandro Paniagua Rodríguez y Ángela Gijón Flores desarrollado
+
+38
+00:03:09,753 --> 00:03:11,533
+con Ruby on Rails y MongoDB

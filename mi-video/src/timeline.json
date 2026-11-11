@@ -1,0 +1,313 @@
+[
+  {
+    "id": "intro",
+    "title": "Tus ideas, en su sitio.",
+    "eyebrow": "LYNX NOTE · DEMO & TUTORIAL",
+    "step": "Presentación",
+    "seconds": 12,
+    "voice": "Esto es Lynx Note: una aplicación web para guardar ideas, organizar apuntes y compartir notas con tus amigos. Vamos a verla en funcionamiento.",
+    "from": 0,
+    "captions": [
+      {
+        "text": "Esto es Lynx Note una aplicación web para guardar ideas organizar apuntes",
+        "start": 0.5995,
+        "end": 4.977416000000001
+      },
+      {
+        "text": "y compartir notas con tus amigos Vamos a verla en funcionamiento",
+        "start": 4.839708,
+        "end": 9.450000000000001
+      }
+    ]
+  },
+  {
+    "id": "access",
+    "title": "Empieza con tu cuenta",
+    "eyebrow": "01 / ACCESO",
+    "step": "Registro e inicio de sesión",
+    "seconds": 16,
+    "voice": "Puedes crear una cuenta desde Sign up o entrar con tu correo y contraseña en Log in. Al iniciar sesión aparecen las secciones de notas, colecciones y amigos, junto a tu perfil y las notificaciones.",
+    "from": 12,
+    "captions": [
+      {
+        "text": "Puedes crear una cuenta desde Sign up o entrar con tu correo y contraseña",
+        "start": 0.5995,
+        "end": 4.107333000000001
+      },
+      {
+        "text": "en Log in. Al iniciar sesión aparecen las secciones de notas colecciones",
+        "start": 3.969625,
+        "end": 8.812750000000001
+      },
+      {
+        "text": "y amigos junto a tu perfil y las notificaciones",
+        "start": 8.675,
+        "end": 11.717125000000001
+      }
+    ]
+  },
+  {
+    "id": "notes",
+    "title": "Todo empieza con una idea",
+    "eyebrow": "02 / TUS NOTAS",
+    "step": "Notes → selecciona una nota",
+    "seconds": 15,
+    "voice": "En Notes tienes tus notas a la izquierda. Selecciona una para consultar su contenido en el panel principal. Desde aquí puedes editarla, eliminarla o abrir las opciones para compartirla.",
+    "from": 28,
+    "captions": [
+      {
+        "text": "En Notes tienes tus notas a la izquierda Selecciona una para consultar",
+        "start": 0.6,
+        "end": 5.197541
+      },
+      {
+        "text": "su contenido en el panel principal Desde aquí puedes editarla eliminarla",
+        "start": 5.059791,
+        "end": 10.246583000000001
+      },
+      {
+        "text": "o abrir las opciones para compartirla",
+        "start": 10.108833,
+        "end": 12.231874
+      }
+    ]
+  },
+  {
+    "id": "create",
+    "title": "Escribe. Añade. Guarda.",
+    "eyebrow": "03 / CREA UNA NOTA",
+    "step": "New Note → texto, listas e imágenes → Create Note",
+    "seconds": 27,
+    "voice": "Pulsa New Note y escribe un título. Con Add Text añades un bloque de texto. Add List permite introducir varios elementos, y Add Image adjunta una imagen desde tu equipo. Puedes combinar estos bloques en una misma nota. Termina con Create Note para guardarla y consultar el resultado.",
+    "from": 43,
+    "captions": [
+      {
+        "text": "Pulsa New Note y escribe un título Con Add Text añades un bloque de texto",
+        "start": 0.5995,
+        "end": 5.675458000000001
+      },
+      {
+        "text": "Add List permite introducir varios elementos y Add Image adjunta una imagen",
+        "start": 6.370583,
+        "end": 10.491166
+      },
+      {
+        "text": "desde tu equipo Puedes combinar estos bloques en una misma nota Termina",
+        "start": 10.353416,
+        "end": 16.043124
+      },
+      {
+        "text": "con Create Note para guardarla y consultar el resultado",
+        "start": 15.905375,
+        "end": 18.837249
+      }
+    ]
+  },
+  {
+    "id": "collections",
+    "title": "Un proyecto, una colección",
+    "eyebrow": "04 / ORGANIZACIÓN",
+    "step": "Collections → New Collection → asigna tus notas",
+    "seconds": 22,
+    "voice": "Para agrupar el contenido, entra en Collections y crea una colección con un nombre. Después, al crear o editar una nota, marca la colección a la que quieres añadirla y guarda los cambios. Así puedes separar tus apuntes de clase, tus ideas y los materiales de cada proyecto.",
+    "from": 70,
+    "captions": [
+      {
+        "text": "Para agrupar el contenido entra en Collections y crea una colección con",
+        "start": 0.6,
+        "end": 4.4387490000000005
+      },
+      {
+        "text": "un nombre Después al crear o editar una nota marca la colección a la que",
+        "start": 4.301,
+        "end": 9.523041000000001
+      },
+      {
+        "text": "quieres añadirla y guarda los cambios Así puedes separar tus apuntes de",
+        "start": 9.385291,
+        "end": 14.020582000000001
+      },
+      {
+        "text": "clase tus ideas y los materiales de cada proyecto",
+        "start": 13.882833,
+        "end": 16.900499999999997
+      }
+    ]
+  },
+  {
+    "id": "friends",
+    "title": "Conecta con tu equipo",
+    "eyebrow": "05 / AMISTADES",
+    "step": "Friends → solicitudes, invitaciones y amigos",
+    "seconds": 19,
+    "voice": "La sección Friends reúne las solicitudes recibidas, las invitaciones enviadas y tus amistades. Puedes buscar a otra persona y enviarle una solicitud, o aceptar las que recibas. En la tarjeta de cada amigo también aparecen las notas y colecciones que ha compartido contigo.",
+    "from": 92,
+    "captions": [
+      {
+        "text": "La sección Friends reúne las solicitudes recibidas las invitaciones enviadas",
+        "start": 0.6,
+        "end": 4.867666000000001
+      },
+      {
+        "text": "y tus amistades Puedes buscar a otra persona y enviarle una solicitud",
+        "start": 4.729916,
+        "end": 9.412749
+      },
+      {
+        "text": "o aceptar las que recibas En la tarjeta de cada amigo también aparecen",
+        "start": 9.544625,
+        "end": 14.143124
+      },
+      {
+        "text": "las notas y colecciones que ha compartido contigo",
+        "start": 14.005375,
+        "end": 16.704416
+      }
+    ]
+  },
+  {
+    "id": "share",
+    "title": "Comparte con quien elijas",
+    "eyebrow": "06 / COMPARTE",
+    "step": "Abre una nota → compartir → elige un amigo",
+    "seconds": 18,
+    "voice": "Para compartir una nota, pulsa el icono de compartir, selecciona a uno de tus amigos y confirma con Sharing. El contenido queda accesible para esa persona. Las colecciones también tienen opciones para compartir y gestionar sus destinatarios.",
+    "from": 111,
+    "captions": [
+      {
+        "text": "Para compartir una nota pulsa el icono de compartir selecciona a uno de",
+        "start": 0.6,
+        "end": 4.708332
+      },
+      {
+        "text": "tus amigos y confirma con Sharing El contenido queda accesible para esa",
+        "start": 4.570583,
+        "end": 9.290208
+      },
+      {
+        "text": "persona Las colecciones también tienen opciones para compartir y gestionar",
+        "start": 9.152458,
+        "end": 14.069624000000001
+      },
+      {
+        "text": "sus destinatarios",
+        "start": 13.931875,
+        "end": 15.135749
+      }
+    ]
+  },
+  {
+    "id": "receive",
+    "title": "El otro lado de compartir",
+    "eyebrow": "07 / CONTENIDO COMPARTIDO",
+    "step": "Cuenta de Sara → Friends → nota compartida",
+    "seconds": 17,
+    "voice": "Ahora entramos con la cuenta de Sara. La campana muestra el aviso de la nota compartida. Desde Friends puede abrir el contenido que Alex le ha enviado. Así se ve el recorrido completo, desde el envío hasta la consulta.",
+    "from": 129,
+    "captions": [
+      {
+        "text": "Ahora entramos con la cuenta de Sara La campana muestra el aviso de la",
+        "start": 0.5995,
+        "end": 5.160791000000001
+      },
+      {
+        "text": "nota compartida Desde Friends puede abrir el contenido que Alex le ha",
+        "start": 5.023041,
+        "end": 9.48625
+      },
+      {
+        "text": "enviado Así se ve el recorrido completo desde el envío hasta la consulta",
+        "start": 9.348541,
+        "end": 14.572082
+      }
+    ]
+  },
+  {
+    "id": "admin",
+    "title": "También hay un espacio de gestión",
+    "eyebrow": "08 / ADMINISTRACIÓN",
+    "step": "Cuenta administradora → Admin",
+    "seconds": 18,
+    "voice": "Las cuentas con rol de administrador tienen acceso a Admin. Este panel centraliza la gestión de usuarios, colecciones, notas y relaciones de amistad. Cada sección permite consultar los registros y acceder a sus operaciones de gestión desde la propia aplicación.",
+    "from": 146,
+    "captions": [
+      {
+        "text": "Las cuentas con rol de administrador tienen acceso a Admin Este panel",
+        "start": 0.6,
+        "end": 5.3808750000000005
+      },
+      {
+        "text": "centraliza la gestión de usuarios colecciones notas y relaciones de amistad",
+        "start": 5.243125,
+        "end": 9.792666
+      },
+      {
+        "text": "Cada sección permite consultar los registros y acceder a sus operaciones",
+        "start": 10.488708,
+        "end": 14.204916
+      },
+      {
+        "text": "de gestión desde la propia aplicación",
+        "start": 14.067166,
+        "end": 16.079874
+      }
+    ]
+  },
+  {
+    "id": "mobile",
+    "title": "Tus notas, también en el móvil",
+    "eyebrow": "09 / DISEÑO ADAPTABLE",
+    "step": "La misma aplicación, en una pantalla pequeña",
+    "seconds": 16,
+    "voice": "La interfaz también se adapta al móvil. El menú se recoge y las notas se abren en una vista individual. Puedes consultar el contenido y moverte entre las secciones desde el navegador, sin instalar una aplicación de escritorio.",
+    "from": 164,
+    "captions": [
+      {
+        "text": "La interfaz también se adapta al móvil El menú se recoge y las notas se",
+        "start": 0.6,
+        "end": 5.3686240000000005
+      },
+      {
+        "text": "abren en una vista individual Puedes consultar el contenido y moverte",
+        "start": 5.230875,
+        "end": 9.719624
+      },
+      {
+        "text": "entre las secciones desde el navegador sin instalar una aplicación de",
+        "start": 9.581875,
+        "end": 13.211791
+      },
+      {
+        "text": "escritorio",
+        "start": 13.074,
+        "end": 13.959291
+      }
+    ]
+  },
+  {
+    "id": "outro",
+    "title": "Organiza. Conecta. Comparte.",
+    "eyebrow": "LYNX NOTE / PROYECTO DE PORTFOLIO",
+    "step": "Ruby on Rails · MongoDB · Bootstrap",
+    "seconds": 14,
+    "voice": "Lynx Note reúne notas, colecciones y colaboración en una aplicación web. Un proyecto de Alejandro Paniagua Rodríguez y Ángela Gijón Flores, desarrollado con Ruby on Rails y MongoDB.",
+    "from": 180,
+    "captions": [
+      {
+        "text": "Lynx Note reúne notas colecciones y colaboración en una aplicación web",
+        "start": 0.5995,
+        "end": 4.854916
+      },
+      {
+        "text": "Un proyecto de Alejandro Paniagua Rodríguez y Ángela Gijón Flores desarrollado",
+        "start": 5.55,
+        "end": 9.891166
+      },
+      {
+        "text": "con Ruby on Rails y MongoDB",
+        "start": 9.753416,
+        "end": 11.533333
+      }
+    ]
+  }
+]

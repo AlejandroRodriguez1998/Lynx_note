@@ -1,0 +1,6 @@
+development:
+  clients:
+    default:
+      uri: <%= ENV.fetch('MONGODB_URI', 'mongodb://127.0.0.1:27017/lynx_note_demo') %>
+      options:
+        server_selection_timeout: 5

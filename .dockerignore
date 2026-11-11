@@ -35,3 +35,6 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+
+# The video has its own Node dependencies and generated media.
+/mi-video/

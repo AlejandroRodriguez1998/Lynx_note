@@ -1,0 +1,29 @@
+[
+  "Login accepted; authenticated navigation visible",
+  "Note selection fetches actual note JSON and renders saved text and lists",
+  "Created note through multipart form with text, three list items and uploaded PNG; saved content rendered",
+  "Created collection and persisted note membership through edit form",
+  "Accepted pending friendship via confirmation and opened a note shared by Sara",
+  {
+    "scene": "friends",
+    "browser_errors": [
+      "Cannot read properties of null (reading 'click')"
+    ]
+  },
+  "Shared new note with Sara through SharingController#create",
+  "Separate Sara session received notification and read the shared note; complete sharing flow verified",
+  {
+    "scene": "receive",
+    "browser_errors": [
+      "createToast is not defined"
+    ]
+  },
+  "Admin role sees dashboard plus actual user and note records",
+  {
+    "scene": "admin",
+    "browser_errors": [
+      "createToast is not defined"
+    ]
+  },
+  "Mobile user agent uses individual note view and responsive collapsed navigation"
+]

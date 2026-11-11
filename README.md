@@ -20,7 +20,13 @@ Esta aplicacion es resposive en todos los dispositivos, con un diseño bonito y 
 
 ## :video_camera: Video
 
-Aquí tienes un [video]() haciendote un tour por la aplicación. (Se subirá pronto...)
+El tutorial de presentación se genera con Remotion e incluye capturas reales,
+narración en español y un recorrido por notas, colecciones, amistades,
+contenido compartido, administración y uso en móvil.
+El [proyecto del vídeo y las instrucciones](mi-video/README.md) están en `mi-video/`.
+Puedes descargar el [vídeo MP4](mi-video/exports/lynx-note-tutorial.mp4), la
+[miniatura](mi-video/exports/lynx-note-portada.png) y los
+[subtítulos](mi-video/exports/lynx-note-subtitulos.srt).
 
 ## ⚙️ Requisitos
 
